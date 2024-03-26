@@ -128,3 +128,14 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Assets
+.public/admin-assets/imgs/brands/*
+.public/admin-assets/imgs/card-brands/*
+.public/admin-assets/imgs/items/*
+.public/admin-assets/imgs/people/*
+.public/uploads/products/*
+.public/uploads/brands/*
+.public/uploads/banner/*
+.public/uploads/category/*
+
