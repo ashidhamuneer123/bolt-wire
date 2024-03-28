@@ -7,6 +7,7 @@ const Category = require('../models/categoryModel')
 const Cart = require('../models/cartModel')
 const Address=require('../models/addressModel')
 const Order = require('../models/orderModel');
+
 const securePassword=async(password)=>{
     try {
         const passwordHash = await bcrypt.hash(password,10);
@@ -136,7 +137,8 @@ const submitOTP=async (req,res)=>{
             password:user.password,
             is_admin:0
             })
-            await userDATA.save();
+           const saveUser = await userDATA.save();
+            req.session.user_id=saveUser._id
             res.redirect('/')
          }
 
@@ -267,6 +269,7 @@ const getAllProducts = async (req, res) => {
 
 const allProducts=async (req,res)=>{
     try {
+       
         const products = await Product.find({ status: true }).populate('category_id');
         // Implement sorting
      const { sortBy } = req.query;
@@ -287,6 +290,8 @@ const allProducts=async (req,res)=>{
 
 const productPage = async (req, res) => {
     try {
+        const user = await User.findById(req.session.user_id);
+
         // Get the product ID from the request parameters
         const productId = req.params.productId;
 
@@ -299,7 +304,7 @@ const productPage = async (req, res) => {
         }
         const relatedProducts= await Product.find({status:true}).limit(4)
         // Render the product page and pass the product details to the view
-        res.render('productPage', { product ,relatedProducts});
+        res.render('productPage', { product ,relatedProducts,user});
        
     } catch (error) {
         console.error('Error fetching product:', error);
@@ -312,9 +317,9 @@ const renderCart = async (req, res) => {
         
   
         if (req.session.user_id) {
-            const userData = await User.findById(req.session.user_id);
+            const user = await User.findById(req.session.user_id);
         
-            if (!userData) {
+            if (!user) {
                 // Handle the case where the user with the session ID is not found
                 return res.status(404).send('User not found');
             }
@@ -335,7 +340,7 @@ const renderCart = async (req, res) => {
                   subtotal += item.quantity * item.productId.selling_price;
               });
             
-        res.render('cart',{ cartItems:cart.products, totalQuantities, subtotal})
+        res.render('cart',{ cartItems:cart.products, totalQuantities, subtotal,user})
         
         }else{
         res.render('login')
@@ -384,7 +389,89 @@ const addToCart = async (req, res) => {
     }
 };
 
+//Dynamically update quantity from cart
 
+
+
+const increaseQuantity = async (req, res) => {
+    try {
+        const { productId } = req.body;
+        const userId = req.session.user_id
+        // Find the item in the cart based on productId
+        const cartItems = await Cart.findOne({ userId }).populate('products.productId');
+        
+        if (!cartItems) {
+            return res.status(404).json({ message: "Cart item not found" });
+        }
+
+        // Update quantity based on increase
+
+        const prod = await Product.findOne({ _id: productId },{ _id: 0, stock: 1 })
+        if(Number(prod.stock > 0)){
+            await Cart.updateOne({userId,"products.productId":productId},{$inc:{"products.$.quantity":1}})
+            await Product.updateOne({_id:productId},{$inc:{stock:-1}})
+            res.status(200).json({success:true})   
+        }else{
+            res.status(200).json({success:false})
+        }
+        
+       /*  // Save the updated cart item
+        await cartItem.save();
+
+        // Calculate total quantities and subtotal
+        const cart = await Cart.findOne({ userId: req.session.user_id }).populate('products.productId');
+        let totalQuantities = 0;
+        let subtotal = 0;
+        cart.products.forEach(item => {
+            totalQuantities += item.quantity;
+            subtotal += item.quantity * item.productId.selling_price;
+        });
+
+        // Send updated quantities and subtotal to the client
+        res.status(200).json({ totalQuantities, subtotal }); */
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+
+//decrease 
+
+const decreaseQuantity = async (req, res) => {
+    try {
+        const { productId } = req.body;
+        const userId = req.session.user_id
+        // Find the item in the cart based on productId
+        const cartItem = await Cart.findOne({ productId });
+        
+        if (!cartItem) {
+            return res.status(404).json({ message: "Cart item not found" });
+        }
+
+        // Update quantity based on increase
+
+
+        
+        // Save the updated cart item
+        await cartItem.save();
+
+        // Calculate total quantities and subtotal
+        const cart = await Cart.findOne({ userId: req.session.user_id }).populate('products.productId');
+        let totalQuantities = 0;
+        let subtotal = 0;
+        cart.products.forEach(item => {
+            totalQuantities += item.quantity;
+            subtotal += item.quantity * item.productId.selling_price;
+        });
+
+        // Send updated quantities and subtotal to the client
+        res.status(200).json({ totalQuantities, subtotal });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
 
 
 
@@ -406,7 +493,7 @@ const remove_product_from_cart = async (req, res) => {
 
 const renderCheckOut=async (req,res)=>{
     try {
-
+        const user = await User.findById(req.session.user_id);
         const userId = req.session.user_id;
           
            const cart = await Cart.findOne({ userId }).populate('products.productId');
@@ -426,7 +513,7 @@ const renderCheckOut=async (req,res)=>{
                   subtotal += item.quantity * item.productId.selling_price;
               });
             
-        res.render('checkOut',{ cartItems:cart.products, totalQuantities, subtotal , addresses})
+        res.render('checkOut',{ cartItems:cart.products, totalQuantities, subtotal , addresses,user})
         
        
 
@@ -497,6 +584,8 @@ module.exports={
     productPage,
     renderCart,
     addToCart,
+    increaseQuantity,
+    decreaseQuantity,
     renderCheckOut,
     remove_product_from_cart,
     renderOrderSuccess

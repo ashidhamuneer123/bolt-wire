@@ -49,12 +49,24 @@
                                 <li>
                                     <a class="language-dropdown-active" href="#"> <i class="fi-rs-world"></i> English <i class="fi-rs-angle-small-down"></i></a>
                                     <ul class="language-dropdown">
-                                        <li><a href="#"><img src="assets/imgs/theme/flag-fr.png" alt="">Français</a></li>
-                                        <li><a href="#"><img src="assets/imgs/theme/flag-dt.png" alt="">Deutsch</a></li>
-                                        <li><a href="#"><img src="assets/imgs/theme/flag-ru.png" alt="">Pусский</a></li>
+                                        <li><a href="#"><img src="/assets/imgs/theme/flag-fr.png" alt="">Français</a></li>
+                                        <li><a href="#"><img src="/assets/imgs/theme/flag-dt.png" alt="">Deutsch</a></li>
+                                        <li><a href="#"><img src="/assets/imgs/theme/flag-ru.png" alt="">Pусский</a></li>
                                     </ul>
                                 </li>
-                                <li><i class="fi-rs-user"></i><a href="page-login-register.html">Log In / Sign Up</a></li>
+                                <li><!-- In your navigation bar or header section -->
+
+                                    <% if (user) { %>
+                                        <!-- If user is logged in, show logout button -->
+                                        <li><a href="/myaccount"><h6><%= user.name %></h6></a></li>
+                                <li><a href="/logout">Logout</a></li>
+    
+                                <% } else { %>
+                                    <!-- If user is not logged in, show login button -->
+                                    <li><a href="/signup">Log In / Sign Up</a></li>
+                                    <% } %>
+    
+                                        </li>
                             </ul>
                         </div>
                     </div>
@@ -72,16 +84,11 @@
                             <form action="#">
                                 <select class="select-active">
                                     <option>All Categories</option>
-                                    <option>Women's</option>
-                                    <option>Men's</option>
-                                    <option>Cellphones</option>
-                                    <option>Computer</option>
-                                    <option>Electronics</option>
-                                    <option> Accessories</option>
-                                    <option>Home & Garden</option>
-                                    <option>Luggage</option>
-                                    <option>Shoes</option>
-                                    <option>Mother & Kids</option>
+                                    
+                                    <option>Too;s & Equipments</option>
+                                    <option>Hardware</option>
+                                    <option>Electricals</option>
+                                   
                                 </select>
                                 <input type="text" placeholder="Search for items...">
                             </form>
@@ -89,53 +96,17 @@
                         <div class="header-action-right">
                             <div class="header-action-2">
                                 <div class="header-action-icon-2">
-                                    <a href="shop-wishlist.html">
-                                        <img class="svgInject" alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
-                                        <span class="pro-count blue">4</span>
+                                    <a href="#">
+                                        <img class="svgInject" alt="Evara" src="/assets/imgs/theme/icons/icon-heart.svg">
+                                        <span class=""></span>
                                     </a>
                                 </div>
                                 <div class="header-action-icon-2">
-                                    <a class="mini-cart-icon" href="shop-cart.html">
+                                    <a class="mini-cart-icon" href="#">
                                         <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
                                         <span class="pro-count blue"><%= totalQuantities %></span>
                                     </a>
-                                    <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                        <ul>
-                                            <li>
-                                                <div class="shopping-cart-img">
-                                                    <a href="shop-product-right.html"><img alt="Evara" src="assets/imgs/shop/thumbnail-3.jpg"></a>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="shop-product-right.html">Daisy Casual Bag</a></h4>
-                                                    <h4><span>1 × </span>$800.00</h4>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="shopping-cart-img">
-                                                    <a href="shop-product-right.html"><img alt="Evara" src="assets/imgs/shop/thumbnail-2.jpg"></a>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="shop-product-right.html">Corduroy Shirts</a></h4>
-                                                    <h4><span>1 × </span>$3200.00</h4>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <div class="shopping-cart-footer">
-                                            <div class="shopping-cart-total">
-                                                <h4>Total <span>$4000.00</span></h4>
-                                            </div>
-                                            <div class="shopping-cart-button">
-                                                <a href="shop-cart.html" class="outline">View cart</a>
-                                                <a href="shop-checkout.html">Checkout</a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                  
                                 </div>
                             </div>
                         </div>
@@ -173,18 +144,18 @@
                                
                                     <li><a href="#">Pages <i class="fi-rs-angle-down"></i></a>
                                         <ul class="sub-menu">
-                                            <li><a href="page-about.html">About Us</a></li>
-                                            <li><a href="page-contact.html">Contact</a></li>
-                                            <li><a href="page-account.html">My Account</a></li>
-                                            <li><a href="page-login-register.html">login/register</a></li>
-                                            <li><a href="page-purchase-guide.html">Purchase Guide</a></li>
-                                            <li><a href="page-privacy-policy.html">Privacy Policy</a></li>
-                                            <li><a href="page-terms.html">Terms of Service</a></li>
-                                            <li><a href="page-404.html">404 Page</a></li>
+                                            <li><a href="#">About Us</a></li>
+                                            <li><a href="#">Contact</a></li>
+                                            <li><a href="/myaccount">My Account</a></li>
+                                            <li><a href="/signup">login/register</a></li>
+                                            <li><a href="#">Purchase Guide</a></li>
+                                            <li><a href="#">Privacy Policy</a></li>
+                                            <li><a href="#">Terms of Service</a></li>
+                                            <li><a href="#">404 Page</a></li>
                                         </ul>
                                     </li>
                                     <li>
-                                        <a href="page-contact.html">Contact</a>
+                                        <a href="#">Contact</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -208,7 +179,7 @@
                 </div>
             </div>
         </div>
-        <section class="mt-50 mb-50">
+     <!--    <section class="mt-50 mb-50">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
@@ -235,9 +206,9 @@
                                             <td class="price" data-title="Price"><span>$<%= item.productId.selling_price %> </span></td>
                                             <td class="text-center" data-title="Stock">
                                                 <div class="detail-qty border radius  m-auto">
-                                                    <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
+                                                    <a href="#" class="qty-down" data-product-id="<%= item.productId._id %>"><i class="fi-rs-angle-small-down"></i></a>
                                                     <span class="qty-val"><%= item.quantity %></span>
-                                                    <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                                    <a href="#" class="qty-up" data-product-id="<%= item.productId._id %>"><i class="fi-rs-angle-small-up"></i></a>
                                                 </div>
                                             </td>
                                             <td class="text-right" data-title="Cart">
@@ -267,12 +238,12 @@
                                                     <tbody>
                                                         <tr>
                                                             <td class="cart_total_label">Total Quantities</td>
-                                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand"><%= totalQuantities %></span></td>
+                                                            <td class="cart_total_amount"><span id="totalQuantities" class="font-lg fw-900 text-brand"><%= totalQuantities %></span></td>
                                                         </tr>
                                                         
                                                         <tr>
                                                             <td class="cart_total_label">SubTotal</td>
-                                                            <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand">$<%= subtotal.toFixed(2) %></span></strong></td>
+                                                            <td class="cart_total_amount"><strong><span id="subtotal" class="font-xl fw-900 text-brand">$<%= subtotal.toFixed(2) %></span></strong></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -281,6 +252,77 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> -->
+        <section class="mt-50 mb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table class="table shopping-summery text-center clean">
+                                <thead>
+                                    <tr class="main-heading">
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Subtotal</th>
+                                        <th scope="col">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% cartItems.forEach(item => { %>
+                                        <tr>
+                                            <td class="image product-thumbnail"><img src="/admin-assets/imgs/items/<%= item.productId.primary_image.name %>" alt="<%= item.productId.product_name %>"></td>
+                                            <td class="product-des product-name">
+                                                <h5 class="product-name"><a href="shop-product-right.html"><%= item.productId.product_name %></a></h5>
+                                                <p class="font-xs"><%= item.productId.description %></p>
+                                            </td>
+                                            <td class="price" data-title="Price"><span>$<%= item.productId.selling_price %> </span></td>
+                                            <td class="text-center" data-title="Stock">
+                                                <div class="detail-qty border radius m-auto">
+                                                    <a onclick="Qincrease('<%= item.productId._id %>')" id="inc-<%= item.productId._id %>" href="#" class="qty-down" data-product-id="<%= item.productId._id %>"><i class="fi-rs-angle-small-down"></i></a>
+                                                    <span id="quantity-<%= item.productId._id %>" class="qty-val"><%= item.quantity %></span>
+                                                    <a onclick="Qdecrease('<%= item.productId._id %>')" id="dec-<%= item.productId._id %>" href="#" class="qty-up" data-product-id="<%= item.productId._id %>"><i class="fi-rs-angle-small-up"></i></a>
+                                                </div>
+                                            </td>
+                                            <td class="text-right" data-title="Cart">
+                                                <span>$<%= item.quantity * item.productId.selling_price %> </span>
+                                            </td>
+                                            <td class="action" data-title="Remove"><a href="/remove-from-cart/<%= item.productId._id %>" class="text-muted"><i class="fi-rs-trash"></i></a></td>
+                                        </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="cart-action text-end">
+                            <a href="/allproducts" class="btn "><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
+                        </div>
+                        <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
+                        <div class="col-lg-6 col-md-12">
+                            <div class="border p-md-4 p-30 border-radius cart-totals">
+                                <div class="heading_s1 mb-3">
+                                    <h4>Cart Totals</h4>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td class="cart_total_label">Total Quantities</td>
+                                                <td class="cart_total_amount"><span id="totalQuantities" class="font-lg fw-900 text-brand"><%= totalQuantities %></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="cart_total_label">SubTotal</td>
+                                                <td class="cart_total_amount"><strong><span id="subtotal" class="font-xl fw-900 text-brand">$<%= subtotal.toFixed(2) %></span></strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <a href="/checkout" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
                             </div>
                         </div>
                     </div>
@@ -310,11 +352,11 @@
                             </p>
                             <h5 class="mb-10 mt-30 fw-600 text-grey-4 wow fadeIn animated">Follow Us</h5>
                             <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0">
-                                <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
-                                <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
-                                <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
-                                <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
-                                <a href="#"><img src="assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
+                                <a href="#"><img src="/assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                                <a href="#"><img src="/assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                                <a href="#"><img src="/assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                                <a href="#"><img src="/assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                                <a href="#"><img src="/assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
                             </div>
                         </div>
                     </div>
@@ -332,8 +374,8 @@
                     <div class="col-lg-2  col-md-3">
                         <h5 class="widget-title wow fadeIn animated">My Account</h5>
                         <ul class="footer-list wow fadeIn animated">
-                            <li><a href="#">Sign In</a></li>
-                            <li><a href="#">View Cart</a></li>
+                            <li><a href="/login">Sign In</a></li>
+                            <li><a href="/cart">View Cart</a></li>
                             <li><a href="#">My Wishlist</a></li>
                             <li><a href="#">Track My Order</a></li>
                             <li><a href="#">Help</a></li>
@@ -375,7 +417,54 @@
             </div>
         </div>
     </footer>
-   
+
+
+    <script>
+      async function Qincrease(productId){
+        let qty=document.getElementById(`quantity-${productId}`)
+        fetch('')
+      }
+
+      async function Qdecrease(productId){
+        
+    }
+
+    /* document.addEventListener('DOMContentLoaded', function() {
+        // Add event listeners to quantity increase and decrease buttons
+        document.querySelectorAll('.qty-up, .qty-down').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const productId = this.getAttribute('data-product-id');
+                const action = this.classList.contains('qty-up') ? 'increase' : 'decrease';
+                updateQuantity(productId, action);
+            });
+        });
+
+
+        function updateQuantity(productId, quantity) {
+            fetch('/cart/update-quantity', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId, quantity })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Quantity updated successfully');
+                    // Optionally, update the UI after successful update
+                } else {
+                    console.error('Failed to update quantity');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating quantity:', error);
+            });
+        }
+    }) */
+    </script>
+
+    
     <!-- Vendor JS-->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>

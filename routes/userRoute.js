@@ -44,6 +44,8 @@ user_route.post('/edit-address/:id', myAccountController.editAddress);
 user_route.get('/delete-address/:addressId', myAccountController.deleteAddress);
 user_route.get('/cart',userController.renderCart)
 user_route.post('/add-to-cart/:productId', userController.addToCart);
+user_route.post('/inc-quantity', userController.increaseQuantity);
+user_route.post('/dec-quantity', userController.decreaseQuantity);
 user_route.get('/remove-from-cart/:productId', userController.remove_product_from_cart)
 user_route.get('/filter',searchController.get_searchedProducts);
 
