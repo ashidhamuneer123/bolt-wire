@@ -7,18 +7,29 @@ const orderSchema = new Schema({
         ref: 'user',
         required: true
     },
+    address: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Address',
+        required: true
+    },
     items: [
         {
             productId: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Product',
+                ref: 'Products',
                 required: true
+            },
+            deliveryStatus: {
+                type: String,
+                enum: ['Processing', 'Cancelled', 'Delivered'], 
+                default: 'Processing' 
             },
             quantity: {
                 type: Number,
                 required: true,
-                default: 1 // Default quantity set to 1
+                default: 1 
             }
+           
         }
     ],
     paymentMethod: {
@@ -39,6 +50,7 @@ const orderSchema = new Schema({
         enum: ['paid', 'unpaid'],
         default: 'unpaid'
     },
+   
     createdAt: {
         type: Date,
         default: Date.now

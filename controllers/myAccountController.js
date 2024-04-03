@@ -1,6 +1,7 @@
 const Address=require('../models/addressModel')
 const User=require('../models/userModel');
 const Order=require('../models/orderModel')
+const Product=require('../models/productModel')
 const bcrypt = require('bcrypt');
 const Swal = require('sweetalert2');
 
@@ -9,7 +10,8 @@ const myAccount = async(req,res)=>{
         const userId=req.session.user_id
         const user = await User.findById(userId)
         const addresses= await Address.find({userId})
-        const orders=await Order.find({userId})
+        const orders = await Order.find({ userId }).populate('items.productId');
+
         res.render('myAccount',{user,addresses,orders})
         
     } catch (error) {
@@ -140,6 +142,48 @@ const deleteAddress = async (req, res) => {
     }
 };
 
+
+const cancelMyOrder=async (req,res)=>{
+    try {
+        const { productId, quantity } = req.body;
+        const userId = req.session.user_id;
+        // Find the order of the user
+        const order = await Order.findOne({ userId });
+
+        if (!order) {
+            return res.status(404).json({ success: false, message: 'Order not found' });
+        }
+
+        // Find the item in the order
+        const item = order.items.find(item => item.productId.toString() === productId);
+
+        if (!item) {
+            return res.status(404).json({ success: false, message: 'Item not found in order' });
+        }
+
+        // Update delivery status to "Cancelled"
+        item.deliveryStatus = 'Cancelled';
+
+        // Restore stock quantity in product schema
+        const product = await Product.findById(productId);
+        
+        if (!product) {
+            return res.status(404).json({ success: false, message: 'Product not found' });
+        }
+
+        product.stock += parseInt(quantity); // Increment stock
+
+        // Save changes
+        await order.save();
+        await product.save();
+
+        res.status(200).json({ success: true, message: 'Order cancelled successfully' });
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 module.exports={
     myAccount,
     updateDetails,
@@ -147,5 +191,6 @@ module.exports={
     addAddress,
     editAddressPage,
     editAddress,
-    deleteAddress
+    deleteAddress,
+    cancelMyOrder
 }

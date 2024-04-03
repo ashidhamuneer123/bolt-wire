@@ -6,9 +6,27 @@ const mongoose = require("mongoose");
 const { json } = require("body-parser");
 const sharp = require("sharp");
 const path = require("path");
+
 //add product function
 const add_product = async (req, res) => {
   try {
+
+    
+    // Additional validation for numerical fields
+    const stock = parseInt(req.body.stock);
+    const prod_price = parseFloat(req.body.prod_price);
+    const sellig_price = parseFloat(req.body.sellig_price);
+
+    if (isNaN(stock) || isNaN(prod_price) || isNaN(sellig_price) || stock <= 0 || prod_price <= 0 || sellig_price <= 0) {
+      return res.status(400).json({ error: "Stock, Actual Price, and Selling Price must be numerical and greater than 0." });
+    }
+
+    // Validate the number of images uploaded
+    if (!req.files.images || req.files.images.length < 2) {
+      return res.status(400).json({ error: "At least 2 secondary images are required." });
+    }
+    
+ 
     let seconaryImages = [];
     req.files.images.forEach((e) => {
       seconaryImages.push({

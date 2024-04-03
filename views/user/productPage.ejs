@@ -5,7 +5,7 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-product-full.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:46 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>Evara - eCommerce HTML Template</title>
+    <title>Bolt & Wire</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -602,11 +602,11 @@
                                         
                                     <div class="bt-1 border-color-1 mt-30 mb-30">
                                        
-                                        <form action="/add-to-cart/<%= product._id %>" method="post">
+                                        <form action="/add-to-cart/<%= product._id %>" method="post" onsubmit="return addToCart(event)">
                                         <div class="detail-extralink">
                                             
                                             
-                                               <input id="quantity" name="quantity" type="number" value="1" min="1" style="width: 40px; height: 40px; padding: 5px;">
+                                              
                                                 
                                                 <div class="product-extra-link2">
                                                     <button type="submit" class="button button-add-to-cart">Add to cart</button>
@@ -791,6 +791,37 @@
             });
         });
     </script>
+
+<script>
+    async function addToCart(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const form = event.target;
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(form.action, {
+                method: form.method,
+                body: formData
+            });
+
+            const responseData = await response.json();
+
+            if (responseData.success) {
+                // Product added successfully, display any success message or update UI
+                alert('Product added to cart successfully!');
+                location.reload();
+            } else {
+                // Product is out of stock or other error occurred, display error message
+                alert(responseData.message);
+            }
+        } catch (error) {
+            console.error('Error adding product to cart:', error);
+            // Handle any errors that occur during the fetch request
+            alert('An error occurred while adding the product to cart. Please try again later.');
+        }
+    }
+</script>
     <!-- Vendor JS-->
     <script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="/assets/js/vendor/jquery-3.6.0.min.js"></script>

@@ -19,36 +19,41 @@ user_route.use(express.static(path.join(__dirname, 'public')));
 
 // Signup and Login Routes
 user_route.get('/signup', auth.isLogout , userController.loadSignup);
-user_route.post('/signup', userController.insertUser);
+user_route.post('/signup', auth.isLogout , userController.insertUser);
 user_route.get('/login', auth.isLogout, userController.loginLoad);
-user_route.post('/login', userController.confirmLogin);
+user_route.post('/login', auth.isLogout , userController.confirmLogin);
 user_route.get('/logout', auth.isLogin,userController.logout)
 
 // OTP Routes
-user_route.get('/otp', userController.getOTP);
-user_route.post('/otp', userController.submitOTP);
-user_route.post('/resend-otp', userController.resendOTP);
+user_route.get('/otp', auth.isLogout, userController.getOTP);
+user_route.post('/otp', auth.isLogout, userController.submitOTP);
+user_route.post('/resend-otp', auth.isLogout, userController.resendOTP);
 
-// Other Routes
+// Home Route
 user_route.get('/', userController.getAllProducts);
 user_route.get('/product/:productId', userController.productPage);
 user_route.get('/allproducts',userController.allProducts)
+
 //myaccount
 
-user_route.get('/myaccount',myAccountController.myAccount)
-user_route.post('/update-detail/:id',myAccountController.updateDetails)
-user_route.get('/add-address',myAccountController.addAddressPage);
-user_route.post('/add-address',myAccountController.addAddress)
-user_route.get('/edit-address/:id', myAccountController.editAddressPage);
-user_route.post('/edit-address/:id', myAccountController.editAddress);
-user_route.get('/delete-address/:addressId', myAccountController.deleteAddress);
-user_route.get('/cart',userController.renderCart)
-user_route.post('/add-to-cart/:productId', userController.addToCart);
-user_route.post('/inc-quantity', userController.increaseQuantity);
-user_route.post('/dec-quantity', userController.decreaseQuantity);
-user_route.get('/remove-from-cart/:productId', userController.remove_product_from_cart)
-user_route.get('/filter',searchController.get_searchedProducts);
+user_route.get('/myaccount',auth.isLogin,myAccountController.myAccount)
+user_route.post('/update-detail/:id',auth.isLogin,myAccountController.updateDetails)
+user_route.get('/add-address',auth.isLogin,myAccountController.addAddressPage);
+user_route.post('/add-address',auth.isLogin,myAccountController.addAddress)
+user_route.get('/edit-address/:id',auth.isLogin, myAccountController.editAddressPage);
+user_route.post('/edit-address/:id',auth.isLogin, myAccountController.editAddress);
+user_route.get('/delete-address/:addressId',auth.isLogin, myAccountController.deleteAddress);
+user_route.post('/cancel-order',auth.isLogin,myAccountController.cancelMyOrder)
 
-user_route.get('/checkout',userController.renderCheckOut)
-user_route.get('/ordersuccess',userController.renderOrderSuccess);
+//cart management
+user_route.get('/cart', auth.isLogin, userController.renderCart)
+user_route.post('/add-to-cart/:productId',auth.isLogin,  userController.addToCart);
+user_route.post('/update-quantity',auth.isLogin, userController.updateQuantity);
+user_route.get('/remove-from-cart/:productId',auth.isLogin,  userController.remove_product_from_cart)
+
+user_route.get('/filter',searchController.get_searchedProducts);
+user_route.get('/checkout',auth.isLogin, userController.renderCheckOut);
+user_route.post('/place-order',auth.isLogin, userController.placeOrder);
+user_route.get('/ordersuccess',auth.isLogin, userController.renderOrderSuccess);
+
 module.exports = user_route;

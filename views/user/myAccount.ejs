@@ -5,7 +5,7 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:11:15 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>Evara - eCommerce HTML Template</title>
+    <title>Bolt & Wire</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,6 +15,7 @@
     <meta property="og:image" content="">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/titlelogo.jpg">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
 </head>
@@ -316,7 +317,7 @@
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="index.html" rel="nofollow">Home</a>
+                    <a href="/" rel="nofollow">Home</a>
                     <span></span> Pages
                     <span></span> Account
                 </div>
@@ -324,7 +325,7 @@
         </div>
         <section class="pt-150 pb-150">
            
-            <div class="container">
+            <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-10 m-auto">
                         <div class="row">
@@ -363,42 +364,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5 class="mb-0">Your Orders</h5>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Order</th>
-                                                                <th>Date</th>
-                                                                <th>Status</th>
-                                                                <th>Total Amount</th>
-                                                                <th>Actions</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <% let serialNumber = 1; %>
-                                                            <% orders.forEach(order=>{ %>
-                                                            <tr>
-                                                                <td><%= serialNumber %></td>
-                                                                <td><%= order.createdAt.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }) %></td>
-                                                                <td><%= order.status %></td>
-                                                                <td>$<%= order.totalAmount %></td>
-                                                                <td><a href="#" class="btn-small d-block">View</a></td>
-                                                            </tr>
-                                                            <% serialNumber++; %>
-                                                            <% }); %>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
+                                      
                                     <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
                                         <div style="width: 36rem;" class="header d-flex align-items-center justify-content-between">
                                             <h3 class="h4 user-text fw-bold mb-3">Manage Addresses</h3>
@@ -469,6 +435,60 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Your Orders</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <% if (orders.length > 0) { %>
+                                                    <% orders.forEach(order => { %>
+                                                        <div class="container-fluid">
+                                                            <div class="order-details">
+                                                                <% order.items.forEach(item => { %>
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <div class="card mb-4 shadow-sm">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-4">
+                                                                                        <img src="/admin-assets/imgs/items/<%= item.productId.primary_image.name %>" class="img-fluid" style="width: 130px; height: 130px;" alt="Product Image">
+                                                                                    </div>
+                                                                                    <div class="col-md-5">
+                                                                                        <div class="card-body">
+                                                                                            <h5 class="card-title"><strong><%= item.productId.product_name %></strong></h5>
+                                                                                            <h6 class="card-text">Quantity: <strong><%= item.quantity %></strong></h6>
+                                                                                            <h6 class="card-text">Amount: <strong><%= item.quantity * item.productId.selling_price %></strong></h6>
+                                                                                            <h6 class="card-text" style="color: <%= item.deliveryStatus === 'Cancelled' ? 'red' : (item.deliveryStatus === 'Delivered' ? 'green' : 'inherit') %>;">
+                                                                                                <strong><%= item.deliveryStatus %></strong>
+                                                                                            </h6>
+                                                                                            
+                                                                                            
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-3 d-flex align-items-center">
+                                                                                        <% if (item.deliveryStatus !== 'Cancelled' && item.deliveryStatus !=='Delivered') { %>
+                                                                                            <button onclick="cancelMyOrder('<%= item.productId._id %>','<%= item.quantity%>')" type="button" class="btn btn-danger btn-sm">Cancel</button>
+                                                                                        <% } %>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                <% }) %>
+                                                            </div>
+                                                        </div>
+                                                    <% }) %>
+                                                <% } else { %>
+                                                    <p>No orders found.</p>
+                                                <% } %>
+                                            </div>
+                                            
+                                        </div>
+                                            
+                                            
+                                    </div>
+                         
+                                  
                                 </div>
                             </div>
                         </div>
@@ -564,6 +584,19 @@
             </div>
         </div>
     </footer>
+    <script>
+        async function cancelMyOrder( productId,quantity){
+            try {
+                event.preventDefault()
+                const response = await axios.post('/cancel-order', { productId, quantity });
+                if(response.data.success){
+                    location.reload()
+                }
+            } catch (error) {
+                console.error('Error cancelling order:', error);
+            }
+        }
+    </script>
  
     <!-- Vendor JS-->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>

@@ -4,14 +4,7 @@ const Product = require("../models/productModel");
 const bcrypt = require('bcrypt');
 
 
-const securePassword = async (password) => {
-    try {
-        const passwordHash = await bcrypt.hash(password, 10);
-        return passwordHash;
-    } catch (error) {
-        console.log(error.message)
-    }
-}
+
 
 
 const loadLogin = async (req,res)=>{
@@ -37,7 +30,7 @@ const confirmLogin = async (req, res) => {
                     res.render('login', { message: "Incorrect email or password" })
                 } else {
                     
-                    req.session.user_id = userData._id;
+                    req.session.admin_id = userData._id;
               
                     res.redirect('/admin/dashboard');
                 }

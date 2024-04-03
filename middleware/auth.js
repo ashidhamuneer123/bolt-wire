@@ -1,13 +1,13 @@
-
+const User = require("../models/userModel");
 
 const isLogin = async (req, res, next) => {
   try {
-    if (req.session.userId) {
-    
+    if (req.session.user_id) {
+      next();
     } else {
-      res.redirect("/");
+      res.redirect("/login");
     }
-    next();
+    
   } catch (error) {
     console.log(error.message);
   }
@@ -15,9 +15,9 @@ const isLogin = async (req, res, next) => {
 
 const isLogout = async (req, res, next) => {
   try {
-    if (req.session.userId) {
+    if (req.session.user_id) {
        res.redirect("/");
-       return
+      
     }
     else{
       next();
@@ -28,31 +28,20 @@ const isLogout = async (req, res, next) => {
   }
 };
 
-const jsonIsLogin = async (req, res, next) => {
-  try {
-    if (req.session.userId) {
-      next();
-    } else {
-      res.status(401).send();
+const checkBlock = async (req, res, next) => {
+  const userId = req.session.user_id;
+  if (userId) {
+    try {
+      const user = await User.findOne({ _id: userId });
+      if (user && user.blocked === 1) {
+        return res.redirect('/login');
+      }
+    } catch (error) {
+      console.error(error.message)
     }
-  } catch (error) {
-    console.log(error.message);
   }
-};
-
-const changePassword = async (req, res, next) => {
-  try {
-    if (req.session.otpVerified) {
-      next();
-    } else {
-      res.redirect("/");
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
-
+  next();
+}
 
 
 
@@ -61,6 +50,5 @@ const changePassword = async (req, res, next) => {
 module.exports = {
   isLogin,
   isLogout,
-  changePassword,
-  jsonIsLogin,
+  checkBlock
 };

@@ -2,7 +2,7 @@
 <html lang="en">
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-products-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:00 GMT -->
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:22 GMT -->
 <head>
     <meta charset="utf-8">
     <title>Bolt & Wire</title>
@@ -23,8 +23,8 @@
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
-            <a href="/admin/dashboard" class="brand-wrap">
-                <img src="/admin-assets/imgs/theme/mainlogo.png" class="logo" alt="Bolt & Wire Dashboard">
+            <a href="index.html" class="brand-wrap">
+                <img src="/admin-assets/imgs/theme/mainlogo.png" class="logo" alt="Evara Dashboard">
             </a>
             <div>
                 <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
@@ -37,40 +37,42 @@
                         <span class="text">Dashboard</span>
                     </a>
                 </li>
-                <li class="menu-item has-submenu active">
+                <li class="menu-item has-submenu">
                     <a class="menu-link" href="#"> <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Products</span>
                     </a>
                     <div class="submenu">
-                        <a href="/admin/product" class="active">Product List</a>
+                        <a href="/admin/product">Products</a>
+                       
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
                     <a class="menu-link" href="#"> <i class="icon material-icons md-shopping_bag"></i>
-                        <span class="text">categories</span>
+                        <span class="text">Categories</span>
                     </a>
                     <div class="submenu">
-                        <a href="/admin/category" class="active">Category List</a>
+                        <a href="/admin/category">Category List</a>
+                        
                     </div>
                 </li>
-                <li class="menu-item has-submenu ">
+                <li class="menu-item has-submenu">
                     <a class="menu-link" href="#"> <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>
                     <div class="submenu">
-                        <a href="/admin/order">Order list </a>
-                      
+                        <a href="/admin/order">Order list</a>
+                        
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href="#"> <i class="icon material-icons md-store"></i>
+                    <a class="menu-link" href=""> <i class="icon material-icons md-store"></i>
                         <span class="text">Users</span>
                     </a>
                     <div class="submenu">
-                        <a href="/admin/userlist">Users list</a>   
+                        <a href="/admin/userlist">Users list</a>
                     </div>
                 </li>
-                
+            
                 <li class="menu-item has-submenu">
                     <a class="menu-link" href="page-transactions-1.html"> <i class="icon material-icons md-monetization_on"></i>
                         <span class="text">Transactions</span>
@@ -160,10 +162,10 @@
                     <li class="dropdown nav-item">
                         <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="/admin-assets/imgs/theme/flag-us.png" alt="English">English</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
+                            <a class="dropdown-item text-brand" href="#"><img src="assets/imgs/theme/flag-us.png" alt="English">English</a>
+                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
+                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
+                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
                         </div>
                     </li>
                     <li class="dropdown nav-item">
@@ -183,109 +185,127 @@
         <section class="content-main">
             <div class="content-header">
                 <div>
-                    <h2 class="content-title card-title">Products List</h2>
-                    <p></p>
-                </div>
-                <div>
-                    <a href="#" class="btn btn-light rounded font-md">Export</a>
-                    <a href="#" class="btn btn-light rounded  font-md">Import</a>
-                    <a href="#" class="btn btn-primary btn-sm rounded">Create new</a>
+                    <h2 class="content-title card-title">Order detail</h2>
+                    
                 </div>
             </div>
-            <div class="card mb-4">
+            <div class="card">
                 <header class="card-header">
                     <div class="row align-items-center">
-                        <div class="col col-check flex-grow-0">
-                            <div class="form-check ms-2">
-                                <input class="form-check-input" type="checkbox" value="">
-                            </div>
+                        <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+                            <span>
+                                <i class="material-icons md-calendar_today"></i> <b><%= order.createdAt.toLocaleDateString() %></b>
+                            </span> <br>
+                            <small class="text-muted">Order ID: <%= order._id %></small>
                         </div>
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            <select class="form-select">
-                                <option selected>All category</option>
-                                <option>Electricals</option>
-                                <option>Hardware</option>
-                                <option>Tools & Accessories</option>
+                        <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+                            <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200">
+                                <option>Change status</option>
+                                <option>Awaiting payment</option>
+                                <option>Processing</option>
+                                <option>Cancelled</option>
+                                <option>Delivered</option>
                             </select>
-                        </div>
-                        <div class="col-md-2 col-6">
-                            <input type="date" value="02.05.2021" class="form-control">
-                        </div>
-                        <div class="col-md-2 col-6">
-                            <select class="form-select">
-                                <option selected>Status</option>
-                                <option>Active</option>
-                                <option>Disabled</option>
-                                <option>Show all</option>
-                            </select>
+                            <a class="btn btn-primary" href="#">Save</a>
+                            <a class="btn btn-secondary print ms-2" href="#"><i class="icon material-icons md-print"></i></a>
                         </div>
                     </div>
                 </header> <!-- card-header end// -->
-                <section style="margin-right: 3rem; width:50vw" class="category d-flex mt-2">
-                    <div class="object-fit-contain mt-3"> 
-                      <div class="header d-flex justify-content-between">  
-                        <h3 class="h3 text-second fw-bold mb-3">Products</h3>
-                        <a href="/admin/new-product" class="btn add-btn" style="height:40px;">Add New Product</a>
-                      </div>
-                      <table style="width: 70vw;" id="example" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                        
-                          <tr>
-                            <th class="th-sm">image</th>
-                            <th class="th-sm">Product name</th>
-                            <th class="th-sm">Brand</th>
-                            <th class="th-sm">Category</th>
-                            <th class="th-sm">Stock</th>
-                            <th class="th-sm">Selling Price</th>
-                            <th class="th-sm">status</th>
-                            <th class="th-sm">Delete/Edit</th>
-                          </tr>
-
-                          <% products.forEach(product => { %>
-                            <tr>
-                              <td><img class="rounded mx-auto d-block" style="width: 4rem;" src="/admin-assets/imgs/items/<%= product.primary_image.name %>" alt=""></td>
-                              <td><%= product.product_name %></td>
-                              <td><%= product.brand_name %></td>
-                              <td><%= product.category.cat_name %></td>
-                              <td><%= product.stock %></td>
-                              <td><%= product.selling_price %></td>
-                              <% if (product.status) { %>
-                                <td>list</td>
-                              <% } else { %>
-                                <td>Unlist</td>
-                              <% } %>
-                              <td>
-                                <a href="/admin/edit-product/<%= product._id %>" class="ms-3"><i class="fa-solid fa-pen"></i>Edit</a>
-                                <a href="/admin/softdelete_product/<%= product._id %>" class="text-danger ms-2" onclick="return confirm('Are you sure you want to delete <%= product.product_name %>?')">Delete</a>
-                              </td>
-                            </tr>
-                          <% }); %>
-
-
-                      
-                        
-                      </table>
+                <div class="card-body">
+                    <div class="row mb-50 mt-20 order-info-wrap">
+                        <div class="col-md-4">
+                            <article class="icontext align-items-start">
+                                <span class="icon icon-sm rounded-circle bg-primary-light">
+                                    <i class="text-primary material-icons md-person"></i>
+                                </span>
+                                <div class="text">
+                                    <h6 class="mb-1">Customer</h6>
+                                    <p class="mb-1">
+                                        
+                                   <strong><%= order.userId.name %></strong> <br><strong>Phone : <%= order.userId.phone %> </strong> 
+                                    </p>
+                                    
+                                </div>
+                            </article>
+                        </div> <!-- col// -->
+                        <div class="col-md-4">
+                            <article class="icontext align-items-start">
+                                <span class="icon icon-sm rounded-circle bg-primary-light">
+                                    <i class="text-primary material-icons md-local_shipping"></i>
+                                </span>
+                                <div class="text">
+                                    <h6 class="mb-1">Order info</h6>
+                                    <p class="mb-1">
+                                 Pay method: <%= order.paymentMethod %> <br> Status: <%= order.status %>
+                                    </p>
+                                    
+                                </div>
+                            </article>
+                        </div> <!-- col// -->
+                        <div class="col-md-4">
+                            <article class="icontext align-items-start">
+                                <span class="icon icon-sm rounded-circle bg-primary-light">
+                                    <i class="text-primary material-icons md-place"></i>
+                                </span>
+                                <div class="text">
+                                    <h6 class="mb-1">Deliver to</h6>
+                                    <p class="mb-1">
+                                       <%= order.address.name %>
+                                       <p><%= order.address.address %></p>
+                                       <%= order.address.city %>,
+                                       <%= order.address.district %>,
+                                       <%= order.address.state %>,
+                                      <p>Pincode:<%= order.address.pincode %></p> 
+                                    </p>
+                                    
+                                </div>
+                            </article>
+                        </div> <!-- col// -->
+                    </div> <!-- row // -->
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Order No:</th>
+                                            <th width="40%">Product</th>
+                                            <th width="20%">Unit Price</th>
+                                            <th width="20%">Quantity</th>
+                                            <th width="20%" class="text-end">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% let serialNumber = 1; %>
+                                        <% order.items.forEach(item => { %>
+                                            <tr>
+                                                <td><%= serialNumber %></td>
+                                                <td>
+                                                    <a class="itemside" href="#">
+                                                        <div class="left">
+                                                            <img src="/admin-assets/imgs/items/<%= item.productId.primary_image.name %>" width="40" height="40" class="img-xs" alt="Item">
+                                                        </div>
+                                                        <div class="info"><%= item.productId.product_name %></div>
+                                                    </a>
+                                                </td>
+                                                <td>$<%= item.productId.selling_price.toFixed(2) %></td>
+                                                <td><%= item.quantity %></td>
+                                                <td class="text-end">$<%= (item.productId.selling_price * item.quantity).toFixed(2) %></td>
+                                            </tr>
+                                        <% }); %>
+                                        
+                                    </tbody>
+                                </table>
+                            </div> <!-- table-responsive// -->
+                        </div> <!-- col// -->
                     </div>
-                  </section>
-                  
-
-
-                  <div class="pagination-area mt-15 mb-50">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-start">
-                            <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                            <li class="page-item"><a class="page-link" href="#">02</a></li>
-                            <li class="page-item"><a class="page-link" href="#">03</a></li>
-                            <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#">16</a></li>
-                            <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-                        </ul>
-                    </nav>
-                </div>
+                </div> <!-- card-body end// -->
+            </div> <!-- card end// -->
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
-                    <script>
+                    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
                     document.write(new Date().getFullYear())
                     </script> ©, Evara - HTML Ecommerce Template .
                 </div>
@@ -307,5 +327,5 @@
 </body>
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-products-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:12 GMT -->
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:22 GMT -->
 </html>

@@ -5,7 +5,7 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>Evara - eCommerce HTML Template</title>
+    <title>Bolt & Wire</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -450,18 +450,21 @@
                         <div class="divider mt-50 mb-50"></div>
                     </div>
                 </div>
+                <form action="/place-order" method="POST">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-25">
                             <h4>Billing Details</h4>
                         </div>
-                        
+                        <div>
+                            <a href="/add-address"> <input id="addAddress" class="btn user-btn" type="button" value="Add New Address"></a>
+                        </div>
                         <div class="row">
                             <% addresses.forEach((address, index) => { %>
                                 <div class="card mb-3 mb-lg-0">
                                     <div class="card-header col">
                                         <label>
-                                            <input type="radio" name="selectedAddress" value="<%= address._id %>" <%= index === 0 ? 'checked' : '' %>>
+                                            <input type="radio" id="selectedAddress" name="selectedAddress" value="<%= address._id %>" <%= index === 0 ? 'checked' : '' %>>
                                            
                                         </label>
                                         <h5 class="mb-0">Address <%= index + 1 %></h5>
@@ -548,10 +551,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="/ordersuccess" class="btn btn-fill-out btn-block mt-30">Place Order</a>
+                            <button type="submit" class="btn btn-fill-out btn-block mt-30">Place Order</button>
                         </div>
                     </div>
                 </div>
+            </form>
             </div>
         </section>
     </main>

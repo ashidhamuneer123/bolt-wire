@@ -15,6 +15,7 @@
     <meta property="og:image" content="">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
 </head>
@@ -173,7 +174,7 @@
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="index.html" rel="nofollow">Home</a>
+                    <a href="/" rel="nofollow">Home</a>
                     <span></span> Shop
                     <span></span> Your Cart
                 </div>
@@ -283,13 +284,12 @@
                                                 <p class="font-xs"><%= item.productId.description %></p>
                                             </td>
                                             <td class="price" data-title="Price"><span>$<%= item.productId.selling_price %> </span></td>
-                                            <td class="text-center" data-title="Stock">
-                                                <div class="detail-qty border radius m-auto">
-                                                    <a onclick="Qincrease('<%= item.productId._id %>')" id="inc-<%= item.productId._id %>" href="#" class="qty-down" data-product-id="<%= item.productId._id %>"><i class="fi-rs-angle-small-down"></i></a>
-                                                    <span id="quantity-<%= item.productId._id %>" class="qty-val"><%= item.quantity %></span>
-                                                    <a onclick="Qdecrease('<%= item.productId._id %>')" id="dec-<%= item.productId._id %>" href="#" class="qty-up" data-product-id="<%= item.productId._id %>"><i class="fi-rs-angle-small-up"></i></a>
-                                                </div>
-                                            </td>
+                                          
+                                            <td>
+                                            <input type="number" id="quantity-<%= item.productId._id %>" name="quantity" value="<%= Math.min(item.quantity,10) %>" style="width: 55px;" readonly>
+                                                    <button onclick="updateQuantity('<%= item.productId._id %>','decrease')" class="btn btn-sm btn-primary ms-2">-</button>
+                                                    <button onclick="updateQuantity('<%= item.productId._id %>','increase')" class="btn btn-sm btn-primary ms-1">+</button>
+                                                </td>
                                             <td class="text-right" data-title="Cart">
                                                 <span>$<%= item.quantity * item.productId.selling_price %> </span>
                                             </td>
@@ -418,52 +418,35 @@
         </div>
     </footer>
 
+   
+
 
     <script>
-      async function Qincrease(productId){
-        let qty=document.getElementById(`quantity-${productId}`)
-        fetch('')
-      }
-
-      async function Qdecrease(productId){
-        
-    }
-
-    /* document.addEventListener('DOMContentLoaded', function() {
-        // Add event listeners to quantity increase and decrease buttons
-        document.querySelectorAll('.qty-up, .qty-down').forEach(button => {
-            button.addEventListener('click', function(event) {
-                event.preventDefault();
-                const productId = this.getAttribute('data-product-id');
-                const action = this.classList.contains('qty-up') ? 'increase' : 'decrease';
-                updateQuantity(productId, action);
-            });
-        });
-
-
-        function updateQuantity(productId, quantity) {
-            fetch('/cart/update-quantity', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ productId, quantity })
-            })
-            .then(response => {
-                if (response.ok) {
-                    console.log('Quantity updated successfully');
-                    // Optionally, update the UI after successful update
-                } else {
-                    console.error('Failed to update quantity');
+        async function updateQuantity(productId,operator) {
+            try {
+                event.preventDefault()
+                const response = await axios.post('/update-quantity', { productId, operator });
+                /* let qty =document.getElementById(`quantity-${productId}`)
+                let totalqty=document.getElementById('totalQuantities')
+                let subtot=document.getElementById('subtotal')
+                if(response.data.success){
+                    totalqty.innerText = response.data.totalQuantities;
+                    subtot.innerText = response.data.subtotal;
+                } */
+                if(response.data.success){
+                    location.reload()
                 }
-            })
-            .catch(error => {
+                
+                
+            } catch (error) {
                 console.error('Error updating quantity:', error);
-            });
+            }
         }
-    }) */
     </script>
-
+    
+    
+    
+    
     
     <!-- Vendor JS-->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
