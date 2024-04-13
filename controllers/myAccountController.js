@@ -2,8 +2,12 @@ const Address=require('../models/addressModel')
 const User=require('../models/userModel');
 const Order=require('../models/orderModel')
 const Product=require('../models/productModel')
+const Wallet = require('../models/walletModel')
 const bcrypt = require('bcrypt');
+const Cart = require('../models/cartModel')
 const Swal = require('sweetalert2');
+
+
 
 const myAccount = async(req,res)=>{
     try {
@@ -11,8 +15,15 @@ const myAccount = async(req,res)=>{
         const user = await User.findById(userId)
         const addresses= await Address.find({userId})
         const orders = await Order.find({ userId }).populate('items.productId');
-
-        res.render('myAccount',{user,addresses,orders})
+        const walletId = user.wallet;
+        // Find the wallet using the wallet ID
+        const userWallet = await Wallet.findById(walletId);
+        const balance = userWallet ? userWallet.balance : 0;
+        const subtotal = req.query.subtotal || 0; // Retrieve subtotal from query parameter
+        const selectedAddressId = req.query.addressId;
+        const paymentMethod=req.query.paymentMethod
+        console.log(selectedAddressId);
+        res.render('myAccount',{user,addresses,orders,balance,subtotal,selectedAddressId,paymentMethod})
         
     } catch (error) {
         console.log(error.message)
@@ -153,7 +164,7 @@ const cancelMyOrder=async (req,res)=>{
         if (!order) {
             return res.status(404).json({ success: false, message: 'Order not found' });
         }
-
+        const user = await User.findById(userId)
         // Find the item in the order
         const item = order.items.find(item => item.productId.toString() === productId);
 
@@ -177,13 +188,151 @@ const cancelMyOrder=async (req,res)=>{
         await order.save();
         await product.save();
 
+         // Refund amount to the user's wallet
+      
+            const walletId = user.wallet;
+            // Find the wallet using the wallet ID
+            const userWallet = await Wallet.findById(walletId);
+             const refundedAmount = item.price;
+              
+            // Add the refunded amount to the user's wallet
+            await userWallet.addToWallet(refundedAmount);
+         
+        
+
         res.status(200).json({ success: true, message: 'Order cancelled successfully' });
 
     } catch (error) {
         console.log(error.message);
     }
 }
+const returnMyOrder=async (req,res)=>{
+    try {
+        const { productId, quantity } = req.body;
+        const userId = req.session.user_id;
+        // Find the order of the user
+        const order = await Order.findOne({ userId });
 
+        if (!order) {
+            return res.status(404).json({ success: false, message: 'Order not found' });
+        }
+
+        // Find the item in the order
+        const item = order.items.find(item => item.productId.toString() === productId);
+
+        if (!item) {
+            return res.status(404).json({ success: false, message: 'Item not found in order' });
+        }
+
+        // Update delivery status to "Returned"
+        item.deliveryStatus = 'Returned';
+
+        // Restore stock quantity in product schema
+        const product = await Product.findById(productId);
+        
+        if (!product) {
+            return res.status(404).json({ success: false, message: 'Product not found' });
+        }
+
+        product.stock += parseInt(quantity); // Increment stock
+
+        // Save changes
+        await order.save();
+        await product.save();
+
+        // Refund amount to the user's wallet
+        const user = await User.findById(userId)
+        const walletId = user.wallet;
+        // Find the wallet using the wallet ID
+        const userWallet = await Wallet.findById(walletId);
+         const refundedAmount = item.price;
+          
+        // Add the refunded amount to the user's wallet
+        await userWallet.addToWallet(refundedAmount);
+
+
+        res.status(200).json({ success: true, message: 'Order Returned' });
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const walletPayment = async (req, res) => {
+    try {
+        const userId = req.session.user_id;
+        const subtotal = req.query.subtotal; 
+        if (isNaN(subtotal)) {
+            // Handle invalid subtotal
+            return res.status(400).send('Invalid subtotal');
+          }
+    // Get the selected address ID from the request body
+    const selectedAddressId = req.body.selectedAddress;
+       
+    // Find the selected address
+    const address = await Address.findOne({ _id: selectedAddressId, userId });
+
+    // Ensure that the selected address exists and belongs to the user
+    if (!address) {
+        return res.status(400).send('Invalid address selected');
+    }
+        // Find the user's cart
+        const cart = await Cart.findOne({ userId }).populate('products.productId');
+
+        // Check if the cart is empty
+        if (!cart || !cart.products.length) {
+            return res.status(400).send('Cart is empty');
+        }
+          // Calculate total amount and set price for each item
+          let totalAmount = 0;
+          for (const item of cart.products) {
+              // Calculate price for each item based on quantity and selling price
+              const itemPrice = item.quantity * item.productId.selling_price;
+              item.price = itemPrice;
+              totalAmount += itemPrice;
+          }
+          const paymentMethod = req.query.paymentMethod;
+          if (!paymentMethod) {
+              return res.status(400).send('Payment method is required');
+          }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        const walletId = user.wallet;
+        const userWallet = await Wallet.findById(walletId);
+        if (!userWallet) {
+            return res.status(404).send('Wallet not found');
+        }
+        if (userWallet.balance < subtotal) {
+            return res.status(400).send('Insufficient balance');
+        }
+        userWallet.balance -= parseFloat(subtotal);
+        await userWallet.save();
+
+            const order = new Order({
+            userId,
+            items: cart.products,
+            status: 'paid',
+            totalAmount,
+            paymentMethod,
+            address: address._id
+        });
+          //Save the order to the database
+          await order.save();
+
+          //Clear the cart after placing the order
+          await Cart.findOneAndUpdate({ userId }, { $set: { products: [] } });
+  
+          // // Redirect to success page
+          return res.redirect('/ordersuccess');
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
 module.exports={
     myAccount,
     updateDetails,
@@ -192,5 +341,7 @@ module.exports={
     editAddressPage,
     editAddress,
     deleteAddress,
-    cancelMyOrder
+    cancelMyOrder,
+    returnMyOrder,
+    walletPayment
 }

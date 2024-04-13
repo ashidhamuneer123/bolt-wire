@@ -21,20 +21,24 @@ const orderSchema = new Schema({
             },
             deliveryStatus: {
                 type: String,
-                enum: ['Processing', 'Cancelled', 'Delivered'], 
+                enum: ['Processing', 'Cancelled', 'Delivered' , 'Returned'], 
                 default: 'Processing' 
             },
             quantity: {
                 type: Number,
                 required: true,
                 default: 1 
+            },
+            price:{
+                type:Number,
+                default:0
             }
            
         }
     ],
     paymentMethod: {
         type: String,
-        enum: ['Cash on Delivery', 'Credit Card', 'Debit Card', 'Net Banking'],
+        enum: ['Cash on Delivery', 'Online payment', 'Wallet'],
         required: true
     },
     deliveryCharge: {

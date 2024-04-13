@@ -180,85 +180,7 @@
                 </div>
             </div>
         </div>
-     <!--    <section class="mt-50 mb-50">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="table-responsive">
-                            <table class="table shopping-summery text-center clean">
-                                <thead>
-                                    <tr class="main-heading">
-                                        <th scope="col">Image</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Subtotal</th>
-                                        <th scope="col">Remove</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% cartItems.forEach(item => { %>
-                                        <tr>
-                                            <td class="image product-thumbnail"><img src="/admin-assets/imgs/items/<%= item.productId.primary_image.name %>" alt="<%= item.productId.product_name %>"></td>
-                                            <td class="product-des product-name">
-                                                <h5 class="product-name"><a href="shop-product-right.html"><%= item.productId.product_name %></a></h5>
-                                                <p class="font-xs"><%= item.productId.description %></p>
-                                            </td>
-                                            <td class="price" data-title="Price"><span>$<%= item.productId.selling_price %> </span></td>
-                                            <td class="text-center" data-title="Stock">
-                                                <div class="detail-qty border radius  m-auto">
-                                                    <a href="#" class="qty-down" data-product-id="<%= item.productId._id %>"><i class="fi-rs-angle-small-down"></i></a>
-                                                    <span class="qty-val"><%= item.quantity %></span>
-                                                    <a href="#" class="qty-up" data-product-id="<%= item.productId._id %>"><i class="fi-rs-angle-small-up"></i></a>
-                                                </div>
-                                            </td>
-                                            <td class="text-right" data-title="Cart">
-                                                <span>$<%= item.quantity * item.productId.selling_price %> </span>
-                                            </td>
-                                            <td class="action" data-title="Remove"><a href="/remove-from-cart/<%= item.productId._id %>" class="text-muted"><i class="fi-rs-trash"></i></a></td>
-                                        </tr>
-                                    <% }); %>
-                                </tbody>
 
-                            </table>
-                            
-                                    </div>
-                                    <div class="cart-action text-end">
-                                        
-                                        <a href="/allproducts" class="btn "><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
-                                    </div>
-                                    <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
-
-                                    <div class="col-lg-6 col-md-12">
-                                        <div class="border p-md-4 p-30 border-radius cart-totals">
-                                            <div class="heading_s1 mb-3">
-                                                <h4>Cart Totals</h4>
-                                            </div>
-                                            <div class="table-responsive">
-                                                <table class="table">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="cart_total_label">Total Quantities</td>
-                                                            <td class="cart_total_amount"><span id="totalQuantities" class="font-lg fw-900 text-brand"><%= totalQuantities %></span></td>
-                                                        </tr>
-                                                        
-                                                        <tr>
-                                                            <td class="cart_total_label">SubTotal</td>
-                                                            <td class="cart_total_amount"><strong><span id="subtotal" class="font-xl fw-900 text-brand">$<%= subtotal.toFixed(2) %></span></strong></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <a href="/checkout" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section> -->
         <section class="mt-50 mb-50">
             <div class="container">
                 <div class="row">
@@ -275,28 +197,30 @@
                                         <th scope="col">Remove</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <% cartItems.forEach(item => { %>
-                                        <tr>
-                                            <td class="image product-thumbnail"><img src="/admin-assets/imgs/items/<%= item.productId.primary_image.name %>" alt="<%= item.productId.product_name %>"></td>
-                                            <td class="product-des product-name">
-                                                <h5 class="product-name"><a href="shop-product-right.html"><%= item.productId.product_name %></a></h5>
-                                                <p class="font-xs"><%= item.productId.description %></p>
-                                            </td>
-                                            <td class="price" data-title="Price"><span>$<%= item.productId.selling_price %> </span></td>
-                                          
-                                            <td>
-                                            <input type="number" id="quantity-<%= item.productId._id %>" name="quantity" value="<%= Math.min(item.quantity,10) %>" style="width: 55px;" readonly>
-                                                    <button onclick="updateQuantity('<%= item.productId._id %>','decrease')" class="btn btn-sm btn-primary ms-2">-</button>
-                                                    <button onclick="updateQuantity('<%= item.productId._id %>','increase')" class="btn btn-sm btn-primary ms-1">+</button>
-                                                </td>
-                                            <td class="text-right" data-title="Cart">
-                                                <span>$<%= item.quantity * item.productId.selling_price %> </span>
-                                            </td>
-                                            <td class="action" data-title="Remove"><a href="/remove-from-cart/<%= item.productId._id %>" class="text-muted"><i class="fi-rs-trash"></i></a></td>
-                                        </tr>
-                                    <% }); %>
-                                </tbody>
+                               
+                            <tbody>
+    <% cartItems.forEach(item => { %>
+        <tr>
+            <td class="image product-thumbnail"><img src="/admin-assets/imgs/items/<%= item.productId.primary_image.name %>" alt="<%= item.productId.product_name %>"></td>
+            <td class="product-des product-name">
+                <h5 class="product-name"><a href="shop-product-right.html"><%= item.productId.product_name %></a></h5>
+                <p class="font-xs"><%= item.productId.description %></p>
+            </td>
+            <td class="price" data-title="Price" id="price-<%= item.productId._id %>"><span>$<%= item.productId.selling_price %></span></td>
+            <td>
+                <input type="number" id="quantity-<%= item.productId._id %>" name="quantity" value="<%= item.quantity %>" style="width: 55px;" readonly>
+                <button onclick="updateQuantity('<%= item.productId._id %>','decrease')" class="btn btn-sm btn-primary ms-2">-</button>
+                <button onclick="updateQuantity('<%= item.productId._id %>','increase')" class="btn btn-sm btn-primary ms-1">+</button>
+            </td>
+            <td class="text-right" data-title="Subtotal" id="subtotal-<%= item.productId._id %>">$<span id="subtotal-value-<%= item.productId._id %>"><%= (item.quantity * item.productId.selling_price).toFixed(2) %></span></td>
+            <td class="action" data-title="Remove"><a href="/remove-from-cart/<%= item.productId._id %>" class="text-muted"><i class="fi-rs-trash"></i></a></td>
+        </tr>
+    <% }); %>
+</tbody>
+
+                                
+                                
+                                
                             </table>
                         </div>
                         <div class="cart-action text-end">
@@ -338,7 +262,7 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="widget-about font-md mb-md-5 mb-lg-0">
                             <div class="logo logo-width-1 wow fadeIn animated">
-                                <a href="/"><img src="assets/imgs/theme/mainlogo.png" alt="logo"></a>
+                                <a href="/"><img src="/assets/imgs/theme/mainlogo.png" alt="logo"></a>
                             </div>
                             <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
                             <p class="wow fadeIn animated">
@@ -388,13 +312,13 @@
                             <div class="col-md-8 col-lg-12">
                                 <p class="wow fadeIn animated">From App Store or Google Play</p>
                                 <div class="download-app wow fadeIn animated">
-                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active" src="assets/imgs/theme/app-store.jpg" alt=""></a>
-                                    <a href="#" class="hover-up"><img src="assets/imgs/theme/google-play.jpg" alt=""></a>
+                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active" src="/assets/imgs/theme/app-store.jpg" alt=""></a>
+                                    <a href="#" class="hover-up"><img src="/assets/imgs/theme/google-play.jpg" alt=""></a>
                                 </div>
                             </div>
                             <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
                                 <p class="mb-20 wow fadeIn animated">Secured Payment Gateways</p>
-                                <img class="wow fadeIn animated" src="assets/imgs/theme/payment-method.png" alt="">
+                                <img class="wow fadeIn animated" src="/assets/imgs/theme/payment-method.png" alt="">
                             </div>
                         </div>
                     </div>
@@ -420,29 +344,31 @@
 
    
 
-
-    <script>
-        async function updateQuantity(productId,operator) {
-            try {
-                event.preventDefault()
-                const response = await axios.post('/update-quantity', { productId, operator });
-                /* let qty =document.getElementById(`quantity-${productId}`)
-                let totalqty=document.getElementById('totalQuantities')
-                let subtot=document.getElementById('subtotal')
-                if(response.data.success){
-                    totalqty.innerText = response.data.totalQuantities;
-                    subtot.innerText = response.data.subtotal;
-                } */
-                if(response.data.success){
-                    location.reload()
-                }
-                
-                
-            } catch (error) {
-                console.error('Error updating quantity:', error);
-            }
+<script>
+    async function updateQuantity(productId, operator) {
+    try {
+        event.preventDefault();
+        const response = await axios.post('/update-quantity', { productId, operator });
+        
+        if (response.data.success) {
+            // Update total quantities and subtotal on the page
+            document.getElementById('totalQuantities').innerText = response.data.totalQuantities;
+            document.getElementById('subtotal').innerText = '$' + response.data.subtotal.toFixed(2);
+            
+            // Update quantity field in the cart table
+            document.getElementById(`quantity-${productId}`).value = response.data.productQuantity;
+    
+            // Update subtotal for the specific product
+            document.getElementById(`subtotal-value-${productId}`).innerText =response.data.productPrice;
         }
-    </script>
+    } catch (error) {
+        console.error('Error updating quantity:', error);
+    }
+}
+
+</script>
+    
+    
     
     
     

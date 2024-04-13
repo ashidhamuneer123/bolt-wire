@@ -221,10 +221,8 @@
                                 <div class="text">
                                     <h6 class="mb-1">Customer</h6>
                                     <p class="mb-1">
-                                        
-                                   <strong><%= order.userId.name %></strong> <br><strong>Phone : <%= order.userId.phone %> </strong> 
+                                        <strong><%= order.userId.name %></strong> <br><strong>Phone : <%= order.userId.phone %> </strong>
                                     </p>
-                                    
                                 </div>
                             </article>
                         </div> <!-- col// -->
@@ -236,9 +234,8 @@
                                 <div class="text">
                                     <h6 class="mb-1">Order info</h6>
                                     <p class="mb-1">
-                                 Pay method: <%= order.paymentMethod %> <br> Status: <%= order.status %>
+                                        Pay method: <%= order.paymentMethod %> <br> Status: <%= order.status %>
                                     </p>
-                                    
                                 </div>
                             </article>
                         </div> <!-- col// -->
@@ -250,14 +247,13 @@
                                 <div class="text">
                                     <h6 class="mb-1">Deliver to</h6>
                                     <p class="mb-1">
-                                       <%= order.address.name %>
-                                       <p><%= order.address.address %></p>
-                                       <%= order.address.city %>,
-                                       <%= order.address.district %>,
-                                       <%= order.address.state %>,
-                                      <p>Pincode:<%= order.address.pincode %></p> 
+                                        <%= order.address.name %>
+                                        <p><%= order.address.address %></p>
+                                        <%= order.address.city %>,
+                                        <%= order.address.district %>,
+                                        <%= order.address.state %>,
+                                        <p>Pincode:<%= order.address.pincode %></p>
                                     </p>
-                                    
                                 </div>
                             </article>
                         </div> <!-- col// -->
@@ -276,31 +272,29 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <% let serialNumber = 1; %>
-                                        <% order.items.forEach(item => { %>
-                                            <tr>
-                                                <td><%= serialNumber %></td>
-                                                <td>
-                                                    <a class="itemside" href="#">
-                                                        <div class="left">
-                                                            <img src="/admin-assets/imgs/items/<%= item.productId.primary_image.name %>" width="40" height="40" class="img-xs" alt="Item">
-                                                        </div>
-                                                        <div class="info"><%= item.productId.product_name %></div>
-                                                    </a>
-                                                </td>
-                                                <td>$<%= item.productId.selling_price.toFixed(2) %></td>
-                                                <td><%= item.quantity %></td>
-                                                <td class="text-end">$<%= (item.productId.selling_price * item.quantity).toFixed(2) %></td>
-                                            </tr>
-                                        <% }); %>
-                                        
+                                        <tr>
+                                            <td>1</td>
+                                            <td>
+                                                <a class="itemside" href="#">
+                                                    <div class="left">
+                                                        <img src="/admin-assets/imgs/items/<%= selectedItem.productId.primary_image.name %>" width="40" height="40" class="img-xs" alt="Item">
+                                                    </div>
+                                                    <div class="info"><%= selectedItem.productId.product_name %></div>
+                                                </a>
+                                            </td>
+                                            <td>$<%= selectedItem.price.toFixed(2) %></td>
+                                            <td><%= selectedItem.quantity %></td>
+                                            <td class="text-end">$<%= (selectedItem.price * selectedItem.quantity).toFixed(2) %></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div> <!-- table-responsive// -->
                         </div> <!-- col// -->
                     </div>
                 </div> <!-- card-body end// -->
-            </div> <!-- card end// -->
+            </div>
+            
+            <!-- card end// -->
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">

@@ -1,15 +1,48 @@
 
 const Order=require('../models/orderModel')
 const Product = require('../models/productModel')
-const getOrderList=async (req,res)=>{
+
+const getTotalOrderCount = async () => {
     try {
-        const orders = await Order.find().populate('items.productId').populate('userId');
-       
-        res.render('admin/order',{orders})
+        const totalCount = await Order.countDocuments();
+        return totalCount;
     } catch (error) {
-        console.error(error.message)
+        console.error(error);
+        throw error;
     }
-}
+};
+
+const getOrderList = async (req, res) => {
+    try {
+        const page = req.query.page || 1; // Default to page 1 if not provided
+        const limit = 1; // Number of orders per page
+
+        // Count total number of orders
+        const totalCount = await getTotalOrderCount();
+
+        // Calculate total number of pages
+        const totalPages = Math.ceil(totalCount / limit);
+
+        // Calculate the offset for pagination
+        const offset = (page - 1) * limit;
+
+        // Fetch orders for the current page
+        const orders = await Order.find()
+            .skip(offset)
+            .limit(limit)
+            .populate('items.productId')
+            .populate('userId');
+
+        res.render('admin/order', { orders, totalPages, currentPage: page });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+
+
+
 
 const cancelOrder=async (req,res)=>{
     try {
@@ -58,23 +91,33 @@ const updateStatus=async (req,res)=>{
     }
 }
 
-const orderDetails=async (req,res)=>{
+const orderDetails = async (req, res) => {
     try {
         const orderId = req.params.orderId;
         const productId = req.query.productId;
-        
+
         const order = await Order.findById(orderId).populate('userId address items.productId');
 
         if (!order) {
             return res.status(404).send('Order not found');
         }
 
-        res.render('admin/orderDetails', { order });
-       
+        // Find the item in the order's items array that matches the provided productId
+        const selectedItem = order.items.find(item => String(item.productId._id) === productId);
+
+        if (!selectedItem) {
+            return res.status(404).send('Product not found in the order');
+        }
+
+        // Render the orderDetails view with only the selected product
+        res.render('admin/orderDetails', { order, selectedItem });
     } catch (error) {
-        
+        console.error(error.message);
+        res.status(500).send('Internal Server Error');
     }
-}
+};
+
+
 
 module.exports={
     getOrderList,

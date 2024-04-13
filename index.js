@@ -5,6 +5,8 @@ const express=require('express');
 const path=require('path')
 const session=require('express-session')
 const flash = require('connect-flash')
+const cors = require('cors')
+
 const app=express();
 const PORT=3000 || process.env.PORT;
 // Serve static files from the 'public' directory
@@ -17,6 +19,7 @@ app.use(session({
 
 //connect flash
 app.use(flash())
+app.use(cors())
 
 //for user routes
 const userRoute=require('./routes/userRoute');

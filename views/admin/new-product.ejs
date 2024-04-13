@@ -17,6 +17,22 @@
     <link rel="shortcut icon" type="image/x-icon" href="/admin-assets/imgs/theme/titlelogo.jpg">
     <!-- Template CSS -->
     <link href="/admin-assets/css/main.css" rel="stylesheet" type="text/css" />
+    <style>
+        /* CSS for highlighting the submit button */
+.highlighted-btn {
+background-color: #007bff; 
+color: #fff; /* Text color */
+border-color: #007bff; /* Border color */
+width: 150px; 
+
+}
+
+.highlighted-btn:hover {
+background-color: #0056b3; 
+border-color: #0056b3;
+}
+
+    </style>
     
 </head>
 
@@ -251,15 +267,16 @@
                         </div>
                        
                     </div>
+                    <div class="btn-group">
+                        <button type="submit" class="add-btn py-3 highlighted-btn">Submit</button>
+                        
+                    </div>
                 </section>
                 
-                <div class="btn-group">
-                    <button type="submit" class="btn add-btn py-3" style="width:20vw;">submit</button>
-                    <button type="reset" class="btn button-cancel ms-2 py-3" style="width:20vw;">Clear</button>
-                </div>
+                
                 </form>
 
- 
+        
 
                 <% if(typeof message !== 'undefined') {
                     %>

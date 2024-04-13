@@ -44,6 +44,9 @@ user_route.get('/edit-address/:id',auth.isLogin, myAccountController.editAddress
 user_route.post('/edit-address/:id',auth.isLogin, myAccountController.editAddress);
 user_route.get('/delete-address/:addressId',auth.isLogin, myAccountController.deleteAddress);
 user_route.post('/cancel-order',auth.isLogin,myAccountController.cancelMyOrder)
+user_route.post('/return-order',auth.isLogin,myAccountController.returnMyOrder)
+user_route.get('/walletPayment',myAccountController.myAccount)
+user_route.post('/walletPayment',myAccountController.walletPayment)
 
 //cart management
 user_route.get('/cart', auth.isLogin, userController.renderCart)
@@ -55,5 +58,13 @@ user_route.get('/filter',searchController.get_searchedProducts);
 user_route.get('/checkout',auth.isLogin, userController.renderCheckOut);
 user_route.post('/place-order',auth.isLogin, userController.placeOrder);
 user_route.get('/ordersuccess',auth.isLogin, userController.renderOrderSuccess);
+
+
+//wishlist 
+
+user_route.get('/wishlist',userController.renderWishlist);
+user_route.post('/addtowishlist/:productId',userController.addToWishlist);
+user_route.post('/removefromwishlist',userController.removeFromWishlist);
+user_route.post('/googleAuth',userController.googleAuth);
 
 module.exports = user_route;

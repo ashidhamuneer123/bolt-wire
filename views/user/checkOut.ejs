@@ -15,6 +15,7 @@
     <meta property="og:image" content="">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/titlelogo.jpg">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
 </head>
@@ -450,8 +451,8 @@
                         <div class="divider mt-50 mb-50"></div>
                     </div>
                 </div>
-                <form action="/place-order" method="POST">
                 <div class="row">
+                    <!-- Billing Details Section -->
                     <div class="col-md-6">
                         <div class="mb-25">
                             <h4>Billing Details</h4>
@@ -464,13 +465,11 @@
                                 <div class="card mb-3 mb-lg-0">
                                     <div class="card-header col">
                                         <label>
-                                            <input type="radio" id="selectedAddress" name="selectedAddress" value="<%= address._id %>" <%= index === 0 ? 'checked' : '' %>>
-                                           
+                                            <input type="radio" id="selectedAddress<%= index %>" name="selectedAddress" value="<%= address._id %>" <%= index === 0 ? 'checked' : '' %>>
                                         </label>
                                         <h5 class="mb-0">Address <%= index + 1 %></h5>
                                     </div>
                                     <div class="card-body">
-                                        
                                         <p><%= address.name %></p>
                                         <address><%= address.address %></address>
                                         <p><%= address.city %>, <%= address.state %> - <%= address.pincode %></p>
@@ -480,8 +479,9 @@
                                 </div>
                             <% }) %>
                         </div>
-                                            
                     </div>
+                
+                    <!-- Orders Section -->
                     <div class="col-md-6">
                         <div class="order_review">
                             <div class="mb-20">
@@ -497,14 +497,13 @@
                                     </thead>
                                     <tbody>
                                         <% cartItems.forEach(item => { %> 
-                                        <tr>
-                                            <td class="image product-thumbnail"><img src="/admin-assets/imgs/items/<%= item.productId.primary_image.name %>" alt="#"></td>
-                                            <td>
-                                                <h5><a href="shop-product-full.html"><%= item.productId.product_name %></a></h5> <span class="product-qty">x <%= item.quantity %></span>
-                                            </td>
-                                            <td>$<%= item.productId.selling_price %></td>
-                                        </tr>
-                                       
+                                            <tr>
+                                                <td class="image product-thumbnail"><img src="/admin-assets/imgs/items/<%= item.productId.primary_image.name %>" alt="#"></td>
+                                                <td>
+                                                    <h5><a href="shop-product-full.html"><%= item.productId.product_name %></a></h5> <span class="product-qty">x <%= item.quantity %></span>
+                                                </td>
+                                                <td>$<%= item.price %></td>
+                                            </tr>
                                         <% }); %>
                                         <tr>
                                             <th>SubTotal</th>
@@ -518,45 +517,43 @@
                                             <th>Total</th>
                                             <td colspan="2" class="product-subtotal"><span class="font-xl text-brand fw-900">$<%= subtotal.toFixed(2) %></span></td>
                                         </tr>
-                                        
                                     </tbody>
                                 </table>
                             </div>
                             <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                
+                            <!-- Payment Method Section -->
                             <div class="payment_method">
                                 <div class="mb-25">
                                     <h5>Payment</h5>
                                 </div>
                                 <div class="payment_option">
                                     <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios3" checked="">
-                                        <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">Cash On Delivery</label>
-                                        <div class="form-group collapse in" id="bankTranfer">
-                                            <p class="text-muted mt-5">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration. </p>
-                                        </div>
+                                        <input class="form-check-input" type="radio" name="payment_option" id="cashOnDelivery" value="Cash on Delivery" checked>
+                                        <label class="form-check-label" for="cashOnDelivery">Cash On Delivery</label>
                                     </div>
                                     <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios4" checked="">
-                                        <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse" data-target="#checkPayment" aria-controls="checkPayment">Check Payment</label>
-                                        <div class="form-group collapse in" id="checkPayment">
-                                            <p class="text-muted mt-5">Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode. </p>
-                                        </div>
+                                        <input class="form-check-input" type="radio" name="payment_option" id="onlinePayment" value="Online payment">
+                                        <label class="form-check-label" for="onlinePayment">Online Payment</label>
                                     </div>
                                     <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios5" checked="">
-                                        <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse" data-target="#paypal" aria-controls="paypal">Paypal</label>
-                                        <div class="form-group collapse in" id="paypal">
-                                            <p class="text-muted mt-5">Pay via PayPal; you can pay with your credit card if you don't have a PayPal account.</p>
-                                        </div>
+                                        <input class="form-check-input" type="radio" name="payment_option" id="walletPayment" value="Wallet">
+                                        <label class="form-check-label" for="walletPayment">Wallet</label>
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-fill-out btn-block mt-30">Place Order</button>
+                            <!-- Place Order button -->
+                            <button onclick="formSubmit()"  class="btn btn-fill-out btn-block mt-30">Place Order</button>
                         </div>
                     </div>
                 </div>
-            </form>
-            </div>
+                
+                <!-- Hidden form for submitting data -->
+                <form id="hiddenForm" action="/place-order" method="POST" style="display: none;">
+                    <!-- Hidden input fields for selected address and payment method -->
+                    <input type="hidden" id="selectedAddressInput" name="selectedAddress">
+                    <input type="hidden" id="paymentMethodInput" name="paymentMethod">
+                </form>
         </section>
     </main>
     <footer class="main">
@@ -646,7 +643,96 @@
             </div>
         </div>
     </footer>
- 
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        async function formSubmit() {
+            // Get the selected address
+            const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+            if (!selectedAddress) {
+                alert('Please select an address');
+                return;
+            }
+            // Get the selected payment method
+            const paymentMethod = document.querySelector('input[name="payment_option"]:checked');
+            if (!paymentMethod) {
+                alert('Please select a payment method');
+                return;
+            }
+
+            if (paymentMethod.value == 'Wallet') {
+    // Get the subtotal element and extract its inner text
+    const subtotalElement = document.querySelector('.product-subtotal .text-brand');
+    if (subtotalElement) {
+        // Extract the inner text and remove any '$' symbols
+        const subtotalText = subtotalElement.innerText;
+        const subtotal = parseFloat(subtotalText.replace('$', '').trim());
+        
+        // Check if the subtotal is a valid number
+        if (!isNaN(subtotal)) {
+           // Redirect to wallet payment route with subtotal and addressId as query parameters
+           const selectedAddressId = selectedAddress.value;
+           
+            window.location.href = '/walletPayment?subtotal=' + subtotal + '&addressId=' + selectedAddressId + '&paymentMethod=' + paymentMethod.value;
+
+            return;
+        } else {
+            console.error('Invalid subtotal:', subtotalText);
+            // Handle the error or inform the user about the invalid subtotal
+            return;
+        }
+    } else {
+        console.error('Subtotal element not found');
+        // Handle the error or inform the user if the subtotal element is not found
+        return;
+    }
+
+
+}
+
+            
+
+    
+            // If online payment is selected, open Razorpay checkout
+            if (paymentMethod.value === 'Online payment') {
+               
+                const response = await fetch('/place-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                   
+                });
+                const data = await response.json();
+                if (data.success) {
+                    const options = {
+                        key: 'rzp_test_nrsjMCLp4uBA73',
+                        amount: data.amount,
+                        currency: 'INR',
+                        order_id: data.orderId,
+                        name: 'Your Company Name',
+                        description: 'Purchase Description',
+                        handler: function (response) {
+                            document.getElementById('razorpayPaymentId').value = response.razorpay_payment_id;
+                            document.getElementById('razorpaySignature').value = response.razorpay_signature;
+                            document.getElementById('hiddenForm').submit();
+                        }
+                    };
+                    const rzp = new Razorpay(options);
+                    rzp.open();
+                } else {
+                    alert('Failed to create Razorpay order');
+                }
+            } else {
+                // Set the selected address and payment method in the hidden form
+                document.getElementById('selectedAddressInput').value = selectedAddress.value;
+                document.getElementById('paymentMethodInput').value = paymentMethod.value;
+    
+                // Submit the hidden form
+                document.getElementById('hiddenForm').submit();
+            }
+        }
+    </script>
+    
     <!-- Vendor JS-->
     <script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="/assets/js/vendor/jquery-3.6.0.min.js"></script>

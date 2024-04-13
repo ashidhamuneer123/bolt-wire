@@ -15,6 +15,8 @@
     <meta property="og:image" content="">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/titlelogo.jpg">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
@@ -346,6 +348,11 @@
                                             <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>Account details</a>
                                         </li>
                                         <li class="nav-item">
+                                            <a class="nav-link" id="Coupons" data-bs-toggle="tab" href="#wallet" role="tab" aria-controls="wallet"
+                                            aria-selected="true">
+                                            <i class="fa-solid fa-wallet"></i> &nbsp;&nbsp;&nbsp;Wallet</a>
+                                        </li>
+                                        <li class="nav-item">
                                             <a class="nav-link" href="/logout"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
                                         </li>
                                     </ul>
@@ -364,6 +371,11 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                 
+                                    
+                                     
+                                           
                                       
                                     <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
                                         <div style="width: 36rem;" class="header d-flex align-items-center justify-content-between">
@@ -466,9 +478,12 @@
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="col-md-3 d-flex align-items-center">
-                                                                                        <% if (item.deliveryStatus !== 'Cancelled' && item.deliveryStatus !=='Delivered') { %>
+                                                                                        <% if (item.deliveryStatus == 'Processing') { %>
                                                                                             <button onclick="cancelMyOrder('<%= item.productId._id %>','<%= item.quantity%>')" type="button" class="btn btn-danger btn-sm">Cancel</button>
                                                                                         <% } %>
+                                                                                            <% if(item.deliveryStatus =='Delivered'){ %>
+                                                                                                <button onclick="returnMyOrder('<%= item.productId._id %>','<%= item.quantity%>')" type="button" class="btn btn-danger btn-sm">Return</button>  
+                                                                                            <% } %>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -487,6 +502,38 @@
                                             
                                             
                                     </div>
+
+                                    <div class="tab-pane fade" id="wallet" role="tabpanel" aria-labelledby="account-detail-tab" style="padding: 20px;
+                                    width: 100%; display: grid; grid-template-columns: 1fr 2fr;">
+                            <div class="card coupon-container" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 250px;">
+                                <div class="card-header bg-gradient-primary text-white" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                    <h5 style="margin-bottom: 0; font-size: 24px;">Wallet</h5>
+                                </div>
+                                <div class="card-body" style="max-width: 300px;"> <!-- Adjust the max-width -->
+                                    <div class="wallet-info" style="padding-bottom: 15px;">
+                                        <h6 style="margin-bottom: 0; font-size: 18px;">Available Balance:</h6>
+                                        <p id="balanceAmount" style="margin-top: 5px; font-size: 24px; font-weight: bold;"><%= balance %></p>
+                                        
+                                    </div>
+                                    <!-- wallet payment Form -->
+                                    <div class="add-funds-form" style="margin-top: 20px;">
+                                       
+                                          
+                                            <div class="form-group">
+                                                <label for="amount" style="margin-bottom: 5px; font-size: 18px;">Amount:</label>
+                                                <input type="number" class="form-control" id="amountInput" name="amount" style="border-radius: 20px; font-size: 16px; padding: 10px; border: 1px solid #ced4da;" value="<%= subtotal %>">
+                                            </div>
+                                            <button onclick="formSubmit()" style="background-color: #000000;" type="submit"  class="btn btn-primary" style="border-radius: 20px; padding: 10px 30px; font-size: 18px;">Pay</button>
+                                        
+                                            <form id="hiddenForm" method="post" action="/walletPayment?subtotal=<%= subtotal %>&addressId=<%= selectedAddressId %>&paymentMethod=<%= paymentMethod %>">
+                                                 <!-- Hidden input fields for selected address and payment method -->
+                                                 <input type="hidden" id="selectedAddressInput" name="selectedAddress">
+                                                 <input type="hidden" id="paymentMethodInput" name="paymentMethod">
+                                            </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                          
                                   
                                 </div>
@@ -597,6 +644,47 @@
             }
         }
     </script>
+     <script>
+        async function returnMyOrder( productId,quantity){
+            try {
+                event.preventDefault()
+                const response = await axios.post('/return-order', { productId, quantity });
+                if(response.data.success){
+                    location.reload()
+                }
+            } catch (error) {
+                console.error('Error returning order:', error);
+            }
+        }
+    </script>
+
+<script>
+    // Define the formSubmit function in the global scope
+    async function formSubmit() {
+        // Get the form element
+        const form = document.getElementById('hiddenForm');
+        
+        // Ensure that the form element exists
+        if (!form) {
+            console.error('Form element with ID "hiddenForm" not found');
+            return;
+        }
+        
+        // Get the selected address ID and payment method from the query parameters
+        const queryParams = new URLSearchParams(window.location.search);
+        const addressId = queryParams.get('addressId'); // Retrieve the address ID from the query parameters
+        const paymentMethod = queryParams.get('paymentMethod'); // Retrieve the payment method from the query parameters
+        
+        // Set the values of the hidden fields
+        form.querySelector('input[name="selectedAddress"]').value = addressId;
+        form.querySelector('input[name="paymentMethod"]').value = paymentMethod;
+        
+        // Submit the form
+        form.submit();
+    }
+</script>
+
+    
  
     <!-- Vendor JS-->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>

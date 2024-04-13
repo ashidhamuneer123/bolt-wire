@@ -15,6 +15,7 @@
     <meta property="og:image" content="">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/titlelogo.jpg">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- Template CSS -->
     <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
    
@@ -610,11 +611,13 @@
                                                 
                                                 <div class="product-extra-link2">
                                                     <button type="submit" class="button button-add-to-cart">Add to cart</button>
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" href="#"><i class="fi-rs-heart"></i></a>
-                                                   
+                                                   <% if(!wishlist){%>
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" onclick="addtowishlist('<%=user._id%>','<%=product._id%>')"><i class="fi-rs-heart"></i></a>
+                                                    <% }  %>
                                                 </div>
                                             </div>
                                             </form>
+                                           
                                         
                                     </div>
                                         <ul class="product-meta font-xs color-grey mt-50">
@@ -644,10 +647,7 @@
                                                             
                                                         </a>
                                                     </div>
-                                                    <div class="product-action-1">
-
-                                                        <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="#" tabindex="0"><i class="fi-rs-heart"></i></a>
-                                                    </div>
+                                                  
                                                     <div class="product-badges product-badges-position product-badges-mrg">
                                                         <span class="hot">Hot</span>
                                                     </div>
@@ -819,6 +819,15 @@
             console.error('Error adding product to cart:', error);
             // Handle any errors that occur during the fetch request
             alert('An error occurred while adding the product to cart. Please try again later.');
+        }
+    }
+</script>
+<script>
+    async function addtowishlist(userId , productId){
+        event.preventDefault();
+        const response = await axios.post('/addtowishlist/<%=product._id%>', { userId , productId});
+        if(response.data.success){
+            location.reload();
         }
     }
 </script>

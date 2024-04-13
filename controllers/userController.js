@@ -1,12 +1,29 @@
 const User = require("../models/userModel");
+require("dotenv").config();
 const OTP=require("../models/userOTPverification");
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const Product = require('../models/productModel')
 const Category = require('../models/categoryModel')
 const Cart = require('../models/cartModel')
+const Wishlist=require('../models/wishlistSchema')
 const Address=require('../models/addressModel')
 const Order = require('../models/orderModel');
+const Wallet =require('../models/walletModel')
+const Razorpay = require('razorpay');
+const mongoose=require('mongoose')
+const KEY_ID = process.env.KEY_ID;
+
+const KEY_SECRET = process.env.KEY_SECRET;
+
+// Initialize Razorpay instance
+const instance = new Razorpay({
+    key_id: KEY_ID,
+    key_secret: KEY_SECRET
+});
+
+
+
 
 const securePassword=async(password)=>{
     try {
@@ -145,7 +162,7 @@ const submitOTP=async (req,res)=>{
     } catch (error) {
         console.log(error);
     }
-}    
+} 
 const resendOTP = async (req, res) => {
     try {
         const user = req.session.userData;
@@ -291,20 +308,21 @@ const allProducts=async (req,res)=>{
 const productPage = async (req, res) => {
     try {
         const user = await User.findById(req.session.user_id);
-
+        
         // Get the product ID from the request parameters
         const productId = req.params.productId;
 
         // Fetch the product details from the database based on the product ID
         const product = await Product.findById(productId);
-        
+        const wishlist = await Wishlist.findOne({productId , userId:req.session.user_id});
+
         if (!product) {
             // If product is not found, render an error page or redirect to a 404 page
             return res.status(404).send('product not found')
         }
         const relatedProducts= await Product.find({status:true}).limit(4)
         // Render the product page and pass the product details to the view
-        res.render('productPage', { product ,relatedProducts,user});
+        res.render('productPage', { product ,relatedProducts,user, wishlist});
        
     } catch (error) {
         console.error('Error fetching product:', error);
@@ -337,8 +355,12 @@ const renderCart = async (req, res) => {
               let subtotal = 0;
               cart.products.forEach(item => {
                   totalQuantities += item.quantity;
-                  subtotal += item.quantity * item.productId.selling_price;
+                  const itemPrice = item.quantity * item.productId.selling_price;
+                  item.price = itemPrice;
+                  subtotal += itemPrice;
               });
+              
+             
             
         res.render('cart',{ cartItems:cart.products, totalQuantities, subtotal,user})
         
@@ -355,12 +377,9 @@ const renderCart = async (req, res) => {
 
 const addToCart = async (req, res) => {
     try {
-        const userId = req.session.user_id; // Assuming user is authenticated
+        const userId = req.session.user_id; 
         const productId = req.params.productId;
         const quantity = req.body.quantity || 1;
-
-
-        
         // Find the cart for the user
         let cart = await Cart.findOne({ userId });
 
@@ -384,23 +403,17 @@ const addToCart = async (req, res) => {
         if (!product) {
             return res.status(404).json({ success: false, message: 'Product not found' });
         }
-
          //out of stock 
-
          if (product.stock == 0 ) {
             return res.status(400).json({ success: false, message: 'Product is out of stock' });
         }
-
         // Check if the requested quantity is greater than available stock
         if (product.stock < quantity) {
             return res.status(400).json({ success: false, message: 'Requested quantity exceeds available stock' });
         }
-
-       
         // Update the product's stock
         product.stock -= quantity;
         await product.save();
-
         // Save the cart to the database
         await cart.save();
 
@@ -414,47 +427,52 @@ const addToCart = async (req, res) => {
 
 
 
-
 const updateQuantity = async (req, res) => {
     try {
-        
         const { productId, operator } = req.body;
         const userId = req.session.user_id;
 
-        const prod = await Product.findById(productId)
-        if(operator=='increase'){
-            if(prod.stock>0){
-                await Cart.updateOne({ userId ,"products.productId":productId},{$inc:{"products.$.quantity":1}});
-                await Product.findByIdAndUpdate({_id:productId},{$inc:{stock:-1}})
-            }else{
-                res.json({success:false , message:'Cant add more !!!Product Out of stock!!!'})
-               
-            }
-            
-        }
-        else{
-             await Cart.updateOne({ userId ,"products.productId":productId},{$inc:{"products.$.quantity":-1}});
-             await Product.findByIdAndUpdate({_id:productId},{$inc:{stock:1}})
-        }
-        const cart = await Cart.findOne({ userId }).populate('products.productId');
-       
-         // Calculate total quantities and subtotal
-         
-         let totalQuantities = 0;
-         let subtotal = 0;
-         cart.products.forEach(item => {
-             totalQuantities += item.quantity;
-             subtotal += item.quantity * item.productId.selling_price;
-         });
-     
-         res.json({ success: true , totalQuantities , subtotal});
+        const prod = await Product.findById(productId);
 
-        
+        if (operator === 'increase') {
+            if (prod.stock > 0) {
+                await Cart.updateOne({ userId, "products.productId": productId }, { $inc: { "products.$.quantity": 1 } });
+                await Product.findByIdAndUpdate({ _id: productId }, { $inc: { stock: -1 } });
+            } else {
+                return res.json({ success: false, message: 'Cant add more !!!Product Out of stock!!!' });
+            }
+        } else {
+            await Cart.updateOne({ userId, "products.productId": productId }, { $inc: { "products.$.quantity": -1 } });
+            await Product.findByIdAndUpdate({ _id: productId }, { $inc: { stock: 1 } });
+        }
+
+        const cart = await Cart.findOne({ userId }).populate('products.productId');
+        let productQuantity=0;
+        let productPrice=0;
+        let totalQuantities = 0;
+        let subtotal = 0;
+        cart.products.forEach(item => {
+            if (item.productId.toString() === productId) {
+                item.quantity += (operator === 'increase' ? 1 : -1);
+            }
+
+            productQuantity=item.quantity;
+            productPrice=item.quantity * item.productId.selling_price;
+            totalQuantities += item.quantity;
+            subtotal += item.quantity * item.productId.selling_price;
+        });
+
+        await cart.save();
+
+        return res.json({ success: true,productQuantity,productPrice, totalQuantities, subtotal });
     } catch (error) {
         console.error('Error updating quantity:', error);
-        res.status(500).json({ success:false , message: 'Internal server error' });
+        return res.status(500).json({ success: false, message: 'Internal server error' });
     }
 };
+
+
+
 
 
 //remove item from cart list
@@ -519,15 +537,18 @@ const renderCheckOut = async (req, res) => {
         let subtotal = 0;
         cart.products.forEach(item => {
             totalQuantities += item.quantity;
-            subtotal += item.quantity * item.productId.selling_price;
+            const itemPrice = item.quantity * item.productId.selling_price;
+            item.price = itemPrice;
+            subtotal += itemPrice;
         });
 
-        res.render('checkOut', { cartItems: cart.products, totalQuantities, subtotal, addresses ,user});
+        res.render('checkOut', { cartItems: cart.products, totalQuantities, subtotal, addresses ,user });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
 };
+
 
 const placeOrder = async (req, res) => {
     try {
@@ -552,33 +573,66 @@ const placeOrder = async (req, res) => {
             return res.status(400).send('Invalid address selected');
         }
 
-        // Calculate total amount from cart
+        // Calculate total amount and set price for each item
         let totalAmount = 0;
-        cart.products.forEach(item => {
-            totalAmount += item.quantity * item.productId.selling_price;
-        });
+        for (const item of cart.products) {
+            // Calculate price for each item based on quantity and selling price
+            const itemPrice = item.quantity * item.productId.selling_price;
+            item.price = itemPrice;
+            totalAmount += itemPrice;
+        }
 
+        // Ensure that paymentMethod is provided in the request body
+        const paymentMethod = req.body.paymentMethod;
+        if (!paymentMethod) {
+            return res.status(400).send('Payment method is required');
+        }
+
+         // If payment method is 'Cash on Deliver'
         // Create the order with required fields
         const order = new Order({
             userId,
             items: cart.products,
             status: 'unpaid',
             totalAmount,
-            paymentMethod: 'Cash on Delivery',
+            paymentMethod,
             address: address._id
         });
 
-        // Save the order to the database
-        const savedOrder = await order.save();
 
-        // Clear the cart after placing the order
+        // If payment method is 'Online payment'
+        if (paymentMethod === 'Online payment') {
+           console.log("razorpaycodeneeded");
+             // Create Razorpay order
+             const razorpayOrder = instance.orders.create({
+                amount: totalAmount * 100, // Razorpay expects amount in paise (multiply by 100)
+                currency: 'INR',
+                receipt: order._id.toString(),
+                payment_capture: 1 // Auto capture payment
+            });
+            console.log(razorpayOrder);
+            // Redirect user to Razorpay checkout page
+            return res.json({
+                success: true,
+                orderId: razorpayOrder.id,
+                amount: razorpayOrder.amount
+            });
+        }
+        //Save the order to the database
+        await order.save();
+
+        //Clear the cart after placing the order
         await Cart.findOneAndUpdate({ userId }, { $set: { products: [] } });
-        res.redirect('/ordersuccess');
+
+        // // Redirect to success page
+        return res.redirect('/ordersuccess');
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
 };
+
+
 
 const renderOrderSuccess = async (req, res) => {
     try {
@@ -589,7 +643,105 @@ const renderOrderSuccess = async (req, res) => {
     }
 };
 
+const renderWishlist = async (req, res) => {
+    try {
+        if (req.session.user_id) {
+            const user = await User.findById(req.session.user_id);
+        
+            if (!user) {
+                // Handle the case where the user with the session ID is not found
+                return res.status(404).send('User not found');
+            }
+            // Save the wishlist item to the database
+            const userId = req.session.user_id;
+          
+           const wishlist = await Wishlist.find({ userId }).populate('productId');
+          
+            if (!wishlist) {
+                // If the user's wishlist is empty, render an empty wishlist view
+                return res.render('wishlist',{wishlist});
+            }
 
+          
+               res.render('wishlist',{wishlist, user})
+        
+        }else{
+        res.render('login')
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+
+const addToWishlist = async (req, res) => {
+    try {
+        
+        const userId = req.session.user_id;
+        
+        const productId=req.params.productId
+        
+        const wishlist = await Wishlist.create({ userId, productId });
+        
+        res.status(201).json({ success: true, wishlist });
+    } catch (error) {
+        console.error('Error adding to wishlist:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
+
+
+const removeFromWishlist = async (req, res) => {
+    try {
+        const userId = req.session.user_id;
+        const { productId } = req.body;
+       
+        await Wishlist.deleteOne({ userId, productId });
+        res.json({ success: true, message: 'Item removed from wishlist' });
+    } catch (error) {
+        console.error('Error removing from wishlist:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
+
+
+const googleAuth = async(req,res)=>{
+    try{
+        const user = req.body.user;
+        console.log("user",user);
+        const email = user.email
+        // Check if user already exists
+        let userData;
+        const existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+            // User already exists, set session for existing user
+            req.session.user_id = existingUser._id;
+            userData = existingUser;
+        } else {
+            // Create a new user
+            const newuser = new User({
+                name: user.displayName,
+                email: user.email,
+                mobile:user.phoneNumber
+            });
+
+            userData = await newuser.save();
+        }
+
+        // If user data is successfully obtained, respond with success message
+        if (userData) {
+            console.log("User data saved successfully");
+            return res.json({ success: true, message: "User data saved successfully" });
+        } else {
+            // If user data retrieval fails, render registration page with error message
+            return res.render("signUp", { errmessage: "." });
+        }
+    }catch(error){
+        console.log(error)
+    }
+}
 
 
 
@@ -611,5 +763,9 @@ module.exports={
     updateQuantity,
     renderCheckOut,
     remove_product_from_cart,
-    renderOrderSuccess
+    renderOrderSuccess,
+    renderWishlist,
+    addToWishlist,
+    removeFromWishlist,
+    googleAuth
 }
