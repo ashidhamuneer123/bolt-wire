@@ -12,16 +12,16 @@ const Order = require('../models/orderModel');
 const Wallet =require('../models/walletModel')
 const Razorpay = require('razorpay');
 const mongoose=require('mongoose')
-const KEY_ID = process.env.KEY_ID;
+const RAZORPAY_ID_KEY = process.env.RAZORPAY_ID_KEY;
 
-const KEY_SECRET = process.env.KEY_SECRET;
+const RAZORPAY_SECRET_KEY = process.env.RAZORPAY_SECRET_KEY;
 
 // Initialize Razorpay instance
 const instance = new Razorpay({
-    key_id: KEY_ID,
-    key_secret: KEY_SECRET
+    key_id: RAZORPAY_ID_KEY,
+    key_secret: RAZORPAY_SECRET_KEY
 });
-
+ 
 
 
 
@@ -139,7 +139,6 @@ const getOTP=async (req,res)=>{
     }
 }   
 
-
 const submitOTP=async (req,res)=>{
     try {
          const enteredOtp=req.body.otp;
@@ -163,6 +162,7 @@ const submitOTP=async (req,res)=>{
         console.log(error);
     }
 } 
+
 const resendOTP = async (req, res) => {
     try {
         const user = req.session.userData;
@@ -708,8 +708,9 @@ const removeFromWishlist = async (req, res) => {
 
 const googleAuth = async(req,res)=>{
     try{
+        
         const user = req.body.user;
-        console.log("user",user);
+        console.log("user ",user);
         const email = user.email
         // Check if user already exists
         let userData;

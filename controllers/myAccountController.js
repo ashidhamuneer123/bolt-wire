@@ -6,7 +6,13 @@ const Wallet = require('../models/walletModel')
 const bcrypt = require('bcrypt');
 const Cart = require('../models/cartModel')
 const Swal = require('sweetalert2');
+const Razorpay = require('razorpay');
+const { RAZORPAY_ID_KEY, RAZORPAY_SECRET_KEY } = process.env;
 
+let instance = new Razorpay({
+    key_id: RAZORPAY_ID_KEY,
+    key_secret: RAZORPAY_SECRET_KEY,
+});
 
 
 const myAccount = async(req,res)=>{
@@ -15,15 +21,17 @@ const myAccount = async(req,res)=>{
         const user = await User.findById(userId)
         const addresses= await Address.find({userId})
         const orders = await Order.find({ userId }).populate('items.productId');
-        const walletId = user.wallet;
-        // Find the wallet using the wallet ID
-        const userWallet = await Wallet.findById(walletId);
-        const balance = userWallet ? userWallet.balance : 0;
-        const subtotal = req.query.subtotal || 0; // Retrieve subtotal from query parameter
-        const selectedAddressId = req.query.addressId;
-        const paymentMethod=req.query.paymentMethod
-        console.log(selectedAddressId);
-        res.render('myAccount',{user,addresses,orders,balance,subtotal,selectedAddressId,paymentMethod})
+
+        let wallet = await Wallet.findOne({ userId });
+        console.log("5",wallet);
+        if (!wallet) {
+            console.log("hiiiii");
+            wallet = new Wallet({ userId, balance: 0 });
+            await wallet.save();
+            console.log("hello",wallet);
+        }
+       
+        res.render('myAccount',{user,addresses,orders,wallet})
         
     } catch (error) {
         console.log(error.message)
@@ -156,18 +164,20 @@ const deleteAddress = async (req, res) => {
 
 const cancelMyOrder=async (req,res)=>{
     try {
-        const { productId, quantity } = req.body;
+        const {orderId, productId, quantity } = req.body;
+        console.log(orderId);
         const userId = req.session.user_id;
+        console.log(userId);
         // Find the order of the user
-        const order = await Order.findOne({ userId });
-
+        const order = await Order.findOne({ userId,_id:orderId });
+       console.log(order);
         if (!order) {
             return res.status(404).json({ success: false, message: 'Order not found' });
         }
-        const user = await User.findById(userId)
+        console.log(order.items);
         // Find the item in the order
         const item = order.items.find(item => item.productId.toString() === productId);
-
+        console.log(item);
         if (!item) {
             return res.status(404).json({ success: false, message: 'Item not found in order' });
         }
@@ -184,20 +194,24 @@ const cancelMyOrder=async (req,res)=>{
 
         product.stock += parseInt(quantity); // Increment stock
 
+         // Deduct total amount of canceled products from the order
+        const canceledAmount = item.quantity * item.price;
+        order.totalAmount -= canceledAmount;
+
         // Save changes
         await order.save();
         await product.save();
 
-         // Refund amount to the user's wallet
-      
-            const walletId = user.wallet;
-            // Find the wallet using the wallet ID
-            const userWallet = await Wallet.findById(walletId);
-             const refundedAmount = item.price;
-              
-            // Add the refunded amount to the user's wallet
-            await userWallet.addToWallet(refundedAmount);
-         
+         // Refund the canceled amount to the user's wallet if not cash on delivery
+         if (order.paymentMethod !== 'Cash on Delivery') {
+        const wallet = await Wallet.findOne({ userId });
+        if (!wallet) {
+            return res.status(404).json({ success: false, message: 'Wallet not found for the user' });
+        }
+
+        wallet.balance += canceledAmount;
+        await wallet.save();
+    } 
         
 
         res.status(200).json({ success: true, message: 'Order cancelled successfully' });
@@ -208,10 +222,10 @@ const cancelMyOrder=async (req,res)=>{
 }
 const returnMyOrder=async (req,res)=>{
     try {
-        const { productId, quantity } = req.body;
+        const {orderId, productId, quantity } = req.body;
         const userId = req.session.user_id;
         // Find the order of the user
-        const order = await Order.findOne({ userId });
+        const order = await Order.findOne({ userId,_id:orderId });
 
         if (!order) {
             return res.status(404).json({ success: false, message: 'Order not found' });
@@ -236,19 +250,21 @@ const returnMyOrder=async (req,res)=>{
 
         product.stock += parseInt(quantity); // Increment stock
 
+             // Deduct total amount of returned products from the order
+             const returnedAmount = item.quantity * item.price;
+             order.totalAmount -= returnedAmount;
+
         // Save changes
         await order.save();
         await product.save();
 
-        // Refund amount to the user's wallet
-        const user = await User.findById(userId)
-        const walletId = user.wallet;
-        // Find the wallet using the wallet ID
-        const userWallet = await Wallet.findById(walletId);
-         const refundedAmount = item.price;
-          
-        // Add the refunded amount to the user's wallet
-        await userWallet.addToWallet(refundedAmount);
+        const wallet = await Wallet.findOne({ userId });
+        if (!wallet) {
+            return res.status(404).json({ success: false, message: 'Wallet not found for the user' });
+        }
+
+        wallet.balance += returnedAmount;
+        await wallet.save();
 
 
         res.status(200).json({ success: true, message: 'Order Returned' });
@@ -257,82 +273,45 @@ const returnMyOrder=async (req,res)=>{
         console.log(error.message);
     }
 }
-
-const walletPayment = async (req, res) => {
+const addTowallet = async (req, res) => {
     try {
+        let amount = req.body.amount ; 
+        console.log(amount,"dasdasdasdasdad")
         const userId = req.session.user_id;
-        const subtotal = req.query.subtotal; 
-        if (isNaN(subtotal)) {
-            // Handle invalid subtotal
-            return res.status(400).send('Invalid subtotal');
-          }
-    // Get the selected address ID from the request body
-    const selectedAddressId = req.body.selectedAddress;
-       
-    // Find the selected address
-    const address = await Address.findOne({ _id: selectedAddressId, userId });
-
-    // Ensure that the selected address exists and belongs to the user
-    if (!address) {
-        return res.status(400).send('Invalid address selected');
-    }
-        // Find the user's cart
-        const cart = await Cart.findOne({ userId }).populate('products.productId');
-
-        // Check if the cart is empty
-        if (!cart || !cart.products.length) {
-            return res.status(400).send('Cart is empty');
-        }
-          // Calculate total amount and set price for each item
-          let totalAmount = 0;
-          for (const item of cart.products) {
-              // Calculate price for each item based on quantity and selling price
-              const itemPrice = item.quantity * item.productId.selling_price;
-              item.price = itemPrice;
-              totalAmount += itemPrice;
-          }
-          const paymentMethod = req.query.paymentMethod;
-          if (!paymentMethod) {
-              return res.status(400).send('Payment method is required');
-          }
-
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).send('User not found');
-        }
-        const walletId = user.wallet;
-        const userWallet = await Wallet.findById(walletId);
-        if (!userWallet) {
-            return res.status(404).send('Wallet not found');
-        }
-        if (userWallet.balance < subtotal) {
-            return res.status(400).send('Insufficient balance');
-        }
-        userWallet.balance -= parseFloat(subtotal);
-        await userWallet.save();
-
-            const order = new Order({
-            userId,
-            items: cart.products,
-            status: 'paid',
-            totalAmount,
-            paymentMethod,
-            address: address._id
+        // Create Razorpay order
+        const order = await instance.orders.create({
+            amount: amount*100, 
+            currency: "INR",
+            receipt: userId
         });
-          //Save the order to the database
-          await order.save();
 
-          //Clear the cart after placing the order
-          await Cart.findOneAndUpdate({ userId }, { $set: { products: [] } });
-  
-          // // Redirect to success page
-          return res.redirect('/ordersuccess');
+        // Update wallet balance
+        let wallet = await Wallet.findOne({ userId });
+        if (!wallet) {
+            wallet = new Wallet({ userId, balance: parseFloat(amount) });
+        } else {
+            wallet.balance += parseFloat(amount) ;
+
+          /*   // Add transaction to history
+            wallet.history.push({
+                amount: parseFloat(amount) ,
+                type: 'credit',
+
+                createdAt: new Date()
+            }); */
+        }
+
+        await wallet.save();
+
+        console.log(amount, "amount added to wallet - from user controller");
+        res.json({ order });
 
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
 };
+
 module.exports={
     myAccount,
     updateDetails,
@@ -343,5 +322,5 @@ module.exports={
     deleteAddress,
     cancelMyOrder,
     returnMyOrder,
-    walletPayment
+    addTowallet
 }

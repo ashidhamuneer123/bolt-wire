@@ -45,8 +45,8 @@ user_route.post('/edit-address/:id',auth.isLogin, myAccountController.editAddres
 user_route.get('/delete-address/:addressId',auth.isLogin, myAccountController.deleteAddress);
 user_route.post('/cancel-order',auth.isLogin,myAccountController.cancelMyOrder)
 user_route.post('/return-order',auth.isLogin,myAccountController.returnMyOrder)
-user_route.get('/walletPayment',myAccountController.myAccount)
-user_route.post('/walletPayment',myAccountController.walletPayment)
+
+user_route.post('/addTowallet',myAccountController.addTowallet)
 
 //cart management
 user_route.get('/cart', auth.isLogin, userController.renderCart)

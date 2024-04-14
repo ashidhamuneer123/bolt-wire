@@ -15,9 +15,10 @@
     <meta property="og:image" content="">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/titlelogo.jpg">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
 </head>
@@ -479,10 +480,10 @@
                                                                                     </div>
                                                                                     <div class="col-md-3 d-flex align-items-center">
                                                                                         <% if (item.deliveryStatus == 'Processing') { %>
-                                                                                            <button onclick="cancelMyOrder('<%= item.productId._id %>','<%= item.quantity%>')" type="button" class="btn btn-danger btn-sm">Cancel</button>
+                                                                                            <button onclick="cancelMyOrder('<%= order._id%>', '<%= item.productId._id %>','<%= item.quantity%>')" type="button" class="btn btn-danger btn-sm">Cancel</button>
                                                                                         <% } %>
                                                                                             <% if(item.deliveryStatus =='Delivered'){ %>
-                                                                                                <button onclick="returnMyOrder('<%= item.productId._id %>','<%= item.quantity%>')" type="button" class="btn btn-danger btn-sm">Return</button>  
+                                                                                                <button onclick="returnMyOrder( '<%= order._id%>','<%= item.productId._id %>','<%= item.quantity%>')" type="button" class="btn btn-danger btn-sm">Return</button>  
                                                                                             <% } %>
                                                                                     </div>
                                                                                 </div>
@@ -506,13 +507,15 @@
                                     <div class="tab-pane fade" id="wallet" role="tabpanel" aria-labelledby="account-detail-tab" style="padding: 20px;
                                     width: 100%; display: grid; grid-template-columns: 1fr 2fr;">
                             <div class="card coupon-container" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 250px;">
+                               <% if(wallet){%>
                                 <div class="card-header bg-gradient-primary text-white" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
                                     <h5 style="margin-bottom: 0; font-size: 24px;">Wallet</h5>
                                 </div>
+
                                 <div class="card-body" style="max-width: 300px;"> <!-- Adjust the max-width -->
                                     <div class="wallet-info" style="padding-bottom: 15px;">
                                         <h6 style="margin-bottom: 0; font-size: 18px;">Available Balance:</h6>
-                                        <p id="balanceAmount" style="margin-top: 5px; font-size: 24px; font-weight: bold;"><%= balance %></p>
+                                        <p id="balanceAmount" style="margin-top: 5px; font-size: 24px; font-weight: bold;">$<%= wallet.balance %></p>
                                         
                                     </div>
                                     <!-- wallet payment Form -->
@@ -521,17 +524,14 @@
                                           
                                             <div class="form-group">
                                                 <label for="amount" style="margin-bottom: 5px; font-size: 18px;">Amount:</label>
-                                                <input type="number" class="form-control" id="amountInput" name="amount" style="border-radius: 20px; font-size: 16px; padding: 10px; border: 1px solid #ced4da;" value="<%= subtotal %>">
+                                                <input type="number" class="form-control" id="amountInput" name="amount" style="border-radius: 20px; font-size: 16px; padding: 10px; border: 1px solid #ced4da;" value="">
                                             </div>
-                                            <button onclick="formSubmit()" style="background-color: #000000;" type="submit"  class="btn btn-primary" style="border-radius: 20px; padding: 10px 30px; font-size: 18px;">Pay</button>
+                                            <button onclick="submitForm()" style="background-color: #000000;" type="submit"  class="btn btn-primary" style="border-radius: 20px; padding: 10px 30px; font-size: 18px;">Pay</button>
                                         
-                                            <form id="hiddenForm" method="post" action="/walletPayment?subtotal=<%= subtotal %>&addressId=<%= selectedAddressId %>&paymentMethod=<%= paymentMethod %>">
-                                                 <!-- Hidden input fields for selected address and payment method -->
-                                                 <input type="hidden" id="selectedAddressInput" name="selectedAddress">
-                                                 <input type="hidden" id="paymentMethodInput" name="paymentMethod">
-                                            </form>
+                                          
                                     </div>
                                 </div>
+                                <% }  %>
                             </div>
                         </div>
                          
@@ -632,10 +632,10 @@
         </div>
     </footer>
     <script>
-        async function cancelMyOrder( productId,quantity){
+        async function cancelMyOrder(orderId, productId,quantity){
             try {
                 event.preventDefault()
-                const response = await axios.post('/cancel-order', { productId, quantity });
+                const response = await axios.post('/cancel-order', {orderId, productId, quantity });
                 if(response.data.success){
                     location.reload()
                 }
@@ -645,10 +645,10 @@
         }
     </script>
      <script>
-        async function returnMyOrder( productId,quantity){
+        async function returnMyOrder(orderId, productId,quantity){
             try {
                 event.preventDefault()
-                const response = await axios.post('/return-order', { productId, quantity });
+                const response = await axios.post('/return-order', {orderId, productId, quantity });
                 if(response.data.success){
                     location.reload()
                 }
@@ -657,32 +657,74 @@
             }
         }
     </script>
-
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+            integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    // Define the formSubmit function in the global scope
-    async function formSubmit() {
-        // Get the form element
-        const form = document.getElementById('hiddenForm');
-        
-        // Ensure that the form element exists
-        if (!form) {
-            console.error('Form element with ID "hiddenForm" not found');
-            return;
-        }
-        
-        // Get the selected address ID and payment method from the query parameters
-        const queryParams = new URLSearchParams(window.location.search);
-        const addressId = queryParams.get('addressId'); // Retrieve the address ID from the query parameters
-        const paymentMethod = queryParams.get('paymentMethod'); // Retrieve the payment method from the query parameters
-        
-        // Set the values of the hidden fields
-        form.querySelector('input[name="selectedAddress"]').value = addressId;
-        form.querySelector('input[name="paymentMethod"]').value = paymentMethod;
-        
-        // Submit the form
-        form.submit();
+    function submitForm() {
+        // Get the amount input value
+        const amount = document.getElementById('amountInput').value;
+
+        // Prepare data for the request body
+        const data = {
+            amount: amount
+            // Add more data if needed
+        };
+
+        // Fetch request
+        fetch('/addTowallet', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => response.json())
+        .then(data => {
+            // Initialize Razorpay checkout with received order details
+            const options = {
+                "key": 'rzp_test_nrsjMCLp4uBA73', // Replace with your Razorpay key ID
+                "amount": data.order.amount, // Use the amount from server response
+                "currency": 'INR', // Change the currency to match your requirements
+                "name": 'Bolt & wire',
+                "description": 'Purchase Description',
+                "order_id": data.order.id, // Use the order ID from server response
+                "handler": function (response) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Payment successful!",
+                        showConfirmButton: false,
+                        timer: 2000
+                    }).then(() => {
+                        window.location.href = '/myaccount';
+                    });
+                },
+                "prefill": {
+                    "name": 'Ashidha muneer',
+                    "email": 'Ashidha@example.com',
+                    "contact": '9999999999',
+                },
+                "theme": {
+                    "color": '#4B0082'
+                }
+            };
+            const razorpayInstance = new Razorpay(options);
+            razorpayInstance.open();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
+            });
+        });
     }
 </script>
+
 
     
  

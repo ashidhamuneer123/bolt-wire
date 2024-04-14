@@ -6,7 +6,7 @@ const admin_route=express();
 const adminController=require("../controllers/adminController");
 const categoryController=require('../controllers/categoryController');
 const productController=require('../controllers/productController')
-
+const couponController = require('../controllers/couponController')
 const orderController=require('../controllers/orderController')
 const nocache = require('nocache')
 
@@ -59,4 +59,8 @@ admin_route.post('/cancel',auth.isLogin,orderController.cancelOrder)
 admin_route.post('/update-status',auth.isLogin,orderController.updateStatus)
 admin_route.get('/orderdetails/:orderId',auth.isLogin,orderController.orderDetails)
 
+//coupon
+admin_route.get('/coupon',couponController.getAllCoupons)
+admin_route.post('/create',couponController.createCoupon)
+admin_route.post('/:id/delete', couponController.deleteCoupon);
 module.exports=admin_route;

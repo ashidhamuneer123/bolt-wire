@@ -1,21 +1,18 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
+const {Schema} = mongoose;
 
-const walletSchema = new mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
-        unique:true
+const walletSchema = new Schema({
+    userId:{
+        type:Schema.ObjectId,
+        ref:'user',
+        require:true
     },
-    balance: {
-        type: Number,
-        default: 0
+    balance:{
+        type:Number,
+        default:0
     }
-});
+})
+ 
+module.exports= mongoose.model("Wallet",walletSchema)
 
-// Method to add funds to the wallet balance
-walletSchema.methods.addToWallet = async function(amount) {
-    this.balance += amount;
-    await this.save();
-};
 
-module.exports = mongoose.model('Wallet', walletSchema);
