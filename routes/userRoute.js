@@ -4,6 +4,7 @@ const user_route = express();
 const userController = require("../controllers/userController");
 const myAccountController=require("../controllers/myAccountController");
 const searchController = require('../controllers/searchController')
+const couponController = require('../controllers/couponController')
 const auth = require('../middleware/auth');
 
 const nocache = require('nocache')
@@ -45,7 +46,7 @@ user_route.post('/edit-address/:id',auth.isLogin, myAccountController.editAddres
 user_route.get('/delete-address/:addressId',auth.isLogin, myAccountController.deleteAddress);
 user_route.post('/cancel-order',auth.isLogin,myAccountController.cancelMyOrder)
 user_route.post('/return-order',auth.isLogin,myAccountController.returnMyOrder)
-
+user_route.get('/myorderdetails/:orderId',auth.isLogin,myAccountController.myOrderDetails)
 user_route.post('/addTowallet',myAccountController.addTowallet)
 
 //cart management
@@ -56,7 +57,10 @@ user_route.get('/remove-from-cart/:productId',auth.isLogin,  userController.remo
 
 user_route.get('/filter',searchController.get_searchedProducts);
 user_route.get('/checkout',auth.isLogin, userController.renderCheckOut);
+user_route.post('/applyCoupon', couponController.applyCoupon)
+user_route.post('/removeCoupon',couponController.removeCoupon)
 user_route.post('/place-order',auth.isLogin, userController.placeOrder);
+user_route.post('/verify-payment',auth.isLogin,userController.verifyPayment)
 user_route.get('/ordersuccess',auth.isLogin, userController.renderOrderSuccess);
 
 
@@ -66,5 +70,8 @@ user_route.get('/wishlist',userController.renderWishlist);
 user_route.post('/addtowishlist/:productId',userController.addToWishlist);
 user_route.post('/removefromwishlist',userController.removeFromWishlist);
 user_route.post('/googleAuth',userController.googleAuth);
+
+//category filter
+user_route.get('/products/category/:categoryId',userController.categoryFiltering)
 
 module.exports = user_route;

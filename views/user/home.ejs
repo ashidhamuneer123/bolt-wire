@@ -214,15 +214,19 @@
                     </div>
                     <div class="header-right">
                         <div class="search-style-2">
-                            <form action="#">
-                                <select class="select-active">
-                                    <option>All Categories</option>
-                                    <option>Electricals</option>
-                                    <option>Hardwares</option>
-                                    <option>Tools & Equipments</option>
-                                </select>
-                                <input type="text" placeholder="Search for items...">
-                            </form>
+                            <form
+                            class="search-container d-flex p-0"
+                            action="/"
+                            method="get"
+                          >
+                            <input
+                              type="text"
+                              class="flex-grow-1"
+                              placeholder="search..."
+                              name="search"
+                              value="<%= search %>"
+                            /><button class="btn btn-primary h-100 rounded-start-0">Search</button>
+                          </form>
                         </div>
                         <div class="header-action-right">
                             <div class="header-action-2">
@@ -297,9 +301,38 @@
                             
                             </nav>
                         
+
+
                         </div>
                     </div>
-                    
+                    <div class="hotline d-none d-lg-block">
+                        <p><i class="fi-rs-headset"></i><span>Hotline</span> 1900 - 888 </p>
+                    </div>
+                    <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
+                    <div class="header-action-right d-block d-lg-none">
+                        <div class="header-action-2">
+                            <div class="header-action-icon-2">
+                                <a href="/wishlist">
+                                    <img alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
+                                    
+                                </a>
+                            </div>
+                            <div class="header-action-icon-2">
+                                <a class="mini-cart-icon" href="/cart">
+                                    <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
+                                    
+                                </a>
+                                
+                            </div>
+                            <div class="header-action-icon-2 d-block d-lg-none">
+                                <div class="burger-icon burger-icon-white">
+                                    <span class="burger-icon-top"></span>
+                                    <span class="burger-icon-mid"></span>
+                                    <span class="burger-icon-bottom"></span>
+                                </div>
+                            </div>
+                    </div>
+            </div>
 
                 </div>
             </div>
@@ -309,7 +342,7 @@
         <div class="mobile-header-wrapper-inner">
             <div class="mobile-header-top">
                 <div class="mobile-header-logo">
-                    <a href="index.html"><img src="assets/imgs/theme/logo.svg" alt="logo"></a>
+                    <a href="/"><img src="assets/imgs/theme/mainlogo.png" alt="logo"></a>
                 </div>
                 <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
                     <button class="close-style search-close">
@@ -331,7 +364,19 @@
                         <a  href="page-contact.html"> Our location </a>
                     </div>
                     <div class="single-mobile-header-info">
-                        <a href="page-login-register.html">Log In / Sign Up </a>
+                       
+
+                            <% if (user) { %>
+                                <!-- If user is logged in, show logout button -->
+                            <a href="/myaccount"><h6><%= user.name %></h6></a>
+                        <a href="/logout">Logout</a>
+
+                        <% } else { %>
+                            <!-- If user is not logged in, show login button -->
+                            <a href="/signup">Log In / Sign Up</a>
+                            <% } %>
+
+                            
                     </div>
                     <div class="single-mobile-header-info">
                         <a href="#">(+01) - 2345 - 6789 </a>
@@ -442,7 +487,7 @@
                             <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
                             <% categories.forEach(category=> { %>
                             <ul class="categories">
-                                <li><a href="#"><%= category.cat_name %></a></li>
+                                <li><a href="#" class="category-link" data-category-id="<%= category._id %>"><%= category.cat_name %></a></li>
                                 
                             </ul>
                             <% }); %>
@@ -502,21 +547,30 @@
                             
                                                     <h2><a href="/product/<%= product._id %>"><%= product.product_name %></a></h2>
                                                     <!-- You can add more product details here -->
-                                                    <div class="rating-result" title="90%">
+                                                    <% if(product.selling_price != product.actual_price){ %>
+                                                    <div class="rating-result" title="offer">
+
                                                         <span>
-                                                            <!-- You might need to adjust the rating display based on your data -->
-                                                            <span>90%</span>
+                                                        
+                                                            <span><b><%= product.category_id.offer %>%</b></span>
                                                         </span>
                                                     </div>
+                                                    <% } %>
+
+                                                   <% if(product.selling_price != product.actual_price){ %>
                                                     <div class="product-price">
                                                         <span>$<%= product.selling_price %></span>
-                                                        <!-- You might need to adjust the price display based on your data -->
+                                            
                                                         <span class="old-price">$<%= product.actual_price %></span>
-                                                        <!-- Assuming there's an old price available -->
+                                                    
                                                     </div>
-                                                    <div class="product-action-1 show">
-                                                        <a aria-label="Add To Cart" class="action-btn hover-up" href="/product/<%= product._id %>"><i class="fi-rs-shopping-bag-add"></i></a>
-                                                    </div>
+                                                    <% } %>
+                                                   <%  if(product.selling_price == product.actual_price){ %>
+                                                    <div class="product-price">
+                                                    <span>$<%= product.actual_price %></span>
+                                                </div>
+                                                    <% } %>
+                                                   
                                                 </div>
                                             </div>
                                         </div>
@@ -616,4 +670,191 @@
             </div>
         </section>
     </main>
-    <%- include("../layouts/userFooter.ejs") -%>
+    
+    <footer class="main">
+      
+        <section class="section-padding footer-mid">
+            <div class="container pt-15 pb-20">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="widget-about font-md mb-md-5 mb-lg-0">
+                            <div class="logo logo-width-1 wow fadeIn animated">
+                                <a href="/"><img src="assets/imgs/theme/mainlogo.png" alt="logo"></a>
+                            </div>
+                            <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
+                            <p class="wow fadeIn animated">
+                                <strong>Address: </strong>562 Wellington Road, Street 32, San Francisco
+                            </p>
+                            <p class="wow fadeIn animated">
+                                <strong>Phone: </strong>+01 2222 365 /(+91) 01 2345 6789
+                            </p>
+                            <p class="wow fadeIn animated">
+                                <strong>Hours: </strong>10:00 - 18:00, Mon - Sat
+                            </p>
+                            <h5 class="mb-10 mt-30 fw-600 text-grey-4 wow fadeIn animated">Follow Us</h5>
+                            <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0">
+                                <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                                <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                                <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                                <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                                <a href="#"><img src="assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-3">
+                        <h5 class="widget-title wow fadeIn animated">About</h5>
+                        <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Delivery Information</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms &amp; Conditions</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Support Center</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2  col-md-3">
+                        <h5 class="widget-title wow fadeIn animated">My Account</h5>
+                        <ul class="footer-list wow fadeIn animated">
+                            <li><a href="#">Sign In</a></li>
+                            <li><a href="#">View Cart</a></li>
+                            <li><a href="#">My Wishlist</a></li>
+                            <li><a href="#">Track My Order</a></li>
+                            <li><a href="#">Help</a></li>
+                            <li><a href="#">Order</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <h5 class="widget-title wow fadeIn animated">Install App</h5>
+                        <div class="row">
+                            <div class="col-md-8 col-lg-12">
+                                <p class="wow fadeIn animated">From App Store or Google Play</p>
+                                <div class="download-app wow fadeIn animated">
+                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active" src="assets/imgs/theme/app-store.jpg" alt=""></a>
+                                    <a href="#" class="hover-up"><img src="assets/imgs/theme/google-play.jpg" alt=""></a>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
+                                <p class="mb-20 wow fadeIn animated">Secured Payment Gateways</p>
+                                <img class="wow fadeIn animated" src="assets/imgs/theme/payment-method.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container pb-20 wow fadeIn animated">
+            <div class="row">
+                <div class="col-12 mb-20">
+                    <div class="footer-bottom"></div>
+                </div>
+                <div class="col-lg-6">
+                    <p class="float-md-left font-sm text-muted mb-0">&copy; 2022, <strong class="text-brand">Evara</strong> - HTML Ecommerce Template </p>
+                </div>
+                <div class="col-lg-6">
+                    <p class="text-lg-end text-start font-sm text-muted mb-0">
+                        Designed by <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>. All rights reserved
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // AJAX request to fetch products based on the selected category
+document.querySelectorAll('.category-link').forEach(link => {
+    link.addEventListener('click', async (event) => {
+        event.preventDefault();
+        const categoryId = link.dataset.categoryId;
+        try {
+            const response = await fetch(`/products/category/${categoryId}`);
+            const data = await response.json();
+            // Update the product display area with the filtered products
+            renderProducts(data.products);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    });
+});
+
+// Function to update the product display area with the filtered products
+function renderProducts(products) {
+    // Clear existing products
+    const productGrid = document.querySelector('.product-grid-4');
+    productGrid.innerHTML = '';
+
+    // Render new products
+    products.forEach(product => {
+        const productHTML = `
+            <div class="col-lg-4 col-md-4 col-12 col-sm-6">
+                <div class="product-cart-wrap mb-30">
+                    <div class="product-img-action-wrap">
+                        <div class="product-img product-img-zoom">
+                            <a href="shop-product-right.html">
+                                <!-- Load primary image -->
+                                <img class="default-img" src="/admin-assets/imgs/items/${product.primary_image.name}" alt="${product.product_name}" width="50px" height="175px">
+                                <!-- Adjust image path and alt text accordingly -->
+                            </a>
+                        </div>
+                        <!-- Add badges or labels here if needed -->
+                    </div>
+                    <div class="product-content-wrap">
+                        <div class="product-category">
+                            <a href="#">${product.category_id.cat_name}</a>
+                            <!-- Assuming category name is available in product data -->
+                        </div>
+                        <h2><a href="/product/${product._id}">${product.product_name}</a></h2>
+                        <!-- You can add more product details here -->
+                        ${product.selling_price != product.actual_price ? `
+                            <div class="rating-result" title="offer">
+                                <span>
+                                    <span><b>${product.category_id.offer}%</b></span>
+                                </span>
+                            </div>
+                            <div class="product-price">
+                                <span>$${product.selling_price}</span>
+                                <span class="old-price">$${product.actual_price}</span>
+                            </div>
+                        ` : `
+                            <div class="product-price">
+                                <span>$${product.actual_price}</span>
+                            </div>
+                        `}
+                    </div>
+                </div>
+            </div>
+        `;
+        productGrid.insertAdjacentHTML('beforeend', productHTML);
+    });
+}
+
+
+    </script>
+  
+    <!-- Vendor JS-->
+    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/plugins/slick.js"></script>
+    <script src="assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="assets/js/plugins/wow.js"></script>
+    <script src="assets/js/plugins/jquery-ui.js"></script>
+    <script src="assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="assets/js/plugins/magnific-popup.js"></script>
+    <script src="assets/js/plugins/select2.min.js"></script>
+    <script src="assets/js/plugins/waypoints.js"></script>
+    <script src="assets/js/plugins/counterup.js"></script>
+    <script src="assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="assets/js/plugins/images-loaded.js"></script>
+    <script src="assets/js/plugins/isotope.js"></script>
+    <script src="assets/js/plugins/scrollup.js"></script>
+    <script src="assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="assets/js/plugins/jquery.elevatezoom.js"></script>
+    <!-- Template  JS -->
+    <script src="assets/js/maind134.js?v=3.4"></script>
+    <script src="assets/js/shopd134.js?v=3.4"></script>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/index-4.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:21 GMT -->
+</html>

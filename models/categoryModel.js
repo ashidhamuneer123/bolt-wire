@@ -14,9 +14,19 @@ const categorySchema = new mongoose.Schema({
         type:Boolean,
         required:true,
         default:false
-    }
-},{
-    timestamps:true
-})
+    }, 
+    offer:{
+        type:Number,
+        default:0
+    },
+    expirationDate: {
+         type: Date
+        },
+    OfferisActive:{
+        type:Boolean,
+        default:true
+    },
+}
+)
 
 module.exports = mongoose.model('Category',categorySchema);

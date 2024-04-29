@@ -1,11 +1,11 @@
 const User = require("../models/userModel");
 const Admin = require("../models/adminModel");
 const Product = require("../models/productModel");
+const Order = require("../models/orderModel")
 const bcrypt = require('bcrypt');
-
-
-
-
+const Coupon = require('../models/couponModel')
+const Category = require('../models/categoryModel')
+const cron=require('node-cron')
 
 const loadLogin = async (req,res)=>{
     try {
@@ -50,8 +50,176 @@ const confirmLogin = async (req, res) => {
 
 const loadDashboard = async (req, res) => {
     try {
-      const name = req.session.admin;
-      res.render("admin/dashboard");
+      const orders = await Order.find();
+      const categories = await Category.find();
+      const products = await Product.find();
+
+      const orderCountsByMonth = Array.from({ length: 12 }, () => 0);
+        orders.forEach(order => {
+            const monthIndex = order.createdAt.getMonth();
+            orderCountsByMonth[monthIndex]++;
+        });
+        
+        const productCountsByMonth = Array.from({ length: 12 }, () => 0);
+        products.forEach(product => {
+            const monthIndex = product.createdAt.getMonth();
+            productCountsByMonth[monthIndex]++;
+        });
+       
+        const orderCountsByYearData = await Order.aggregate([
+          {
+              $group: {
+                  _id: { $year: "$createdAt" },
+                  orderCount: { $sum: 1 }
+              }
+          },
+          {
+              $sort: { "_id": 1 }
+          }
+      ]);
+
+      const orderCountsByYear = Array.from({ length: 12 }, () => 0);
+      orderCountsByYearData.forEach(entry => {
+          const yearIndex = entry._id - new Date().getFullYear() + 5;
+          orderCountsByYear[yearIndex] = entry.orderCount;
+      });
+
+      const productCountsByYearData = await Product.aggregate([
+        {
+            $group: {
+                _id: { $year: "$createdAt" },
+                productCount: { $sum: 1 }
+            }
+        },
+        {
+            $sort: { "_id": 1 }
+        }
+    ]);
+
+    const productCountsByYear = Array.from({ length: 12 }, () => 0);
+        productCountsByYearData.forEach(entry => {
+            const yearIndex = entry._id - new Date().getFullYear() + 5;
+            productCountsByYear[yearIndex] = entry.productCount;
+        });
+
+
+        const totalAmountByYearData = await Order.aggregate([
+          {
+              $group: {
+                  _id: { $year: "$createdAt" },
+                  totalAmount: { $sum: { $toDouble: "$totalAmount" } }
+              }
+          },
+          {
+              $sort: { "_id": 1 }
+          }
+      ]);
+
+      const totalAmountByYear = Array.from({ length: 12 }, () => 0);
+      totalAmountByYearData.forEach(entry => {
+          const yearIndex = entry._id - new Date().getFullYear() + 5;
+          totalAmountByYear[yearIndex] = entry.totalAmount;
+      });
+
+      // Calculate total amount by month
+      const totalAmountByMonth = Array.from({ length: 12 }, () => 0);
+      orders.forEach(order => {
+          const monthIndex = order.createdAt.getMonth();
+          const totalAmount = parseFloat(order.totalAmount);
+          totalAmountByMonth[monthIndex] += totalAmount;
+      });
+        const bestSellingProduct = await Order.aggregate([
+          {
+              $unwind: "$items"
+          },
+          {
+              $group: {
+                  _id: "$items.productId",
+                  totalSales: { $sum: "$items.quantity" }
+              }
+          },
+          {
+              $sort: { totalSales: -1 }
+          },
+          {
+              $limit: 10
+          },
+          {
+              $lookup: {
+                  from: "products",
+                  localField: "_id",
+                  foreignField: "_id",
+                  as: "product"
+              }
+          },
+          {
+              $unwind: "$product"
+          },
+          {
+              $project: {
+                  productName: "$product.product_name",
+                  totalSales: 1
+              }
+          }
+      ]);
+
+      const bestSellingCategories = await Order.aggregate([
+        {
+            $unwind: "$items"
+        },
+        {
+            $lookup: {
+                from: "products",
+                localField: "items.productId",
+                foreignField: "_id",
+                as: "productInfo"
+            }
+        },
+        {
+            $unwind: "$productInfo"
+        },
+        {
+            $lookup: {
+                from: "categories",
+                localField: "productInfo.category_id",
+                foreignField: "_id",
+                as: "category"
+            }
+        },
+        {
+            $unwind: "$category"
+        },
+        {
+            $group: {
+                _id: "$category._id",
+                name: { $first: "$category.cat_name" },
+                totalSales: { $sum: "$items.quantity" } // Changed to reference items.quantity
+            }
+        },
+        {
+            $sort: { totalSales: -1 }
+        },
+        {
+            $limit: 3
+        }
+    ]);
+    
+
+    
+
+      res.render("admin/dashboard",{
+        orders, 
+        categories, 
+        orderCountsByMonth, 
+        productCountsByMonth, 
+        orderCountsByYear, 
+        productCountsByYear, 
+        bestSellingProduct, 
+        bestSellingCategories ,
+        totalAmountByMonth,
+        totalAmountByYear
+      });
+
     } catch (error) {
       console.log(error.message);
     }
@@ -115,11 +283,113 @@ const updateUsers = async (req, res) => {
   };
 
 
+const salesReport= async (req,res)=>{
+  try {
+    
 
+    const orders = await Order.find().populate('items.productId').populate('userId');
+   console.log(orders);
+    res.render('admin/salesReport',{orders})
+  } catch (error) {
+    console.error(error)
+  }
+}
   
+const salesreportsearch = async(req,res)=>{
+    try{
+        
+  
+    const {start,end}= req.body;
+    const endOfDay = new Date(end);
+    endOfDay.setHours(23,59,59,999);
+    const orders = await Order.find({
+        createdAt:{$gte:new Date(start),$lte:endOfDay}
+
+    }).populate('items.productId').populate('userId');
+    res.render('admin/salesReport',{orders,start,end})
 
 
 
+    }catch(error){
+        console.error(error)
+    }
+
+}
+
+//offer module 
+
+const adminOffers = async(req,res)=>{
+    try {
+        
+        const catData = await Category.find()
+        const product = await Product.find()
+           if(catData){
+          res.render('admin/adminOffer',{categories : catData,product})
+           }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const applyAdminOffers = async(req,res)=>{
+    try{
+        const { categoryId, discount, expiry } = req.body;
+        const updatedCategory = await Category.findByIdAndUpdate(
+          categoryId,
+          { offer: discount, expirationDate: expiry, OfferisActive: true },
+          { new: true } 
+        );
+        if (!updatedCategory) {
+            return res.status(404).json({ message: 'Category not found' });
+          }
+
+          const productsToUpdate = await Product.find({ category_id: categoryId });
+          if (!productsToUpdate) {
+           
+            return res.status(404).json({ message: 'product not found' });
+          }
+        
+          for (const product of productsToUpdate) {
+          const updatedPrice = Math.round(product.actual_price * ((100 - discount) / 100));
+          product.selling_price = updatedPrice;
+         
+          await product.save();
+         }
+
+          res.status(200).json({ message: 'Offer applied successfully', category: updatedCategory });
+          
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+
+const checkingAdminOffers = async () => {
+    try {
+    
+    const expiredCategories = await Category.find({ expirationDate: { $lte: new Date() }, OfferisActive: true });
+
+    for (const category of expiredCategories) {
+      
+        category.offer = 0;
+        category.expirationDate = null;
+        category.OfferisActive = false;
+        await category.save();
+
+       
+        const productsToUpdate = await Product.find({Categories:category._id});
+        for (const product of productsToUpdate) {
+            product.saleprice = product.Regularprice;
+            await product.save();
+        }
+    }
+
+        
+    } catch (error) {
+     console.error('Error checking and resetting expired offers:', error);
+   }
+};
+cron.schedule('0 0 * * *', checkingAdminOffers);
 
 module.exports={
     loadLogin,
@@ -127,5 +397,9 @@ module.exports={
     loadDashboard,
     adminLogout,
     userList,
-    updateUsers
+    updateUsers,
+    salesReport,
+    salesreportsearch,
+    adminOffers,
+    applyAdminOffers
 }

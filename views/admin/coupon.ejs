@@ -15,6 +15,7 @@
     <meta property="og:image" content="">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="/admin-assets/imgs/theme/titlelogo.jpg">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- Template CSS -->
     <link href="/admin-assets/css/main.css" rel="stylesheet" type="text/css" />
 
@@ -131,104 +132,189 @@
         </nav>
     </aside>
     <main class="main-wrap">
-        <header class="main-header navbar">
-            
-            <div class="col-nav">
-                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link btn-icon" href="#">
-                            <i class="material-icons md-notifications animation-shake"></i>
-                            <span class="badge rounded-pill">3</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
-                    </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="assets/imgs/theme/flag-us.png" alt="English">English</a>
-                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
-                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
-                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
-                        </div>
-                    </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false">Admin</a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                            <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </header>
-        <section>
-            
-            <div class="card container-fluid">
-                <div class="card-header">
-                    <h5 class="mb-0">Coupons</h5>
-                </div>
-                <div class="tab-content wow fadeIn animated" id="myTabContent">
-                    <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
-                        <div class="row product-grid-4">
-                    
-                        <ul>
-                            <% coupons.forEach(coupon => { %>
-                                    
-                                       <li>
-                                            <div class="card shadow-sm">
-                                                    <strong><%= coupon.code %></strong> - <%= coupon.discount %>%
-                                            </div>
-                                            <form action="/admin/<%= coupon._id %>/delete" method="post">
-                                                <button type="submit">Delete</button>
-                                           </form>
-                                        </li>
-                                       
-                                    
-                            <% }); %>
-                          </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+       
+          <section class="content-main">
+            <div class="content-header">
+              <div>
+                <h2 class="content-title card-title">Coupon</h2>
+                
+              </div>
   
-<div class="card">
-    <div class="card-header">
-        <h5 class="mb-0">Create New Coupon</h5>
-    </div>
-    <div class="card-body">
-        <div class="container-fluid">
-            <form action="/admin/create" method="post">
-                <label for="code">Code:</label>
-                <input type="text" id="code" name="code" required>
-                <label for="discount">Discount (%):</label>
-                <input type="number" id="discount" name="discount" required>
-                <label for="validFrom">Valid From:</label>
-                <input type="date" id="validFrom" name="validFrom" required>
-                <label for="validTo">Valid To:</label>
-                <input type="date" id="validTo" name="validTo" required>
-                <button type="submit">Create</button>
-              </form>
-        <div>
-    </div>
-</div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-3">
+                    <form method="post" action="/admin/addCoupon">
+  
+  
+  
+                      <div class="mb-4">
+                        <label for="couponName" class="form-label">Coupon Name</label>
+                        <input type="text" placeholder="Type here" name="couponName" class="form-control" id="couponName" required pattern="^[a-zA-Z]+$" title="Coupon name should only contain letters."/>                      <div id="couponNameValidation" class="invalid-feedback"></div>
+                      </div>
+                      
+                      <div class="mb-4">
+                        <label for="couponCode" class="form-label">Coupon Code</label>
+                        <input type="text" placeholder="Type here" name="couponCode" class="form-control" id="couponCode" required pattern="^[a-zA-Z0-9]+$" title="Coupon code should only contain letters and numbers."/>
+                        <div id="couponCodeValidation" class="invalid-feedback"></div>
+                      </div>
+                      <div class="mb-4">
+                        <label for="product_name" class="form-label">Minimum Purchase</label>
+                        <input type="number" placeholder="$0" name="minimumPurchase" class="form-control" min="1" required/>
+                      </div>
+                      <div class="mb-4">
+                        <label for="product_name" class="form-label">Discount %</label>
+                        <input type="number" placeholder="0%" name="discountAmount" class="form-control" min="1" max="99" required/>
+                      </div>
+  
+                      <div class="mb-4">
+                        <label for="expiration_date" class="form-label">Expiration Date</label>
+                        <input type="date" name="expirationDate" class="form-control" id="expiration_date" required>
+                        <% if (locals.expiredDate) { %>
+                          <div id="expiredDateAlert" class="alert alert-danger" role="alert">
+                              The expiration date must be greater than today.
+                          </div>
+                          <script>
+                              document.addEventListener("DOMContentLoaded", function() {
+                                  const expiredDateAlert = document.getElementById("expiredDateAlert");
+                                  if (expiredDateAlert) {
+                                      setTimeout(() => {
+                                          expiredDateAlert.remove(); // Remove the alert after 3 seconds
+                                      }, 1000);
+                                  }
+                              });
+                          </script>
+                      <% } %>
+                      
+                      
+                      </div>
+  
+                      <div class="d-grid">
+                        <button class="btn btn-primary" type="submit">
+                          Create coupon
+                        </button>
+  
+                      </div>
+                    </form>
+                  </div>
+                  <div class="col-md-9">
+                    <div class="table-responsive">
+  
+                      <% if(couponData && couponData.length> 0 ) { %>
+  
+  
+  
+                        <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <th class="text-center">
+                                <div class="form-check"></div>
+                              </th>
+                              <th>No</th>
+                              <th>Coupon name</th>
+                              <th>Coupon Code</th>
+                              <th>Min purchase</th>
+                              <th>Discount %</th>
+                              <th>Status</th>
+                              <th>Action</th>
+                              <th>Remove</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% for(let i=0; i < couponData.length; i++) { %>
+                              <tr>
+                                <td class="text-center">
+                                  <div class="form-check"></div>
+                                </td>
+                                <td>
+                                  <%= i + 1 %>
+                                </td>
+                                <td><b>
+                                    <%= couponData[i].couponName %>
+                                  </b></td>
+                                <td><b>
+                                    <%= couponData[i].couponCode %>
+                                  </b></td>
+                                <td><b>
+                                    $ <%= couponData[i].minimumPurchase %>
+                                  </b></td>
+                                <td><b>
+                                    <%= couponData[i].discountAmount %>%
+                                  </b></td>
+                                <td>
+                                  <% if (couponData[i].isActive) { %>
+                                    <span class="badge rounded-pill alert-success">Active</span>
+                                    <% } else { %>
+                                      <span class="badge rounded-pill alert-danger">Blocked</span>
+                                      <% } %>
+                                </td>
+                                <td>
+                                  <% if(couponData[i].isActive) { %>
+                                    <a href="#" class="btn btn-sm font-sm btn-light rounded block-btn"
+                                      data-couid="<%= couponData[i]._id %>"
+                                      style="background-color: rgb(255, 0, 0); transition: background-color 0.3s;">
+                                      <b>Block</b>
+                                    </a>
+                                    <% } else { %>
+                                      <a href="#" class="btn btn-sm font-sm btn-light rounded unblock-btn"
+                                        data-couid="<%= couponData[i]._id %>"
+                                        style="background-color: #088178; transition: background-color 0.3s;">
+                                        Unblock
+                                      </a>
+                                      <% } %>
+                                </td>
+                                <td>
+                                  <a href="#" class="btn btn-sm font-sm btn-light delete-coupon-btn"
+                                    data-couid="<%= couponData[i]._id %>"
+                                    style="background-color: rgb(255, 0, 0); transition: background-color 0.3s;"
+                                    onclick="deleteCoupon('<%= couponData[i]._id %>')">
+                                    <i class="material-icons md-delete_forever"></i>
+                                    <b>Delete</b>
+                                  </a>
+                                </td>
+  
+                              </tr>
+                              <% } %>
+                          </tbody>
+                        </table>
+  
+                        <% } %>
+  
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+  
+  
+  
+            <!-- card .// -->
+          </section>
+          <!-- content-main end// -->
+          <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+              <div class="col-sm-6">
+                <script>
+                  document.write(new Date().getFullYear());
+                </script>
+                ©,Bolt & Wire
+              </div>
+              <div class="col-sm-6">
+                <div class="text-sm-end">All rights reserved</div>
+              </div>
+            </div>
+          </footer>
+      </main>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
  
-        </section>
-        
-        
-    </main>
-   
+
     <script src="/admin-assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/admin-assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/admin-assets/js/vendors/select2.min.js"></script>
@@ -236,6 +322,162 @@
     <script src="/admin-assets/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="/admin-assets/js/main.js" type="text/javascript"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const blockButtons = document.querySelectorAll('.block-btn');
+          const unblockButtons = document.querySelectorAll('.unblock-btn');
+  
+          blockButtons.forEach(button => {
+            button.addEventListener('click', function (event) {
+              event.preventDefault();
+              const couponId = this.getAttribute('data-couid');
+              Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to block this coupon!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#00d9ff', // Neon blue confirm button
+                cancelButtonColor: '#888', // Gray cancel button
+                confirmButtonText: 'Yes, block it!',
+                cancelButtonText: 'No, keep it',
+                background: 'rgba(30, 30, 30, 0.7)', // Semi-transparent light background
+                color: '#fff', // White text color
+                iconColor: '#f27474', //color (reddish)
+                backdrop: `rgba(0,0,0,0.6)url("path/to/your/loading-spinner.gif") left top no-repeat`, // Semi-transparent backdrop with a loading spinner
+                width: '900px',
+                padding: '2rem',
+                heightAuto: false,
+                height: '400px',
+                customClass: {
+                  popup: 'custom-swal-popup premium-modal',
+                  loader: 'custom-swal-loader',
+                }
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.href = `/admin/ToggleblockCoupon?Couid=${couponId}`;
+                }
+              });
+            });
+          });
+  
+          unblockButtons.forEach(button => {
+            button.addEventListener('click', function (event) {
+              event.preventDefault();
+              const couponId = this.getAttribute('data-couid');
+              Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to unblock this coupon!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#00d9ff', // Neon blue confirm button
+                cancelButtonColor: '#888', // Gray cancel button
+                confirmButtonText: 'Yes, Unblock it!',
+                cancelButtonText: 'No, keep it',
+                background: 'rgba(30, 30, 30, 0.7)', // Semi-transparent light background
+                color: '#fff', // White text color
+                iconColor: '#f27474', // Custom icon color (reddish)
+                backdrop: `
+        rgba(0,0,0,0.6)
+        url("path/to/your/loading-spinner.gif")
+        left top
+        no-repeat
+      `, // Semi-transparent backdrop with a loading spinner
+                width: '900px',
+                padding: '2rem',
+                heightAuto: false,
+                height: '400px',
+                customClass: {
+                  popup: 'custom-swal-popup premium-modal',
+                  loader: 'custom-swal-loader',
+                }
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  // If confirmed, redirect to unblock coupon route
+                  window.location.href = `/admin/ToggleblockCoupon?Couid=${couponId}`;
+                }
+              });
+            });
+          });
+        });
+      </script>
+      <%if(locals.couponExists){%>
+        <script>
+          Swal.fire({
+            icon: 'warning',
+            title: 'coupon already exists!',
+            background: 'rgba(30, 30, 30, 0.7)', // Semi-transparent light background
+            color: '#fff', // White text color
+            iconColor: '#f27474', // Custom icon color (reddish)
+            backdrop: `
+        rgba(0,0,0,0.6)
+        url("path/to/your/loading-spinner.gif")
+        left top
+        no-repeat
+      `, // Semi-transparent backdrop with a loading spinner
+            width: '900px',
+            padding: '2rem',
+            heightAuto: false,
+            height: '400px',
+            customClass: {
+              popup: 'custom-swal-popup premium-modal',
+              loader: 'custom-swal-loader',
+            }
+          })
+        </script>
+        <%}%>
+  
+  
+            <!--detletecoupon -->
+  
+            <script>
+            function deleteCoupon(event) {
+              const url = `/admin/couponDelete?id=${event}`;
+              fetch(url, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+  
+  
+              })
+                .then(response => response.json())
+                .then(data => {
+                  if (data.success) {
+                    toastr.success(data.message);
+                    setTimeout(() => {
+                      window.location.reload()
+  
+                    }, 1000)
+                  } else {
+                    toastr.error(data.message);
+                  }
+                })
+                .catch(error => {
+                  console.error('Error:', error);
+                  toastr.error('An error occurred while deleting the coupon.');
+                });
+            }
+  
+          </script>
+  
+     <!-- validateCoupon -->
+  
+  
+     <script>
+      // Prevent spaces in coupon code input
+      const couponCodeInput = document.getElementById('couponCode');
+      couponCodeInput.addEventListener('input', () => {
+        couponCodeInput.value = couponCodeInput.value.replace(/\s/g, '');
+      });
+  
+    // Prevent spaces in coupon name input
+    const couponNameInput = document.getElementById('couponName');
+    couponNameInput.addEventListener('input', () => {
+      couponNameInput.value = couponNameInput.value.replace(/\s/g, '');
+    });
+    </script>
+  
 </body>
 
 

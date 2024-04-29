@@ -643,7 +643,7 @@
                                                 </td>
                                                 <td class="price" data-title="Price"><span>$<%= item.productId.selling_price %></span></td>
                                                 <td class="text-right" data-title="Cart">
-                                                    <form action="/add-to-cart/<%= item.productId._id %>" method="post" onsubmit="return addToCart(event)">
+                                                    <form action="/add-to-cart/<%= item.productId._id %>" method="post" onsubmit="return addToCart(event)" data-product-id="<%= item.productId._id %>">
                                                         <button type="submit" class="btn btn-sm"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
                                                     </form>
                                                 </td>
@@ -772,9 +772,9 @@
                 const responseData = await response.json();
     
                 if (responseData.success) {
-                    // Product added successfully, display any success message or update UI
-                    alert('Product added to cart successfully!');
-                    location.reload();
+               
+                 location.reload();
+                    
                 } else {
                     // Product is out of stock or other error occurred, display error message
                     alert(responseData.message);

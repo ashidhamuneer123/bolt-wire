@@ -17,21 +17,29 @@ let instance = new Razorpay({
 
 const myAccount = async(req,res)=>{
     try {
+        const PAGE_SIZE = 4;
         const userId=req.session.user_id
         const user = await User.findById(userId)
         const addresses= await Address.find({userId})
-        const orders = await Order.find({ userId }).populate('items.productId');
+
+         // Pagination logic for orders
+    const page = parseInt(req.query.page) || 1;
+    const totalOrdersCount = await Order.countDocuments({ userId });
+    const totalPages = Math.ceil(totalOrdersCount / PAGE_SIZE);
+
+        const orders = await Order.find({ userId }).populate('items.productId')
+        .sort({ createdAt: -1 })
+      .skip((page - 1) * PAGE_SIZE)
+      .limit(PAGE_SIZE);;
 
         let wallet = await Wallet.findOne({ userId });
-        console.log("5",wallet);
+        
         if (!wallet) {
-            console.log("hiiiii");
             wallet = new Wallet({ userId, balance: 0 });
             await wallet.save();
-            console.log("hello",wallet);
         }
        
-        res.render('myAccount',{user,addresses,orders,wallet})
+        res.render('myAccount',{user,addresses,orders,wallet,currentPage: page, totalPages})
         
     } catch (error) {
         console.log(error.message)
@@ -165,19 +173,19 @@ const deleteAddress = async (req, res) => {
 const cancelMyOrder=async (req,res)=>{
     try {
         const {orderId, productId, quantity } = req.body;
-        console.log(orderId);
+       
         const userId = req.session.user_id;
-        console.log(userId);
+       
         // Find the order of the user
         const order = await Order.findOne({ userId,_id:orderId });
-       console.log(order);
+       
         if (!order) {
             return res.status(404).json({ success: false, message: 'Order not found' });
         }
-        console.log(order.items);
+       
         // Find the item in the order
         const item = order.items.find(item => item.productId.toString() === productId);
-        console.log(item);
+       
         if (!item) {
             return res.status(404).json({ success: false, message: 'Item not found in order' });
         }
@@ -273,10 +281,37 @@ const returnMyOrder=async (req,res)=>{
         console.log(error.message);
     }
 }
+
+const myOrderDetails = async (req, res) => {
+    try {
+        const orderId = req.params.orderId;
+        const productId = req.query.productId;
+
+        const order = await Order.findById(orderId).populate('userId address items.productId');
+
+        if (!order) {
+            return res.status(404).send('Order not found');
+        }
+
+        // Find the item in the order's items array that matches the provided productId
+        const selectedItem = order.items.find(item => String(item.productId._id) === productId);
+
+        if (!selectedItem) {
+            return res.status(404).send('Product not found in the order');
+        }
+
+        // Render the orderDetails view with only the selected product
+        res.render('myOrderDetails', { order, selectedItem });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
 const addTowallet = async (req, res) => {
     try {
         let amount = req.body.amount ; 
-        console.log(amount,"dasdasdasdasdad")
+       
         const userId = req.session.user_id;
         // Create Razorpay order
         const order = await instance.orders.create({
@@ -292,18 +327,19 @@ const addTowallet = async (req, res) => {
         } else {
             wallet.balance += parseFloat(amount) ;
 
-          /*   // Add transaction to history
+  // Add transaction to history
+
             wallet.history.push({
                 amount: parseFloat(amount) ,
                 type: 'credit',
 
                 createdAt: new Date()
-            }); */
+            }); 
         }
 
         await wallet.save();
 
-        console.log(amount, "amount added to wallet - from user controller");
+     
         res.json({ order });
 
     } catch (error) {
@@ -322,5 +358,6 @@ module.exports={
     deleteAddress,
     cancelMyOrder,
     returnMyOrder,
-    addTowallet
+    addTowallet,
+    myOrderDetails
 }

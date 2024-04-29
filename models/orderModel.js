@@ -38,13 +38,17 @@ const orderSchema = new Schema({
     ],
     paymentMethod: {
         type: String,
-        enum: ['Cash on Delivery', 'Online payment', 'Wallet'],
+        enum: ['Cash on Delivery', 'Online payment', 'Online', 'Wallet'],
         required: true
     },
     deliveryCharge: {
         type: Number,
         default: 0
     },
+    couponDiscount: {
+         type: Number,
+        
+         },
     totalAmount: {
         type: Number,
         required: true
@@ -54,7 +58,7 @@ const orderSchema = new Schema({
         enum: ['paid', 'unpaid'],
         default: 'unpaid'
     },
-   
+  
     createdAt: {
         type: Date,
         default: Date.now

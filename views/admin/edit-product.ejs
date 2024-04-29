@@ -297,7 +297,7 @@
         <script>
             $(document).ready(function () {
                 previewImg = (e) => {
-                    console.log(e.target.value)
+                   
                     let image = URL.createObjectURL(e.target.files[0]);
                     let imgPreview = document.getElementById('img' + e.target.id)
                     imgPreview.src = image;

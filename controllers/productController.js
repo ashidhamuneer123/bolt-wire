@@ -42,7 +42,7 @@ const add_product = async (req, res) => {
         path: e.path,
       };
     });
-    console.log(path.join(__dirname + "/../public/"));
+    
 
     seconaryImages.forEach(async (image) => {
       await sharp(path.join(__dirname + `/../public/admin-assets/imgs/items/${image.name}`))
@@ -65,8 +65,10 @@ const add_product = async (req, res) => {
       primary_image: PrimaryImage,
       secondary_images: seconaryImages,
     });
-
-    const saved = await product.save();
+   
+      await product.save();
+    
+    
 
     //req.flash('success', 'New product Added Sucessfully');
     res.redirect("/admin/product");
@@ -75,17 +77,28 @@ const add_product = async (req, res) => {
   }
 };
 
-//render add Product
+//render Product
 const render_product_page = async (req, res) => {
   const admin = res.locals.admin;
+  const currentPage = parseInt(req.query.page) || 1;
+  const perPage = 4; // Number of products per page
   try {
-    const products = await getAllProducts();
+ 
+    const totalProducts = await Product.countDocuments({ delete: false });
+    const totalPages = Math.ceil(totalProducts / perPage);
+    const skip = (currentPage - 1) * perPage;
+
+    const products = await getAllProducts(skip, perPage);
 
     res.render("admin/product", {
       Admin: admin,
       products: products,
       success: req.flash("success")[0],
       error: req.flash("false")[0],
+      totalPages: totalPages,
+      currentPage: currentPage,
+      itemsPerPage :perPage,
+     
     });
   } catch (error) {
     console.error("Error rendering product page:", error);
@@ -94,7 +107,7 @@ const render_product_page = async (req, res) => {
 };
 
 //get all Product
-const getAllProducts = async () => {
+const getAllProducts = async (skip, perPage) => {
   const products = await Product.aggregate([
     {
       $match: {
@@ -131,6 +144,12 @@ const getAllProducts = async () => {
         description: 1,
       },
     },
+    {
+      $skip: skip
+  },
+  {
+      $limit: perPage
+  }
   ]);
   return products;
 };
@@ -211,7 +230,7 @@ const render_edit_product = async (req, res) => {
 const update_product = async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.body.id });
-    console.log(req.files);
+    
     if (req.files != null) {
       // Handle primary image update
       let primaryImage = req.files.primaryImage;
@@ -228,11 +247,11 @@ const update_product = async (req, res) => {
       let secondaryImages = req.files.images;
       if (secondaryImages) {
           for (let i = 0; i < secondaryImages.length; i++) {
-              console.log(secondaryImages[i]);
+             
               product.secondary_images[i].name = secondaryImages[i].filename;
               product.secondary_images[i].path = secondaryImages[i].path;
             }
-            console.log(secondaryImages);
+           
             secondaryImages.forEach(async (image) => {
                 await sharp(path.join(__dirname + `/../public/admin-assets/imgs/items/${image.filename}`))
                   .resize(480, 480)

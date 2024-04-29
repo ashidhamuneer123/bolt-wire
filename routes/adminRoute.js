@@ -60,7 +60,17 @@ admin_route.post('/update-status',auth.isLogin,orderController.updateStatus)
 admin_route.get('/orderdetails/:orderId',auth.isLogin,orderController.orderDetails)
 
 //coupon
-admin_route.get('/coupon',couponController.getAllCoupons)
-admin_route.post('/create',couponController.createCoupon)
-admin_route.post('/:id/delete', couponController.deleteCoupon);
+admin_route.get('/coupon',couponController.loadCoupon)
+admin_route.post('/addCoupon', couponController.addCoupon)
+admin_route.get('/ToggleblockCoupon', couponController.ToggleblockCoupon)
+admin_route.post('/couponDelete', couponController.couponDelete)
+
+//sales Report
+admin_route.get('/salesreport',adminController.salesReport)
+admin_route.post('/salesreportsearch',adminController.salesreportsearch)
+
+//offers
+admin_route.get('/adminOffers', adminController.adminOffers)
+admin_route.post('/applyAdminOffers', adminController.applyAdminOffers)
+
 module.exports=admin_route;
