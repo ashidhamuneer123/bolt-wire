@@ -580,7 +580,7 @@
                                 <div class="col-lg-2 col-md-4 mb-lg-0 mb-md-5 mb-sm-5">
                                     <h5 class="mb-20">Price range</h5>
                                     <ul class="categor-list">
-                                        <li class="cat-item text-muted"><a href="shop-grid-right.html">All</a></li>
+                                        <li class="cat-item text-muted"><a href="#">All</a></li>
                                         <li class="cat-item text-muted"><a href="shop-grid-right.html">$0.00 - $20.00 </a></li>
                                         <li class="cat-item text-muted"><a href="shop-grid-right.html">$20.00 - $40.00 </a></li>
                                         <li class="cat-item text-muted"><a href="shop-grid-right.html">$40.00 - $60.00 </a></li>
@@ -685,27 +685,39 @@
                 <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                 
             </div>
-            <div class="product-badges product-badges-position product-badges-mrg">
-                <span class="hot">-30%</span>
-            </div>
+           
         </div>
         <div class="product-content-wrap">
             <div class="product-category">
                 <a href="#"><%= product.category_id.cat_name %></a>
             </div>
             <h2><a href="#"><%= product.product_name %></a></h2>
-            <div class="rating-result" title="90%">
-                <span>
-                    <span>70%</span>
-                </span>
-            </div>
-            <div class="product-price">
-                <span>$<%= product.selling_price %> </span>
-                <span class="old-price">$<%= product.actual_price %></span>
-            </div>
-            <div class="product-action-1 show">
-                <a aria-label="Add To Cart" class="action-btn hover-up" href="/cart"><i class="fi-rs-shopping-bag-add"></i></a>
-            </div>
+
+            <% if(product.selling_price != product.actual_price){ %>
+                <div class="rating-result" title="offer">
+
+                    <span>
+                    
+                        <span><%=product.category_id.offer%>%</span>
+                    </span>
+                </div>
+                <% } %>
+
+                <% if(product.selling_price != product.actual_price){ %>
+                    <div class="product-price">
+                        <span>$<%= product.selling_price %></span>
+            
+                        <span class="old-price">$<%= product.actual_price %></span>
+                    
+                    </div>
+                    <% } %>
+                   <%  if(product.selling_price == product.actual_price){ %>
+                    <div class="product-price">
+                    <span>$<%= product.actual_price %></span>
+                </div>
+                    <% } %>
+          
+           
         </div>
         
     </div>

@@ -100,13 +100,13 @@ const applyCoupon = async (req, res) => {
           });
       }
 
-      const userRedeemed = coupon.redeemedUsers.find(user => user.userId === userId);
+    const userRedeemed = coupon.redeemedUsers.find(user => user.userId === userId);
       if (userRedeemed) {
           return res.json({
               success: false,
               message: 'Coupon has already been redeemed by the user.'
           });
-      }
+      }  
       if (selectedAmount < coupon.minimumPurchase) {
           return res.json({
               success: false,

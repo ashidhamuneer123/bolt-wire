@@ -238,7 +238,12 @@
                                     <td><img src="/admin-assets/imgs/items/<%= item.productId.primary_image.name %>" class="img-fluid" style="width: 60px; height: 60px;" alt="Product Image"></td>
                                     <td><b><%= order.userId.name %></b></td>
                                     <td><%= order.paymentMethod %></td>
-                                    <td>$<%= item.quantity * item.productId.selling_price %></td>
+                                    <% if(order.couponDiscount>0){ %>
+                                    <td>$<%=(item.quantity * item.productId.selling_price)- (item.quantity * item.productId.selling_price * (order.couponDiscount/100))  %></td>
+                                    <% } %>
+                                    <% if(order.couponDiscount == 0){ %>
+                                        <td>$<%= item.quantity * item.productId.selling_price %></td>
+                                    <% } %>
                                     <td><span class="badge rounded-pill alert-warning"><strong style="color: <%= item.deliveryStatus === 'Cancelled' ? 'red' : (item.deliveryStatus === 'Delivered' ? 'green' : 'inherit') %>;"><%= item.deliveryStatus %></strong></span></td>
                                     <td class="text-end">
                                         <div class="dropdown">

@@ -9,7 +9,7 @@ const get_searchedProducts = async (req, res) => {
     const totalCount = await Product.countDocuments();
     
     
-
+    const sortproducts = await Product.find({ status: true }).populate('category_id');
 
      //detailed sorting 
      let sortProducts;
@@ -18,11 +18,11 @@ const get_searchedProducts = async (req, res) => {
         switch (sortBy) {
             case 'popularity':
                 // Implement sorting logic based on popularity
-                sortProducts = products; // Placeholder
+                sortProducts = sortproducts; // Placeholder
                 break;
             case 'averageRating':
                 // Implement sorting logic based on average rating
-                sortProducts = products; // Placeholder
+                sortProducts = sortproducts; // Placeholder
                 break;
             case 'lowToHigh':
                 sortProducts = await Product.find({ status: true }).sort({ selling_price: 1 });
@@ -31,7 +31,7 @@ const get_searchedProducts = async (req, res) => {
                 sortProducts = await Product.find({ status: true }).sort({ selling_price: -1 });
                 break;
             case 'featured':
-                sortProducts = products; // Placeholder
+                sortProducts = sortproducts; // Placeholder
                 break;
             case 'newArrivals':
                 const currentDate = new Date();
@@ -45,7 +45,7 @@ const get_searchedProducts = async (req, res) => {
                 sortProducts = await Product.find({ status: true }).sort({ product_name: -1 });
                 break;
             default:
-                sortProducts = products;
+                sortProducts = sortproducts;
                 break;
         }
     let Products = await Product.aggregate([
@@ -237,7 +237,7 @@ const get_searchedProducts = async (req, res) => {
 
 
 
-    res.render('filter', { totalCount, Colors, Brands,brandCounts, categories,categoryCountMap, Products ,products:sortProducts })
+    res.render('filter', { totalCount, Colors, Brands,brandCounts, categories,categoryCountMap, Products , sortproducts : sortProducts,products })
    
     
 }

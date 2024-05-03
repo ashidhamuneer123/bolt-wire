@@ -509,7 +509,12 @@
                                                                                         <div class="card-body">
                                                                                             <h5 class="card-title"><strong><%= item.productId.product_name %></strong></h5>
                                                                                             <h6 class="card-text">Quantity: <strong><%= item.quantity %></strong></h6>
-                                                                                            <h6 class="card-text">Amount: <strong><%= item.quantity * item.productId.selling_price %></strong></h6>
+                                                                                            <% if(order.couponDiscount>0){ %>
+                                                                                            <h6 class="card-text">Amount: <strong><%=(item.quantity * item.productId.selling_price)- (item.quantity * item.productId.selling_price * (order.couponDiscount/100))  %></strong></h6>
+                                                                                            <% } %>
+                                                                                            <% if(order.couponDiscount == 0){ %>
+                                                                                                <h6 class="card-text">Amount: <strong><%= item.quantity * item.productId.selling_price %></strong></h6>
+                                                                                                <% } %>
                                                                                             <h6 class="card-text" style="color: <%= item.deliveryStatus === 'Cancelled' ? 'red' : (item.deliveryStatus === 'Delivered' ? 'green' : 'inherit') %>;">
                                                                                                 <strong><%= item.deliveryStatus %></strong>
                                                                                             </h6>

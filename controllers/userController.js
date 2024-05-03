@@ -582,7 +582,7 @@ const renderCheckOut = async (req, res) => {
 
     const addresses = await Address.find({ userId });
     // Fetch available coupons
-    const coupons = await Coupon.find();
+    const coupons = await Coupon.find({isActive:true});
     // Calculate total quantities and subtotal
     let totalQuantities = 0;
     let subtotal = 0;
@@ -614,9 +614,9 @@ const renderCheckOut = async (req, res) => {
 const placeOrder = async (req, res) => {
   try {
     const userId = req.session.user_id;
-    const { couponCode } = req.body;
-    console.log(couponCode);
-        const coupon = await Coupon.findOne({ couponCode, isActive: true, expirationDate: { $gte: Date.now() } });
+    const couponCode = req.body.couponCode;
+   
+    const coupon = await Coupon.findOne({ couponCode, isActive: true, expirationDate: { $gte: Date.now() } });
     // Find the user's cart
     const cart = await Cart.findOne({ userId }).populate("products.productId");
 
@@ -676,7 +676,10 @@ const placeOrder = async (req, res) => {
       address: address._id,
       couponDiscount
     });
-
+    if(paymentMethod === "Cash on Delivery"){
+      //Save the order to the database
+      await order.save();
+      }
     // If payment method is 'Online payment'
     if (paymentMethod === "Online") {
       const createOrder = await Order.create(order);
@@ -726,21 +729,36 @@ const placeOrder = async (req, res) => {
          wallet.history.push({
           amount: totalAmount,
           type: 'debit'
+
+
       });
  
          // Update the wallet balance in the database
          await wallet.save();
- 
-         
+
+         const order = new Order({
+          userId,
+          items: cart.products,
+          status: "paid",
+          totalAmount,
+          paymentMethod,
+          address: address._id,
+          couponDiscount
+        });
+
+       
+            //Save the order to the database
+          await order.save();
+        
+      
+       
 
       } catch (error) {
         console.error(error)
         res.status(400).send(error.message); 
       }
     }
-    //Save the order to the database
-    await order.save();
- 
+   
 
     //Clear the cart after placing the order
     await Cart.findOneAndUpdate({ userId }, { $set: { products: [] } });
@@ -859,7 +877,7 @@ const removeFromWishlist = async (req, res) => {
 const googleAuth = async (req, res) => {
   try {
     const user = req.body.user;
-    console.log("user ", user);
+    
     const email = user.email;
     // Check if user already exists
     let userData;
@@ -882,7 +900,7 @@ const googleAuth = async (req, res) => {
 
     // If user data is successfully obtained, respond with success message
     if (userData) {
-      console.log("User data saved successfully");
+      
       return res.json({
         success: true,
         message: "User data saved successfully",

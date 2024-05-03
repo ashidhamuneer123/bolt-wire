@@ -598,21 +598,29 @@
     
                             <h2><a href="/product/<%= product._id %>"><%= product.product_name %></a></h2>
                             <!-- You can add more product details here -->
-                            <div class="rating-result" title="90%">
-                                <span>
-                                    <!-- You might need to adjust the rating display based on your data -->
-                                    <span>90%</span>
-                                </span>
-                            </div>
-                            <div class="product-price">
-                                <span>$<%= product.selling_price %></span>
-                                <!-- You might need to adjust the price display based on your data -->
-                                <span class="old-price">$<%= product.actual_price %></span>
-                                <!-- Assuming there's an old price available -->
-                            </div>
-                            <div class="product-action-1 show">
-                                <a aria-label="Add To Cart" class="action-btn hover-up" href="/cart"><i class="fi-rs-shopping-bag-add"></i></a>
-                            </div>
+                            <% if(product.selling_price != product.actual_price){ %>
+                                <div class="rating-result" title="offer">
+
+                                    <span>
+                                    
+                                        <span><b><%= product.category_id.offer %>%</b></span>
+                                    </span>
+                                </div>
+                                <% } %>
+                                <% if(product.selling_price != product.actual_price){ %>
+                                    <div class="product-price">
+                                        <span>$<%= product.selling_price %></span>
+                            
+                                        <span class="old-price">$<%= product.actual_price %></span>
+                                    
+                                    </div>
+                                    <% } %>
+                                   <%  if(product.selling_price == product.actual_price){ %>
+                                    <div class="product-price">
+                                    <span>$<%= product.actual_price %></span>
+                                </div>
+                                    <% } %>
+                           
                         </div>
                     </div>
                 </div>

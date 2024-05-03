@@ -268,7 +268,13 @@
                                             <th width="40%">Product</th>
                                             <th width="20%">Unit Price</th>
                                             <th width="20%">Quantity</th>
+                                            <% if(order.couponDiscount>0){ %>
+                                                <th width="20%">Coupon Discount</th>
+                                                <th width="20%" class="text-end">Total</th>
+                                                <% } %>
+                                                <% if(order.couponDiscount==0){ %>  
                                             <th width="20%" class="text-end">Total</th>
+                                            <% } %>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -284,7 +290,13 @@
                                             </td>
                                             <td>$<%= selectedItem.price.toFixed(2) %></td>
                                             <td><%= selectedItem.quantity %></td>
+                                            <% if(order.couponDiscount>0){ %>
+                                                <th width="20%"><%= order.couponDiscount %>%</th>
+                                                <th width="20%" class="text-end">$<%= (selectedItem.price * selectedItem.quantity).toFixed(2)- (selectedItem.price * selectedItem.quantity * (order.couponDiscount/100)).toFixed(2) %></th>
+                                                <% } %>
+                                                <% if(order.couponDiscount==0){ %>
                                             <td class="text-end">$<%= (selectedItem.price * selectedItem.quantity).toFixed(2) %></td>
+                                            <% } %>
                                         </tr>
                                     </tbody>
                                 </table>

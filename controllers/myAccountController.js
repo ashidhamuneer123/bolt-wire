@@ -218,6 +218,12 @@ const cancelMyOrder=async (req,res)=>{
         }
 
         wallet.balance += canceledAmount;
+        wallet.history.push({
+            amount: parseFloat(canceledAmount) ,
+            type: 'credit',
+
+            createdAt: new Date()
+        }); 
         await wallet.save();
     } 
         
@@ -272,6 +278,12 @@ const returnMyOrder=async (req,res)=>{
         }
 
         wallet.balance += returnedAmount;
+        wallet.history.push({
+            amount: parseFloat(returnedAmount) ,
+            type: 'credit',
+
+            createdAt: new Date()
+        }); 
         await wallet.save();
 
 

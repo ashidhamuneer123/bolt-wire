@@ -696,7 +696,7 @@ body {
                     <!-- Hidden input fields for selected address and payment method -->
                     <input type="hidden" id="selectedAddressInput" name="selectedAddress">
                     <input type="hidden" id="paymentMethodInput" name="paymentMethod">
-                    <input type="hidden" name="couponCode" id="couponCode">
+                    <input type="hidden" name="couponCode" id="couponCodeInput">
                 </form>
         </section>
     </main>
@@ -807,7 +807,7 @@ body {
                 return;
             }
             const couponCode = document.getElementById('couponCode').value;
-            console.log(couponCode);
+            
 
 
             // If online payment is selected, open Razorpay checkout
@@ -850,7 +850,8 @@ body {
                 // Set the selected address and payment method in the hidden form
                 document.getElementById('selectedAddressInput').value = selectedAddress.value;
                 document.getElementById('paymentMethodInput').value = paymentMethod.value;
-                document.getElementById('couponCode').value = couponCode;;
+                document.getElementById('couponCodeInput').value = couponCode;
+                console.log(couponCode);
                 // Submit the hidden form
                 document.getElementById('hiddenForm').submit();
             }

@@ -45,7 +45,7 @@ const productSchema = new Schema({
         }
     }],
     actual_price:{
-        type:String,
+        type:Number,
         required:true
     },
     selling_price:{
