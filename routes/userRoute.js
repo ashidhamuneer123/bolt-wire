@@ -57,6 +57,10 @@ user_route.get('/remove-from-cart/:productId',auth.isLogin,  userController.remo
 
 user_route.get('/filter',searchController.get_searchedProducts);
 user_route.get('/checkout',auth.isLogin, userController.renderCheckOut);
+user_route.get('/checkout-address',auth.isLogin,userController.checkoutAddresspage);
+user_route.post('/checkout-address',auth.isLogin,userController.addCheckoutAddress);
+user_route.get('/edit-checkoutaddress/:id',auth.isLogin, userController.editCheckoutAddressPage);
+user_route.post('/edit-checkoutaddress/:id',auth.isLogin, userController.editCheckoutAddress);
 user_route.post('/applyCoupon', couponController.applyCoupon)
 user_route.post('/removeCoupon',couponController.removeCoupon)
 user_route.post('/place-order',auth.isLogin, userController.placeOrder);

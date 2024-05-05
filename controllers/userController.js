@@ -224,6 +224,21 @@ const logout = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
   try {
+    let totalQuantities = 0;
+    const userId = req.session.user_id;
+    if(userId){
+      const cart = await Cart.findOne({ userId }).populate(
+        "products.productId"
+      );
+      if(cart){
+        cart.products.forEach((item) => {
+          totalQuantities += item.quantity;
+          
+        });
+      }
+      
+    }
+    
     var search = '';
         if (req.query.search) {
             search = req.query.search;
@@ -291,7 +306,7 @@ const getAllProducts = async (req, res) => {
         break;
     }
 
-    res.render("home", { products: sortProducts, categories, user , search:search});
+    res.render("home", { products: sortProducts, categories, user , search:search , totalQuantities});
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).send("Internal Server Error");
@@ -608,8 +623,72 @@ const renderCheckOut = async (req, res) => {
   }
 };
 
+const checkoutAddresspage = async(req,res)=>{
+  try {
+      const userId=req.session.user_id
+      const user = await User.findById(userId)
+      res.render('checkoutAddress',{user})
+      
+  } catch (error) {
+      console.log(error.message)
+  }
+}
 
+const addCheckoutAddress = async(req,res)=>{
+ 
+      try {
+          const { name, mobile, address, pincode, state, district, city } = req.body;
+          
+          
+          const userId = req.session.user_id; 
+  
+          // Create a new address object
+          const newAddress = new Address({
+              userId,
+              name,
+              mobile,
+              address,
+              pincode,
+              state,
+              district,
+              city
+          });
 
+          // Save the new address to the database
+          await newAddress.save();
+  
+          res.redirect('/checkout'); 
+      } catch (error) {
+          console.log(error.message);
+          res.status(500).send('Internal Server Error');
+      }
+      
+ 
+}
+
+const editCheckoutAddressPage = async(req,res)=>{
+  try {
+      const userId=req.session.user_id
+      const user = await User.findById(userId)
+      const address = await Address.findById(req.params.id);
+      res.render('editCheckoutAddress', { address,user});
+  } catch (error) {
+      console.log(error.message);
+      res.status(500).send('Internal Server Error');
+  }
+}
+
+const editCheckoutAddress = async(req,res)=>{
+  try {
+      const { name, mobile, address, pincode, state, district, city } = req.body;
+      const addressId = req.params.id;
+      await Address.findByIdAndUpdate(addressId, { name, mobile, address, pincode, state, district, city });
+      res.redirect('/checkout'); // Redirect to my account page after editing
+  } catch (error) {
+      console.log(error.message);
+      res.status(500).send('Internal Server Error');
+  }
+}
 
 const placeOrder = async (req, res) => {
   try {
@@ -940,7 +1019,10 @@ module.exports = {
   productPage,
   renderCart,
   addToCart,
- 
+  checkoutAddresspage,
+  addCheckoutAddress,
+  editCheckoutAddressPage,
+  editCheckoutAddress,
   placeOrder,
   updateQuantity,
   renderCheckOut,

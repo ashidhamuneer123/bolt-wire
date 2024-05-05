@@ -567,7 +567,7 @@ body {
                             <h4>Billing Details</h4>
                         </div>
                         <div>
-                            <a href="/add-address"> <input id="addAddress" class="btn user-btn" type="button"
+                            <a href="/checkout-address"> <input id="addAddress" class="btn user-btn" type="button"
                                     value="Add New Address"></a>
                         </div>
                         <div class="row">
@@ -594,7 +594,7 @@ body {
                                         <p>
                                             <%= address.mobile %>
                                         </p>
-                                        <a href="/edit-address/<%= address._id %>" class="btn-small">Edit</a>
+                                        <a href="/edit-checkoutaddress/<%= address._id %>" class="btn-small">Edit</a>
                                     </div>
                                 </div>
                                 <% }) %>
