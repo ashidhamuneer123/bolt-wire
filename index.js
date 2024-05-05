@@ -1,6 +1,7 @@
 const mongoose=require('mongoose');
 require("dotenv").config();
-mongoose.connect("mongodb://127.0.0.1:27017/bolt&wire")
+//mongoose.connect("mongodb://127.0.0.1:27017/bolt&wire")
+mongoose.connect(process.env.MONGODB_URI)
 const express=require('express');
 const path=require('path')
 const session=require('express-session')
