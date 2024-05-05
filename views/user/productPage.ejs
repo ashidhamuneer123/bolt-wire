@@ -591,9 +591,11 @@
                                                 
                                                 <div class="product-extra-link2">
                                                     <button type="submit" class="button button-add-to-cart">Add to cart</button>
+                                                    <% if(user){%>
                                                    <% if(!wishlist){%>
                                                         <a aria-label="Add To Wishlist" class="action-btn hover-up" onclick="addtowishlist('<%=user._id%>','<%=product._id%>')"><i class="fi-rs-heart"></i></a>
                                                     <% }  %>
+                                                    <% } %>
                                                 </div>
                                             </div>
                                             </form>
