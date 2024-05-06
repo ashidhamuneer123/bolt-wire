@@ -78,4 +78,10 @@ user_route.post('/googleAuth',userController.googleAuth);
 //category filter
 user_route.get('/products/category/:categoryId',userController.categoryFiltering)
 
+//brand filter
+user_route.get('/products/brand/:brandName',userController.brandFiltering)
+
+//color filter
+user_route.get('/products/color/:colorName',userController.colorFiltering)
+
 module.exports = user_route;

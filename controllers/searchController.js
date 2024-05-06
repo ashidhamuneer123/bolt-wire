@@ -4,34 +4,64 @@ const Category = require('../models/categoryModel');
 
 
 const get_searchedProducts = async (req, res) => {
-    const products = await Product.find({ status: true }).populate('category_id');
-    // Retrieve the total count of products
-    const totalCount = await Product.countDocuments();
-    
-    
-    const sortproducts = await Product.find({ status: true }).populate('category_id');
+    try {
+        const products = await Product.find({ status: true }).populate(
+            "category_id"
+          );
+        // Retrieve the total count of products
+        const totalCount = await Product.countDocuments();
 
-     //detailed sorting 
-     let sortProducts;
+          
+          let sortPrice;
+          const priceRange=req.query.priceRange;
+          
+          switch (priceRange) {
+          
+            case '0-100':
+                sortPrice = await Product.find({ status: true, selling_price: { $gt: 0, $lte: 100 } });
+                break;
+            case '101-500':
+                sortPrice = await Product.find({ status: true, selling_price: { $gt: 100, $lte: 500 } });
+                break;
+            case '501-700':
+                sortPrice = await Product.find({ status: true, selling_price: { $gt: 500, $lte: 700 } });
+                break;
+            case '701-1000':
+                sortPrice = await Product.find({ status: true, selling_price: { $gt: 700, $lte: 1000 } });
+                break;
+            case '1001-1500':
+                sortPrice = await Product.find({ status: true, selling_price: { $gt: 1000, $lte: 1500 } });
+                break;
+            case '1501-2000':
+                sortPrice = await Product.find({ status: true, selling_price: { $gt: 1500, $lte:2000 } });
+                break;
+            default:
+                sortPrice = products;
+                break;
+        }
+          
+        // Detailed sorting
+        let sortProducts;
         const sortBy = req.query.sortBy;
-
+        
         switch (sortBy) {
             case 'popularity':
                 // Implement sorting logic based on popularity
-                sortProducts = sortproducts; // Placeholder
+                sortProducts = products; // Placeholder
                 break;
             case 'averageRating':
                 // Implement sorting logic based on average rating
-                sortProducts = sortproducts; // Placeholder
+                sortProducts = products; // Placeholder
                 break;
             case 'lowToHigh':
                 sortProducts = await Product.find({ status: true }).sort({ selling_price: 1 });
+                
                 break;
             case 'highToLow':
                 sortProducts = await Product.find({ status: true }).sort({ selling_price: -1 });
                 break;
             case 'featured':
-                sortProducts = sortproducts; // Placeholder
+                sortProducts = products; // Placeholder
                 break;
             case 'newArrivals':
                 const currentDate = new Date();
@@ -45,202 +75,26 @@ const get_searchedProducts = async (req, res) => {
                 sortProducts = await Product.find({ status: true }).sort({ product_name: -1 });
                 break;
             default:
-                sortProducts = sortproducts;
+                sortProducts = products;
                 break;
         }
-    let Products = await Product.aggregate([
-        {
-            $match: {
-                delete: false,
-                status: true
-            }
-        },
-        {
-            $lookup: {
-                from: 'categories',
-                localField: 'category_id',
-                foreignField: '_id',
-                as: 'category'
-            }
-        },
-        {
-            $unwind: "$category"
-        }
-    ]);
-    
-   
-    
 
-    let query = req.query.search;
-
-    if (query) {
-        // searching
-        Products = Products.filter((product) => {
-            query = query.toLowerCase().replace(/\s/g, '');
-            //checking in product name 
-            const name = product.product_name.toLowerCase().replace(/\s/g, '');
-            if (name.includes(query)) {
-                return true;
-            } else if (query.includes(name)) {
-                return true;
-            }
-
-            // checking in brand
-            const brand = product.brand_name.toLowerCase().replace(/\s/g, '');
-            if (brand.includes(query)) {
-                return true;
-            } else if (query.includes(brand)) {
-                return true;
-            }
-
-            // checking in color
-            const color = product.color.toLowerCase().replace(/\s/g, '');
-            if (color.includes(query)) {
-                return true;
-            } else if (query.includes(color)) {
-                return true;
-            }
-
-            // search in categories 
-            const category = product.category.cat_name.toLowerCase().replace(/\s/g, '');
-            if (category.includes(query)) {
-                return true;
-            } else if (query.includes(category)) {
-                return true;
-            }
-        });
-    }
-
-    // category filtering
-    let category = req.query.category;
-    if (category) {
-        Products = Products.filter((product) => {
-            return category.includes(product.category.cat_name);
-        })
-    }
-    // brand filtering
-    let brand = req.query.brand;
-    if (brand) {
-        Products = Products.filter((product) => {
-            return brand.includes(product.brand_name);
-        })
-    }
-
-    // color filtering
-    let color = req.query.color;
-    if (color) {
-        Products = Products.filter((product) => {
-            return color.includes(product.color);
-        })
-    }
-
-    // price sorting 
-    const sortQuery = req.query.sort;
-    if (sortQuery === 'low-high') {
-        Products.sort((a, b) => {
-            const sellingPriceA = parseFloat(a.selling_price);
-            const sellingPriceB = parseFloat(b.selling_price);
-
-            if (sellingPriceA < sellingPriceB) {
-                return -1;
-            } else if (sellingPriceA > sellingPriceB) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
-    } else if (sortQuery === 'high-low') {
-        Products.sort((a, b) => {
-            const sellingPriceA = parseFloat(a.selling_price);
-            const sellingPriceB = parseFloat(b.selling_price);
-
-            if (sellingPriceA < sellingPriceB) {
-                return 1;
-            } else if (sellingPriceA > sellingPriceB) {
-                return -1;
-            } else {
-                return 0;
-            }
-        });
-    } else if (sortQuery === 'new-first') {
-        Products.sort((a, b) => {
-            const createdAtA = new Date(a.createdAt);
-            const createdAtB = new Date(b.createdAt);
-
-            if (createdAtA > createdAtB) {
-                return -1; 
-            } else if (createdAtA < createdAtB) {
-                return 1; 
-            }
-        });
-    }
-
- 
-    // finding all categories 
-    const categories = await Category.find({ delete: false });
-  //counting number of products in each category 
-  
-        // Aggregate products to count the number of products in each category
-        const categoryCounts = await Product.aggregate([
-            {
-                $match: { status: true }
-            },
-            {
-                $group: {
-                    _id: '$category_id',
-                    count: { $sum: 1 }
-                }
-            }
+        // Retrieve categories, brands, and colors for filtering
+        const categories = await Category.find({ cat_status: true });
+        const brandCounts = await Product.aggregate([
+            { $match: { status: true } },
+            { $group: { _id: '$brand_name', count: { $sum: 1 } } }
         ]);
-
-        // Create a map to store category counts
-        const categoryCountMap = new Map();
-
-        // Populate the map with category counts
-        categoryCounts.forEach(count => {
-            categoryCountMap.set(String(count._id), count.count);
-        });
-       
-
-
-    // finding all brands
-    const brands = await Product.find({ delete: false }, { _id: 0, brand_name: 1 });
-    const uniqueSet = new Set();
-    for (const brand of brands) {
-        uniqueSet.add(brand.brand_name);
+        const uniqueColors = await Product.distinct('color', { status: true });
+        const user =req.session.user_id;
+        // Render the filter page with the retrieved data
+        res.render('filter', {user, totalCount, categories, brandCounts, uniqueColors, products:sortProducts , products:sortPrice });
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        res.status(500).send('Internal Server Error');
     }
-    const Brands = Array.from(uniqueSet);
-  
-    //brand counts
+};
 
-    const brandCounts = await Product.aggregate([
-        {
-            $match: { status: true }
-        },
-        {
-            $group: {
-                _id: '$brand_name',
-                count: { $sum: 1 }
-            }
-        }
-    ]);
-
-   
-
-    //colors
-    const colors = await Product.find({ delete: false }, { _id: 0, color: 1 });
-    const uniqueSet1 = new Set();
-    for (const color of colors) {
-        uniqueSet1.add(color.color);
-    }
-    const Colors = Array.from(uniqueSet1);
-
-
-
-    res.render('filter', { totalCount, Colors, Brands,brandCounts, categories,categoryCountMap, Products , sortproducts : sortProducts,products })
-   
-    
-}
 
 module.exports = {
     get_searchedProducts

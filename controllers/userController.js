@@ -1091,6 +1091,32 @@ const categoryFiltering=async (req,res)=>{
 }
 }
 
+const brandFiltering=async (req,res)=>{
+  try {
+    const brandName = req.params.brandName;
+    console.log(brandName);
+    // Fetch products based on the brand ID
+    const products = await Product.find({ brand_name: brandName }).populate('category_id')
+    res.json({ products });
+} catch (error) {
+    console.error('Error fetching products by brands:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+}
+}
+
+const colorFiltering=async (req,res)=>{
+  try {
+    const colorName = req.params.colorName;
+    console.log(colorName);
+    // Fetch products based on the brand ID
+    const products = await Product.find({ color: colorName }).populate('category_id')
+    res.json({ products });
+} catch (error) {
+    console.error('Error fetching products by brands:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+}
+}
+
 module.exports = {
   loadSignup,
   insertUser,
@@ -1119,5 +1145,7 @@ module.exports = {
   removeFromWishlist,
   googleAuth,
   verifyPayment,
-  categoryFiltering
+  categoryFiltering,
+  brandFiltering,
+  colorFiltering
 };
