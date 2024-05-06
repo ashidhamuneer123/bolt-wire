@@ -325,16 +325,58 @@ const allProducts = async (req, res) => {
     const products = await Product.find({ status: true }).populate(
       "category_id"
     );
-    // Implement sorting
-    const { sortBy } = req.query;
-    if (sortBy === "lowToHigh") {
-      products.sort((a, b) => a.selling_price - b.selling_price);
-    } else if (sortBy === "highToLow") {
-      products.sort((a, b) => b.selling_price - a.selling_price);
+    let sortProducts;
+    const sortBy = req.query.sortBy;
+
+    switch (sortBy) {
+      case "popularity":
+        // Implement sorting logic based on popularity
+        sortProducts = products; // Placeholder
+        break;
+      case "averageRating":
+        // Implement sorting logic based on average rating
+        sortProducts = products; // Placeholder
+        break;
+      case "lowToHigh":
+        sortProducts = await Product.find({ status: true }).sort({
+          selling_price: 1,
+        });
+        break;
+      case "highToLow":
+        sortProducts = await Product.find({ status: true }).sort({
+          selling_price: -1,
+        });
+        break;
+      case "featured":
+        sortProducts = products; // Placeholder
+        break;
+      case "newArrivals":
+        const currentDate = new Date();
+        const oneWeekAgo = new Date(
+          currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
+        );
+        sortProducts = await Product.find({
+          status: true,
+          createdAt: { $gte: oneWeekAgo },
+        });
+        break;
+      case "aA-zZ":
+        sortProducts = await Product.find({ status: true }).sort({
+          product_name: 1,
+        });
+        break;
+      case "zZ-aA":
+        sortProducts = await Product.find({ status: true }).sort({
+          product_name: -1,
+        });
+        break;
+      default:
+        sortProducts = products;
+        break;
     }
     const user = await User.findById(req.session.user_id);
 
-    res.render("allProducts", { products, user, sortBy });
+    res.render("allProducts", {products: sortProducts, user, sortBy });
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).send("Internal Server Error");
