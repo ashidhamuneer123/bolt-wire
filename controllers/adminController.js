@@ -288,7 +288,7 @@ const salesReport= async (req,res)=>{
     
 
     const orders = await Order.find().populate('items.productId').populate('userId');
-   console.log(orders);
+  
     res.render('admin/salesReport',{orders})
   } catch (error) {
     console.error(error)
