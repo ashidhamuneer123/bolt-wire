@@ -116,7 +116,7 @@ const applyCoupon = async (req, res) => {
       }
 
       coupon.redeemedUsers.push({ userId: userId, usedTime: new Date() });
-      coupon.timesUsed++;
+      coupon.timesUsed++; 
       await coupon.save();
 
       return res.status(200).json({

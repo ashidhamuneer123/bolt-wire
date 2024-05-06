@@ -694,7 +694,8 @@ const placeOrder = async (req, res) => {
   try {
     const userId = req.session.user_id;
     const couponCode = req.body.couponCode;
-   
+    // Store applied coupon in session or temporary storage
+    req.session.appliedCoupons = [couponCode];
     const coupon = await Coupon.findOne({ couponCode, isActive: true, expirationDate: { $gte: Date.now() } });
     // Find the user's cart
     const cart = await Cart.findOne({ userId }).populate("products.productId");
@@ -829,7 +830,20 @@ const placeOrder = async (req, res) => {
             //Save the order to the database
           await order.save();
         
-      
+       // After successful order placement, mark applied coupons as redeemed
+    const appliedCoupons = req.session.appliedCoupons;
+    if (appliedCoupons && appliedCoupons.length > 0) {
+      for (const couponCode of appliedCoupons) {
+        const coupon = await Coupon.findOneAndUpdate(
+          { couponCode, isActive: true, expirationDate: { $gte: Date.now() } },
+          { $push: { redeemedUsers: { userId, usedTime: new Date() } } }
+        );
+      }
+    }
+
+    // Clear applied coupons from session after order placement
+    delete req.session.appliedCoupons;
+
        
 
       } catch (error) {
@@ -838,6 +852,7 @@ const placeOrder = async (req, res) => {
       }
     }
    
+
 
     //Clear the cart after placing the order
     await Cart.findOneAndUpdate({ userId }, { $set: { products: [] } });
