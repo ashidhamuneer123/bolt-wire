@@ -225,6 +225,7 @@ const logout = async (req, res) => {
 const getAllProducts = async (req, res) => {
   try {
     let totalQuantities = 0;
+    let totalWish =0;
     const userId = req.session.user_id;
     if(userId){
       const cart = await Cart.findOne({ userId }).populate(
@@ -236,8 +237,14 @@ const getAllProducts = async (req, res) => {
           
         });
       }
+      const wish = await Wishlist.find({ userId })
+      if(wish){
+       totalWish = wish.length;
+      }
       
     }
+
+    
     
     var search = '';
         if (req.query.search) {
@@ -306,7 +313,7 @@ const getAllProducts = async (req, res) => {
         break;
     }
 
-    res.render("home", { products: sortProducts, categories, user , search:search , totalQuantities});
+    res.render("home", { products: sortProducts, categories, user , search:search , totalQuantities , totalWish});
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).send("Internal Server Error");
@@ -386,6 +393,7 @@ const renderCart = async (req, res) => {
 
       // Calculate total quantities and subtotal
       let totalQuantities = 0;
+      let totalWish=0;
       let subtotal = 0;
       cart.products.forEach((item) => {
         totalQuantities += item.quantity;
@@ -393,12 +401,16 @@ const renderCart = async (req, res) => {
         item.price = itemPrice;
         subtotal += itemPrice;
       });
-
+      const wish = await Wishlist.find({ userId })
+      if(wish){
+       totalWish = wish.length;
+      }
       res.render("cart", {
         cartItems: cart.products,
         totalQuantities,
         subtotal,
         user,
+        totalWish
       });
     } else {
       res.render("login");
@@ -922,7 +934,24 @@ const renderWishlist = async (req, res) => {
       }
       // Save the wishlist item to the database
       const userId = req.session.user_id;
-
+      let totalQuantities=0;
+      let totalWish=0;
+      if(userId){
+        const cart = await Cart.findOne({ userId }).populate(
+          "products.productId"
+        );
+        if(cart){
+          cart.products.forEach((item) => {
+            totalQuantities += item.quantity;
+            
+          });
+        }
+        const wish = await Wishlist.find({ userId })
+        if(wish){
+         totalWish = wish.length;
+        }
+        
+      }
       const wishlist = await Wishlist.find({ userId }).populate("productId");
 
       if (!wishlist) {
@@ -930,7 +959,7 @@ const renderWishlist = async (req, res) => {
         return res.render("wishlist", { wishlist });
       }
 
-      res.render("wishlist", { wishlist, user });
+      res.render("wishlist", { wishlist, user,totalQuantities,totalWish });
     } else {
       res.render("login");
     }

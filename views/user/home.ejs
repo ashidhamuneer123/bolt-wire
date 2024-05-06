@@ -103,7 +103,7 @@
                                 <div class="header-action-icon-2">
                                     <a href="/wishlist">
                                         <img class="svgInject" alt="Evara" src="/assets/imgs/theme/icons/icon-heart.svg">
-                                        
+                                        <span class="pro-count blue"><%= totalWish %></span>
                                     </a>
                                 </div>
                                 <div class="header-action-icon-2">
@@ -184,13 +184,13 @@
                             <div class="header-action-icon-2">
                                 <a href="/wishlist">
                                     <img alt="Evara" src="/assets/imgs/theme/icons/icon-heart.svg">
-                                    
+                                    <span class="pro-count blue"><%= totalWish %></span>
                                 </a>
                             </div>
                             <div class="header-action-icon-2">
                                 <a class="mini-cart-icon" href="/cart">
                                     <img alt="Evara" src="/assets/imgs/theme/icons/icon-cart.svg">
-                                    
+                                    <span class="pro-count blue"><%= totalQuantities %></span>
                                 </a>
                                 
                             </div>
@@ -508,24 +508,25 @@
                 <div class="carausel-6-columns-cover position-relative">
                     <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-arrows"></div>
                     <div class="carausel-6-columns" id="carausel-6-columns">
-                        <div class="card-1">
+                        <div class="card-1" id="tools-card">
                             <figure class=" img-hover-scale overflow-hidden">
                                 <a href="#"><img src="assets/imgs/shop/category-thumb-T.jpg" alt=""></a>
                             </figure>
                             <h5><a href="#">Tools & Equipments</a></h5>
                         </div>
-                        <div class="card-1">
+                        <div class="card-1" id="hardwares-card">
                             <figure class=" img-hover-scale overflow-hidden">
                                 <a href="#"><img src="assets/imgs/shop/category-thumb-H.jpg" alt=""></a>
                             </figure>
                             <h5><a href="#">Hardwares</a></h5>
                         </div>
-                        <div class="card-1">
+                        <div class="card-1" id="electricals-card">
                             <figure class=" img-hover-scale overflow-hidden">
-                                <a href="#"> <img src="assets/imgs/shop/category-thumb-E.jpg" alt=""></a>
+                                <a href="#"> <img src="/assets/imgs/shop/category-thumb-E.jpg" alt=""></a>
                             </figure>
                             <h5><a href="#">Electricals</a></h5>
                         </div>
+                        
                         
                         
                     </div>
@@ -644,13 +645,13 @@
                             <div class="col-md-8 col-lg-12">
                                 <p class="wow fadeIn animated">From App Store or Google Play</p>
                                 <div class="download-app wow fadeIn animated">
-                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active" src="assets/imgs/theme/app-store.jpg" alt=""></a>
-                                    <a href="#" class="hover-up"><img src="assets/imgs/theme/google-play.jpg" alt=""></a>
+                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active" src="/assets/imgs/theme/app-store.jpg" alt=""></a>
+                                    <a href="#" class="hover-up"><img src="/assets/imgs/theme/google-play.jpg" alt=""></a>
                                 </div>
                             </div>
                             <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
                                 <p class="mb-20 wow fadeIn animated">Secured Payment Gateways</p>
-                                <img class="wow fadeIn animated" src="assets/imgs/theme/payment-method.png" alt="">
+                                <img class="wow fadeIn animated" src="/assets/imgs/theme/payment-method.png" alt="">
                             </div>
                         </div>
                     </div>
@@ -743,31 +744,33 @@ function renderProducts(products) {
 
 
     </script>
+
+    
   
     <!-- Vendor JS-->
-    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
-    <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
-    <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
-    <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/plugins/slick.js"></script>
-    <script src="assets/js/plugins/jquery.syotimer.min.js"></script>
-    <script src="assets/js/plugins/wow.js"></script>
-    <script src="assets/js/plugins/jquery-ui.js"></script>
-    <script src="assets/js/plugins/perfect-scrollbar.js"></script>
-    <script src="assets/js/plugins/magnific-popup.js"></script>
-    <script src="assets/js/plugins/select2.min.js"></script>
-    <script src="assets/js/plugins/waypoints.js"></script>
-    <script src="assets/js/plugins/counterup.js"></script>
-    <script src="assets/js/plugins/jquery.countdown.min.js"></script>
-    <script src="assets/js/plugins/images-loaded.js"></script>
-    <script src="assets/js/plugins/isotope.js"></script>
-    <script src="assets/js/plugins/scrollup.js"></script>
-    <script src="assets/js/plugins/jquery.vticker-min.js"></script>
-    <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
-    <script src="assets/js/plugins/jquery.elevatezoom.js"></script>
+    <script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="/assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="/assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/plugins/slick.js"></script>
+    <script src="/assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="/assets/js/plugins/wow.js"></script>
+    <script src="/assets/js/plugins/jquery-ui.js"></script>
+    <script src="/assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="/assets/js/plugins/magnific-popup.js"></script>
+    <script src="/assets/js/plugins/select2.min.js"></script>
+    <script src="/assets/js/plugins/waypoints.js"></script>
+    <script src="/assets/js/plugins/counterup.js"></script>
+    <script src="/assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="/assets/js/plugins/images-loaded.js"></script>
+    <script src="/assets/js/plugins/isotope.js"></script>
+    <script src="/assets/js/plugins/scrollup.js"></script>
+    <script src="/assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="/assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="/assets/js/plugins/jquery.elevatezoom.js"></script>
     <!-- Template  JS -->
-    <script src="assets/js/maind134.js?v=3.4"></script>
-    <script src="assets/js/shopd134.js?v=3.4"></script>
+    <script src="/assets/js/maind134.js?v=3.4"></script>
+    <script src="/assets/js/shopd134.js?v=3.4"></script>
 </body>
 
 

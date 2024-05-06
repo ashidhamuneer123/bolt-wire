@@ -211,14 +211,23 @@ body {
 
                                     <li><a href="#">Pages <i class="fi-rs-angle-down"></i></a>
                                         <ul class="sub-menu">
-                                            <li><a href="#">About Us</a></li>
-                                            <li><a href="#">Contact</a></li>
+                                            
                                             <li><a href="/myaccount">My Account</a></li>
-                                            <li><a href="/signup">login/register</a></li>
-                                            <li><a href="#">Purchase Guide</a></li>
-                                            <li><a href="#">Privacy Policy</a></li>
-                                            <li><a href="#">Terms of Service</a></li>
-                                            <li><a href="#">404 Page</a></li>
+                                                   
+                                <li><!-- In your navigation bar or header section -->
+
+                                    <% if (user) { %>
+                                        <!-- If user is logged in, show logout button -->
+                                        <li><a href="/myaccount"><h6><%= user.name %></h6></a></li>
+                                <li><a href="/logout">Logout</a></li>
+    
+                                <% } else { %>
+                                    <!-- If user is not logged in, show login button -->
+                                    <li><a href="/signup">Log In / Sign Up</a></li>
+                                    <% } %>
+    
+                                        </li>
+                                          
                                         </ul>
                                     </li>
                                     <li>
