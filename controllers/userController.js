@@ -325,6 +325,7 @@ const allProducts = async (req, res) => {
     const products = await Product.find({ status: true }).populate(
       "category_id"
     );
+
     let sortProducts;
     const sortBy = req.query.sortBy;
 

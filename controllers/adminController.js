@@ -367,22 +367,24 @@ const applyAdminOffers = async(req,res)=>{
 const checkingAdminOffers = async () => {
     try {
     
-    const expiredCategories = await Category.find({ expirationDate: { $lte: new Date() }, OfferisActive: true });
+        const expiredCategories = await Category.find({ expirationDate: { $lte: new Date() }, OfferisActive: true });
 
-    for (const category of expiredCategories) {
-      
-        category.offer = 0;
-        category.expirationDate = null;
-        category.OfferisActive = false;
-        await category.save();
-
-       
-        const productsToUpdate = await Product.find({Categories:category._id});
-        for (const product of productsToUpdate) {
-            product.saleprice = product.Regularprice;
-            await product.save();
+        for (const category of expiredCategories) {
+          
+            category.offer = 0;
+            category.expirationDate = null;
+            category.OfferisActive = false;
+            await category.save();
+    
+           
+            const productsToUpdate = await Product.find({category_id:category._id});
+            for (const product of productsToUpdate) {
+                product.selling_price = product.actual_price;
+                await product.save();
+            }
         }
-    }
+    
+            console.log('Expired offers checked and reset successfully.');
 
         
     } catch (error) {
