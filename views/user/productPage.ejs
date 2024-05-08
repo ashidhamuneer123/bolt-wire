@@ -3,6 +3,7 @@
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-product-full.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:46 GMT -->
+
 <head>
     <meta charset="utf-8">
     <title>Bolt & Wire</title>
@@ -18,12 +19,12 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- Template CSS -->
     <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
-   
+
 </head>
 
 <body>
     <!-- Quick view -->
-   
+
     <header class="header-area header-style-1 header-height-2">
         <div class="header-top header-top-ptb-1 d-none d-lg-block">
             <div class="container">
@@ -32,7 +33,7 @@
                         <div class="header-info">
                             <ul>
                                 <li><i class="fi-rs-smartphone"></i> <a href="#">(+01) - 2345 - 6789</a></li>
-                                <li><i class="fi-rs-marker"></i><a  href="#">Our location</a></li>
+                                <li><i class="fi-rs-marker"></i><a href="#">Our location</a></li>
                             </ul>
                         </div>
                     </div>
@@ -51,26 +52,34 @@
                         <div class="header-info header-info-right">
                             <ul>
                                 <li>
-                                    <a class="language-dropdown-active" href="#"> <i class="fi-rs-world"></i> English <i class="fi-rs-angle-small-down"></i></a>
+                                    <a class="language-dropdown-active" href="#"> <i class="fi-rs-world"></i> English <i
+                                            class="fi-rs-angle-small-down"></i></a>
                                     <ul class="language-dropdown">
-                                        <li><a href="#"><img src="/assets/imgs/theme/flag-fr.png" alt="">Français</a></li>
-                                        <li><a href="#"><img src="/assets/imgs/theme/flag-dt.png" alt="">Deutsch</a></li>
-                                        <li><a href="#"><img src="/assets/imgs/theme/flag-ru.png" alt="">Pусский</a></li>
+                                        <li><a href="#"><img src="/assets/imgs/theme/flag-fr.png" alt="">Français</a>
+                                        </li>
+                                        <li><a href="#"><img src="/assets/imgs/theme/flag-dt.png" alt="">Deutsch</a>
+                                        </li>
+                                        <li><a href="#"><img src="/assets/imgs/theme/flag-ru.png" alt="">Pусский</a>
+                                        </li>
                                     </ul>
                                 </li>
-                               
+
                                 <li><!-- In your navigation bar or header section -->
 
                                     <% if (user) { %>
                                         <!-- If user is logged in, show logout button -->
-                                        <li><a href="/myaccount"><h6><%= user.name %></h6></a></li>
+                                <li><a href="/myaccount">
+                                        <h6>
+                                            <%= user.name %>
+                                        </h6>
+                                    </a></li>
                                 <li><a href="/logout">Logout</a></li>
-    
+
                                 <% } else { %>
                                     <!-- If user is not logged in, show login button -->
                                     <li><a href="/signup">Log In / Sign Up</a></li>
                                     <% } %>
-    
+
                                         </li>
                             </ul>
                         </div>
@@ -84,7 +93,7 @@
                     <div class="logo logo-width-1">
                         <a href="/"><img src="/assets/imgs/theme/mainlogo.png" alt="logo"></a>
                     </div>
-                  
+
                 </div>
             </div>
         </div>
@@ -95,26 +104,26 @@
                         <a href="/"><img src="/assets/imgs/theme/mainlogo.png" alt="logo"></a>
                     </div>
                     <div class="header-nav d-none d-lg-flex">
-                     
+
                         <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
                             <nav>
                                 <ul>
                                     <li><a class="active" href="/">Home </a>
-                                      
+
                                     </li>
-                                   
+
                                     <li><a href="#">Shop <i class="fi-rs-angle-down"></i></a>
                                         <ul class="sub-menu">
                                             <li><a href="/allproducts">All Products</a></li>
                                             <li><a href="/filter">Filter</a></li>
                                             <li><a href="/wishlist">Wishlist</a></li>
                                             <li><a href="/cart">Cart</a></li>
-                                          
-                                            
+
+
                                         </ul>
                                     </li>
-                              
-                                 
+
+
                                     <li><a href="#">Pages <i class="fi-rs-angle-down"></i></a>
                                         <ul class="sub-menu">
                                             <li><a href="#">About Us</a></li>
@@ -124,43 +133,48 @@
 
                                                 <% if (user) { %>
                                                     <!-- If user is logged in, show logout button -->
-                                                    <li><a href="/myaccount"><h6><%= user.name %></h6></a></li>
+                                            <li><a href="/myaccount">
+                                                    <h6>
+                                                        <%= user.name %>
+                                                    </h6>
+                                                </a></li>
                                             <li><a href="/logout">Logout</a></li>
-                
+
                                             <% } else { %>
                                                 <!-- If user is not logged in, show login button -->
                                                 <li><a href="/signup">Log In / Sign Up</a></li>
                                                 <% } %>
-                
-                                                    </li>
-                                          
-                                        </ul>
+
                                     </li>
-                                    <li>
-                                        <a href="#">Contact</a>
-                                    </li>
+
+                                </ul>
+                                </li>
+                                <li>
+                                    <a href="#">Contact</a>
+                                </li>
                                 </ul>
                             </nav>
                         </div>
                     </div>
-                   
-                    <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
+
+                    <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%
+                    </p>
                     <div class="header-action-right d-block d-lg-none">
                         <div class="header-action-2">
-                           
-                           
-                            </div>
-                            <div class="header-action-icon-2 d-block d-lg-none">
-                                <div class="burger-icon burger-icon-white">
-                                    <span class="burger-icon-top"></span>
-                                    <span class="burger-icon-mid"></span>
-                                    <span class="burger-icon-bottom"></span>
-                                </div>
+
+
+                        </div>
+                        <div class="header-action-icon-2 d-block d-lg-none">
+                            <div class="burger-icon burger-icon-white">
+                                <span class="burger-icon-top"></span>
+                                <span class="burger-icon-mid"></span>
+                                <span class="burger-icon-bottom"></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </header>
     <div class="mobile-header-active mobile-header-wrapper-style">
@@ -177,62 +191,67 @@
                 </div>
             </div>
             <div class="mobile-header-content-area">
-              
+
                 <div class="mobile-menu-wrap mobile-header-border">
-                  
+
                     <!-- mobile menu start -->
                     <nav>
                         <ul class="mobile-menu">
                             <li class="menu-item"><span class="menu-expand"></span><a href="/">Home</a>
-                              
+
                             </li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="shop-grid-right.html">shop</a>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                    href="shop-grid-right.html">shop</a>
                                 <ul class="dropdown">
-                                    
+
                                     <li><a href="/filter">Filter</a></li>
                                     <li><a href="/wishlist">Wishlist</a></li>
                                     <li><a href="/cart">Cart</a></li>
-                                  
+
                                 </ul>
                             </li>
-                          
-                         
+
+
                             <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Pages</a>
                                 <ul class="dropdown">
-                                    
-                                    <li><a href="/myaccount">My Account</a></li>
-                                          
-                                <li><!-- In your navigation bar or header section -->
 
-                                    <% if (user) { %>
-                                        <!-- If user is logged in, show logout button -->
-                                        <li><a href="/myaccount"><h6><%= user.name %></h6></a></li>
-                                <li><a href="/logout">Logout</a></li>
-    
-                                <% } else { %>
-                                    <!-- If user is not logged in, show login button -->
-                                    <li><a href="/signup">Log In / Sign Up</a></li>
-                                    <% } %>
-    
-                                        </li>
-                                   
-                                </ul>
+                                    <li><a href="/myaccount">My Account</a></li>
+
+                                    <li><!-- In your navigation bar or header section -->
+
+                                        <% if (user) { %>
+                                            <!-- If user is logged in, show logout button -->
+                                    <li><a href="/myaccount">
+                                            <h6>
+                                                <%= user.name %>
+                                            </h6>
+                                        </a></li>
+                                    <li><a href="/logout">Logout</a></li>
+
+                                    <% } else { %>
+                                        <!-- If user is not logged in, show login button -->
+                                        <li><a href="/signup">Log In / Sign Up</a></li>
+                                        <% } %>
+
                             </li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Language</a>
-                                <ul class="dropdown">
-                                    <li><a href="#">English</a></li>
-                                    <li><a href="#">French</a></li>
-                                    <li><a href="#">German</a></li>
-                                    <li><a href="#">Spanish</a></li>
-                                </ul>
-                            </li>
+
+                        </ul>
+                        </li>
+                        <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Language</a>
+                            <ul class="dropdown">
+                                <li><a href="#">English</a></li>
+                                <li><a href="#">French</a></li>
+                                <li><a href="#">German</a></li>
+                                <li><a href="#">Spanish</a></li>
+                            </ul>
+                        </li>
                         </ul>
                     </nav>
                     <!-- mobile menu end -->
                 </div>
                 <div class="mobile-header-info-wrap mobile-header-border">
                     <div class="single-mobile-header-info mt-30">
-                        <a  href="page-contact.html"> Our location </a>
+                        <a href="page-contact.html"> Our location </a>
                     </div>
                     <div class="single-mobile-header-info">
                         <a href="page-login-register.html">Log In / Sign Up </a>
@@ -257,8 +276,10 @@
             <div class="container">
                 <div class="breadcrumb">
                     <a href="/" rel="nofollow">Home</a>
-                    <span></span> <%=product.brand_name %>
-                    <span></span> <%=product.product_name %>
+                    <span></span>
+                    <%=product.brand_name %>
+                        <span></span>
+                        <%=product.product_name %>
                 </div>
             </div>
         </div>
@@ -274,39 +295,49 @@
                                         <!-- MAIN SLIDES -->
                                         <div class="product-image-slider">
                                             <figure class="border-radius-10">
-                                                <img width="100%" class="img-fluid" src="/uploads/products/<%= product.primary_image.name %>" alt="product image">
+                                                <img width="100%" class="img-fluid"
+                                                    src="/uploads/products/<%= product.primary_image.name %>"
+                                                    alt="product image">
                                             </figure>
-                                            <% if (product.secondary_images && product.secondary_images.length > 0) { %>
-                                                <% product.secondary_images.forEach(image => { %>
-                                            <figure class="border-radius-10">
-                                                <img class="img-fluid" width="100%" src="/uploads/products/<%= image.name %>" alt="product image">
-                                            </figure>
-                                            <% }); %>
-                                            <% } else { %>
-                                                <div>No secondary images available</div>
-                                            <% } %>
-                                          
+                                            <% if (product.secondary_images && product.secondary_images.length> 0) { %>
+                                                <% product.secondary_images.forEach(image=> { %>
+                                                    <figure class="border-radius-10">
+                                                        <img class="img-fluid" width="100%"
+                                                            src="/uploads/products/<%= image.name %>"
+                                                            alt="product image">
+                                                    </figure>
+                                                    <% }); %>
+                                                        <% } else { %>
+                                                            <div>No secondary images available</div>
+                                                            <% } %>
+
                                         </div>
                                         <!-- THUMBNAILS -->
-                                        
+
                                         <div class="slider-nav-thumbnails pl-15 pr-15">
-                                            <% if (product.secondary_images && product.secondary_images.length > 0) { %>
-                                                <% product.secondary_images.forEach(image => { %>
-                                                    <div><img class="img-fluid" width="100%" src="/uploads/products/<%= image.name %>" alt="product image"></div>
-                                                <% }); %>
-                                            <% } else { %>
-                                                <div>No secondary images available</div>
-                                            <% } %>
+                                            <% if (product.secondary_images && product.secondary_images.length> 0) { %>
+                                                <% product.secondary_images.forEach(image=> { %>
+                                                    <div><img class="img-fluid" width="100%"
+                                                            src="/uploads/products/<%= image.name %>"
+                                                            alt="product image"></div>
+                                                    <% }); %>
+                                                        <% } else { %>
+                                                            <div>No secondary images available</div>
+                                                            <% } %>
                                         </div>
                                     </div>
                                     <!-- End Gallery -->
                                 </div>
                                 <div class="col-md-6 col-sm-12 col-xs-12">
                                     <div class="detail-info">
-                                        <h2 class="title-detail"><%=product.product_name %></h2>
+                                        <h2 class="title-detail">
+                                            <%=product.product_name %>
+                                        </h2>
                                         <div class="product-detail-rating">
                                             <div class="pro-details-brand">
-                                                <span> Brand: <a href="#"><%=product.brand_name %></a></span>
+                                                <span> Brand: <a href="#">
+                                                        <%=product.brand_name %>
+                                                    </a></span>
                                             </div>
                                             <div class="product-rate-cover text-end">
                                                 <div class="product-rate d-inline-block">
@@ -316,107 +347,129 @@
                                                 <span class="font-small ml-5 text-muted"> (25 reviews)</span>
                                             </div>
                                         </div>
-                                        <%  if(product.selling_price == product.actual_price){ %>
+                                        <% if(product.selling_price==product.actual_price){ %>
                                             <div class="product-price">
                                                 <ins><span class="text-brand">$<%=product.selling_price %></span></ins>
-                                        </div>
+                                            </div>
                                             <% } %>
-                                       
-                                             
-                                                 <%  if(product.selling_price != product.actual_price){ %> 
+
+
+                                                <% if(product.selling_price !=product.actual_price){ %>
                                                     <div class="clearfix product-price-cover">
-                                                        <div class="product-price primary-color float-left">  
-                                                <ins><span class="text-brand">$<%=product.selling_price %></span></ins>
-                                                <ins><span class="old-price font-md ml-15">$<%=product.actual_price %></span></ins>
-                                                <span class="save-price  font-md color3 ml-15"><%= product.category_id.offer %>% Off</span>
-                                            </div>
-                                        </div>
-                                                <% } %>
-                                           
-                                        <div class="bt-1 border-color-1 mt-15 mb-15"></div>
-                                        <div class="short-desc mb-30">
-                                            <p><%=product.description %></p>
-                                        </div>
-                                       
-                                        <div class="attr-detail attr-color mb-15">
-                                            <strong class="mr-10">Color:</strong><strong><%=product.color %></strong>
-                                           
-                                        </div>
-                               
-                                        
-                                    <div class="bt-1 border-color-1 mt-30 mb-30">
-                                       
-                                        <form action="/add-to-cart/<%= product._id %>" method="post" onsubmit="return addToCart(event)">
-                                        <div class="detail-extralink">
-                                            
-                                            
-                                              
-                                                
-                                                <div class="product-extra-link2">
-                                                    <button type="submit" class="button button-add-to-cart">Add to cart</button>
-                                                    <% if(user){%>
-                                                   <% if(!wishlist){%>
-                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" onclick="addtowishlist('<%=user._id%>','<%=product._id%>')"><i class="fi-rs-heart"></i></a>
-                                                    <% }  %>
+                                                        <div class="product-price primary-color float-left">
+                                                            <ins><span class="text-brand">$<%=product.selling_price %>
+                                                                        </span></ins>
+                                                            <ins><span class="old-price font-md ml-15">$
+                                                                    <%=product.actual_price %></span></ins>
+                                                            <span class="save-price  font-md color3 ml-15">
+                                                                <%= product.category_id.offer %>% Off
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                     <% } %>
-                                                </div>
-                                            </div>
-                                            </form>
-                                           
-                                        
-                                    </div>
-                                        <ul class="product-meta font-xs color-grey mt-50">
-                                            
-                                         
-                                            <li>Availability:<span id="stockleft" class="in-stock text-success ml-5"><%=product.stock %>  Items In Stock</span></li>
-                                        </ul>
+
+                                                        <div class="bt-1 border-color-1 mt-15 mb-15"></div>
+                                                        <div class="short-desc mb-30">
+                                                            <p>
+                                                                <%=product.description %>
+                                                            </p>
+                                                        </div>
+
+                                                        <div class="attr-detail attr-color mb-15">
+                                                            <strong class="mr-10">Color:</strong><strong>
+                                                                <%=product.color %>
+                                                            </strong>
+
+                                                        </div>
+
+
+                                                        <div class="bt-1 border-color-1 mt-30 mb-30">
+
+                                                            <form action="/add-to-cart/<%= product._id %>" method="post"
+                                                                onsubmit="return addToCart(event)">
+                                                                <div class="detail-extralink">
+
+
+
+
+                                                                    <div class="product-extra-link2">
+                                                                        <button type="submit"
+                                                                            class="button button-add-to-cart">Add to
+                                                                            cart</button>
+                                                                        <% if(user){%>
+                                                                            <% if(!wishlist){%>
+                                                                                <a aria-label="Add To Wishlist"
+                                                                                    class="action-btn hover-up"
+                                                                                    onclick="addtowishlist('<%=user._id%>','<%=product._id%>')"><i
+                                                                                        class="fi-rs-heart"></i></a>
+                                                                                <% } %>
+                                                                                    <% } %>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+
+
+                                                        </div>
+                                                        <ul class="product-meta font-xs color-grey mt-50">
+
+
+                                                            <li>Availability:<span id="stockleft"
+                                                                    class="in-stock text-success ml-5">
+                                                                    <%=product.stock %> Items In Stock
+                                                                </span></li>
+                                                        </ul>
                                     </div>
                                     <!-- Detail Info -->
                                 </div>
                             </div>
-                          
+
                             <div class="row mt-60">
                                 <div class="col-12">
                                     <h3 class="section-title style-1 mb-30">Related products</h3>
                                 </div>
                                 <div class="col-12">
                                     <div class="row related-products">
-                                        <% relatedProducts.forEach(product => { %>
+                                        <% relatedProducts.forEach(product=> { %>
 
-                                        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
-                                            <div class="product-cart-wrap small hover-up">
-                                                <div class="product-img-action-wrap">
-                                                    <div class="product-img product-img-zoom">
-                                                        <a href="#" tabindex="0">
-                                                            <img class="default-img" src="/admin-assets/imgs/items/<%= product.primary_image.name %>" alt="" width="10px" height="175px">
-                                                            
-                                                        </a>
+                                            <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                                                <div class="product-cart-wrap small hover-up">
+                                                    <div class="product-img-action-wrap">
+                                                        <div class="product-img product-img-zoom">
+                                                            <a href="#" tabindex="0">
+                                                                <img class="default-img"
+                                                                    src="/admin-assets/imgs/items/<%= product.primary_image.name %>"
+                                                                    alt="" width="10px" height="175px">
+
+                                                            </a>
+                                                        </div>
+
+                                                        <div
+                                                            class="product-badges product-badges-position product-badges-mrg">
+                                                            <span class="hot">Hot</span>
+                                                        </div>
                                                     </div>
-                                                  
-                                                    <div class="product-badges product-badges-position product-badges-mrg">
-                                                        <span class="hot">Hot</span>
-                                                    </div>
-                                                </div>
-                                                <div class="product-content-wrap">
-                                                    <h2><a href="/product/<%= product._id %>" tabindex="0"><%= product.product_name %></a></h2>
-                                                    <div class="rating-result" title="90%">
-                                                        <span>
-                                                        </span>
-                                                    </div>
-                                                    <div class="product-price">
-                                                        <span>$<%= product.selling_price %> </span>
-                                                        <span class="old-price">$<%= product.actual_price %></span>
+                                                    <div class="product-content-wrap">
+                                                        <h2><a href="/product/<%= product._id %>" tabindex="0">
+                                                                <%= product.product_name %>
+                                                            </a></h2>
+                                                        <div class="rating-result" title="90%">
+                                                            <span>
+                                                            </span>
+                                                        </div>
+                                                        <div class="product-price">
+                                                            <span>$<%= product.selling_price %> </span>
+                                                            <span class="old-price">$<%= product.actual_price %></span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <% }); %>
-                                      
-                                       
+                                            <% }); %>
+
+
                                     </div>
                                 </div>
                             </div>
-                           
+
                         </div>
                     </div>
                 </div>
@@ -424,7 +477,7 @@
         </section>
     </main>
     <footer class="main">
-     
+
         <section class="section-padding footer-mid">
             <div class="container pt-15 pb-20">
                 <div class="row">
@@ -481,8 +534,10 @@
                             <div class="col-md-8 col-lg-12">
                                 <p class="wow fadeIn animated">From App Store or Google Play</p>
                                 <div class="download-app wow fadeIn animated">
-                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active" src="/assets/imgs/theme/app-store.jpg" alt=""></a>
-                                    <a href="#" class="hover-up"><img src="/assets/imgs/theme/google-play.jpg" alt=""></a>
+                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active"
+                                            src="/assets/imgs/theme/app-store.jpg" alt=""></a>
+                                    <a href="#" class="hover-up"><img src="/assets/imgs/theme/google-play.jpg"
+                                            alt=""></a>
                                 </div>
                             </div>
                             <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
@@ -500,25 +555,27 @@
                     <div class="footer-bottom"></div>
                 </div>
                 <div class="col-lg-6">
-                    <p class="float-md-left font-sm text-muted mb-0">&copy; 2022, <strong class="text-brand">Evara</strong> - HTML Ecommerce Template </p>
+                    <p class="float-md-left font-sm text-muted mb-0">&copy; 2022, <strong
+                            class="text-brand">Evara</strong> - HTML Ecommerce Template </p>
                 </div>
                 <div class="col-lg-6">
                     <p class="text-lg-end text-start font-sm text-muted mb-0">
-                        Designed by <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>. All rights reserved
+                        Designed by <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>. All rights
+                        reserved
                     </p>
                 </div>
             </div>
         </div>
     </footer>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const quantityElement = document.getElementById('quantity');
             const quantityInput = document.querySelector('input[name="quantity"]');
             const qtyDownButton = document.querySelector('.qty-down');
             const qtyUpButton = document.querySelector('.qty-up');
-    
+
             // Event listener for decrement button
-            qtyDownButton.addEventListener('click', function(event) {
+            qtyDownButton.addEventListener('click', function (event) {
                 event.preventDefault();
                 const currentQuantity = parseInt(quantityElement.textContent);
                 if (currentQuantity > 1) {
@@ -526,9 +583,9 @@
                     quantityInput.value = currentQuantity - 1;
                 }
             });
-    
+
             // Event listener for increment button
-            qtyUpButton.addEventListener('click', function(event) {
+            qtyUpButton.addEventListener('click', function (event) {
                 event.preventDefault();
                 const currentQuantity = parseInt(quantityElement.textContent);
                 quantityElement.textContent = currentQuantity + 1;
@@ -537,44 +594,44 @@
         });
     </script>
 
-<script>
-    async function addToCart(event) {
-        event.preventDefault(); // Prevent default form submission
+    <script>
+        async function addToCart(event) {
+            event.preventDefault(); // Prevent default form submission
 
-        const form = event.target;
-        const formData = new FormData(form);
+            const form = event.target;
+            const formData = new FormData(form);
 
-        try {
-            const response = await fetch(form.action, {
-                method: form.method,
-                body: formData
-            });
+            try {
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: formData
+                });
 
-            const responseData = await response.json();
+                const responseData = await response.json();
 
-            if (responseData.success) {
-               alert("Product added to cart!!")
-                location.reload();
-            } else {
-                // Product is out of stock or other error occurred, display error message
-                alert(responseData.message);
+                if (responseData.success) {
+                    alert("Product added to cart!!")
+                    location.reload();
+                } else {
+                    // Product is out of stock or other error occurred, display error message
+                    alert(responseData.message);
+                }
+            } catch (error) {
+                console.error('Error adding product to cart:', error);
+                // Handle any errors that occur during the fetch request
+                alert('An error occurred while adding the product to cart. Please try again later.');
             }
-        } catch (error) {
-            console.error('Error adding product to cart:', error);
-            // Handle any errors that occur during the fetch request
-            alert('An error occurred while adding the product to cart. Please try again later.');
         }
-    }
-</script>
-<script>
-    async function addtowishlist(userId , productId){
-        event.preventDefault();
-        const response = await axios.post('/addtowishlist/<%=product._id%>', { userId , productId});
-        if(response.data.success){
-            location.reload();
+    </script>
+    <script>
+        async function addtowishlist(userId, productId) {
+            event.preventDefault();
+            const response = await axios.post('/addtowishlist/<%=product._id%>', { userId, productId });
+            if (response.data.success) {
+                location.reload();
+            }
         }
-    }
-</script>
+    </script>
     <!-- Vendor JS-->
     <script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="/assets/js/vendor/jquery-3.6.0.min.js"></script>
@@ -603,4 +660,5 @@
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-product-full.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:46 GMT -->
+
 </html>

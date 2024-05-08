@@ -3,6 +3,7 @@
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:11:15 GMT -->
+
 <head>
     <meta charset="utf-8">
     <title>Bolt & Wire</title>
@@ -18,46 +19,46 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         .transaction-history {
-    font-family: Arial, sans-serif;
-}
+            font-family: Arial, sans-serif;
+        }
 
-.transaction-history h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
+        .transaction-history h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
 
-.transaction-history table {
-    width: 100%;
-    border-collapse: collapse;
-}
+        .transaction-history table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-.transaction-history th, .transaction-history td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
-}
+        .transaction-history th,
+        .transaction-history td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
 
-.transaction-history th {
-    background-color: #f2f2f2;
-    color: #333;
-}
+        .transaction-history th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
 
-.transaction-history tbody tr:hover {
-    background-color: #f9f9f9;
-}
+        .transaction-history tbody tr:hover {
+            background-color: #f9f9f9;
+        }
 
-.transaction-history tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
+        .transaction-history tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
 
-.transaction-history tbody td:last-child {
-    text-transform: capitalize;
-}
-
+        .transaction-history tbody td:last-child {
+            text-transform: capitalize;
+        }
     </style>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    
+
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
 </head>
@@ -71,7 +72,7 @@
                         <div class="header-info">
                             <ul>
                                 <li><i class="fi-rs-smartphone"></i> <a href="#">(+01) - 2345 - 6789</a></li>
-                                <li><i class="fi-rs-marker"></i><a  href="page-contact.html">Our location</a></li>
+                                <li><i class="fi-rs-marker"></i><a href="page-contact.html">Our location</a></li>
                             </ul>
                         </div>
                     </div>
@@ -79,9 +80,11 @@
                         <div class="text-center">
                             <div id="news-flash" class="d-inline-block">
                                 <ul>
-                                    <li>Get great devices up to 50% off <a href="shop-grid-right.html">View details</a></li>
+                                    <li>Get great devices up to 50% off <a href="shop-grid-right.html">View details</a>
+                                    </li>
                                     <li>Supper Value Deals - Save more with coupons</li>
-                                    <li>Trendy 25silver jewelry, save up 35% off today <a href="shop-grid-right.html">Shop now</a></li>
+                                    <li>Trendy 25silver jewelry, save up 35% off today <a
+                                            href="shop-grid-right.html">Shop now</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -90,25 +93,33 @@
                         <div class="header-info header-info-right">
                             <ul>
                                 <li>
-                                    <a class="language-dropdown-active" href="#"> <i class="fi-rs-world"></i> English <i class="fi-rs-angle-small-down"></i></a>
+                                    <a class="language-dropdown-active" href="#"> <i class="fi-rs-world"></i> English <i
+                                            class="fi-rs-angle-small-down"></i></a>
                                     <ul class="language-dropdown">
-                                        <li><a href="#"><img src="/assets/imgs/theme/flag-fr.png" alt="">Français</a></li>
-                                        <li><a href="#"><img src="/assets/imgs/theme/flag-dt.png" alt="">Deutsch</a></li>
-                                        <li><a href="#"><img src="/assets/imgs/theme/flag-ru.png" alt="">Pусский</a></li>
+                                        <li><a href="#"><img src="/assets/imgs/theme/flag-fr.png" alt="">Français</a>
+                                        </li>
+                                        <li><a href="#"><img src="/assets/imgs/theme/flag-dt.png" alt="">Deutsch</a>
+                                        </li>
+                                        <li><a href="#"><img src="/assets/imgs/theme/flag-ru.png" alt="">Pусский</a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li><!-- In your navigation bar or header section -->
 
                                     <% if (user) { %>
                                         <!-- If user is logged in, show logout button -->
-                                        <li><a href="/myaccount"><h6><%= user.name %></h6></a></li>
+                                <li><a href="/myaccount">
+                                        <h6>
+                                            <%= user.name %>
+                                        </h6>
+                                    </a></li>
                                 <li><a href="/logout">Logout</a></li>
-        
+
                                 <% } else { %>
                                     <!-- If user is not logged in, show login button -->
                                     <li><a href="/signup">Log In / Sign Up</a></li>
                                     <% } %>
-        
+
                                         </li>
                             </ul>
                         </div>
@@ -122,11 +133,12 @@
                     <div class="logo logo-width-1">
                         <a href="/"><img src="/assets/imgs/theme/mainlogo.png" alt="logo"></a>
                     </div>
-                    <div class="main-menu main-menu-grow main-menu-padding-1 main-menu-lh-1 main-menu-mrg-1 hm3-menu-padding d-none d-lg-block hover-boder">
+                    <div
+                        class="main-menu main-menu-grow main-menu-padding-1 main-menu-lh-1 main-menu-mrg-1 hm3-menu-padding d-none d-lg-block hover-boder">
                         <nav>
                             <ul>
                                 <li><a class="active" href="/">Home </a>
-                                   
+
                                 </li>
                                 <li><a href="shop-grid-right.html">Shop <i class="fi-rs-angle-down"></i></a>
                                     <ul class="sub-menu">
@@ -134,12 +146,12 @@
                                         <li><a href="/filter">Filter</a></li>
                                         <li><a href="#">Wishlist</a></li>
                                         <li><a href="/cart">Cart</a></li>
-                                       
-                                       
+
+
                                     </ul>
                                 </li>
-                              
-                              
+
+
                                 <li><a href="#">Pages <i class="fi-rs-angle-down"></i></a>
                                     <ul class="sub-menu">
                                         <li><a href="#">About Us</a></li>
@@ -152,7 +164,7 @@
                                         <li><a href="#">404 Page</a></li>
                                     </ul>
                                 </li>
-                              
+
                             </ul>
                         </nav>
                     </div>
@@ -164,7 +176,7 @@
                                     <option>Electricals</option>
                                     <option>Hardware</option>
                                     <option>Tools & equipments</option>
-                                   
+
                                 </select>
                                 <input type="text" placeholder="Search for items…">
                             </form>
@@ -216,43 +228,43 @@
                     </form>
                 </div>
                 <div class="mobile-menu-wrap mobile-header-border">
-                 
+
                     <!-- mobile menu start -->
                     <nav>
                         <ul class="mobile-menu">
                             <li class="menu-item"><span class="menu-expand"></span><a href="/">Home</a>
-                               
+
                             </li>
                             <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">shop</a>
                                 <ul class="dropdown">
-                                    
+
                                     <li><a href="/filter">Filter</a></li>
                                     <li><a href="/wishlist">Wishlist</a></li>
                                     <li><a href="/cart">Cart</a></li>
-                                    
+
                                 </ul>
                             </li>
-                           
-                           
+
+
                             <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Pages</a>
                                 <ul class="dropdown">
-                                  
+
                                     <li><a href="/myaccount">My Account</a></li>
                                     <li><a href="/signup">login/register</a></li>
-                                    
+
                                 </ul>
                             </li>
-                         
+
                         </ul>
                     </nav>
                     <!-- mobile menu end -->
                 </div>
                 <div class="mobile-header-info-wrap mobile-header-border">
                     <div class="single-mobile-header-info mt-30">
-                        <a  href="#"> Our location </a>
+                        <a href="#"> Our location </a>
                     </div>
                     <div class="single-mobile-header-info">
-                        
+
                     </div>
                     <div class="single-mobile-header-info">
                         <a href="#">(+01) - 2345 - 6789 </a>
@@ -280,7 +292,7 @@
             </div>
         </div>
         <section class="pt-150 pb-150">
-           
+
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-10 m-auto">
@@ -289,114 +301,153 @@
                                 <div class="dashboard-menu">
                                     <ul class="nav flex-column" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="false"><i class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
+                                            <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab"
+                                                href="#dashboard" role="tab" aria-controls="dashboard"
+                                                aria-selected="false"><i
+                                                    class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                            <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders"
+                                                role="tab" aria-controls="orders" aria-selected="false"><i
+                                                    class="fi-rs-shopping-bag mr-10"></i>Orders</a>
                                         </li>
-                                        
+
                                         <li class="nav-item">
-                                            <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>Account details</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="Coupons" data-bs-toggle="tab" href="#wallet" role="tab" aria-controls="wallet"
-                                            aria-selected="true">
-                                            <i class="fa-solid fa-wallet"></i> &nbsp;&nbsp;&nbsp;Wallet</a>
+                                            <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address"
+                                                role="tab" aria-controls="address" aria-selected="true"><i
+                                                    class="fi-rs-marker mr-10"></i>My Address</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/logout"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
+                                            <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab"
+                                                href="#account-detail" role="tab" aria-controls="account-detail"
+                                                aria-selected="true"><i class="fi-rs-user mr-10"></i>Account details</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="Coupons" data-bs-toggle="tab" href="#wallet"
+                                                role="tab" aria-controls="wallet" aria-selected="true">
+                                                <i class="fa-solid fa-wallet"></i> &nbsp;&nbsp;&nbsp;Wallet</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/logout"><i
+                                                    class="fi-rs-sign-out mr-10"></i>Logout</a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="tab-content dashboard-content">
-                                    <div class="tab-pane fade active show" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                                    <div class="tab-pane fade active show" id="dashboard" role="tabpanel"
+                                        aria-labelledby="dashboard-tab">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5 class="mb-0">Hello <%= user.name %> </h5>
-                                            
+                                                <h5 class="mb-0">Hello <%= user.name %>
+                                                </h5>
+
                                             </div>
                                             <div class="card-body">
-                                                <p>From your account dashboard. you can easily check &amp; view your <a href="#">recent orders</a>, manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a></p>
+                                                <p>From your account dashboard. you can easily check &amp; view your <a
+                                                        href="#">recent orders</a>, manage your <a href="#">shipping and
+                                                        billing addresses</a> and <a href="#">edit your password and
+                                                        account details.</a></p>
                                             </div>
                                         </div>
                                     </div>
 
-                                 
-                                    
-                                     
-                                           
-                                      
-                                    <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
-                                        <div style="width: 36rem;" class="header d-flex align-items-center justify-content-between">
+
+
+
+
+
+                                    <div class="tab-pane fade" id="address" role="tabpanel"
+                                        aria-labelledby="address-tab">
+                                        <div style="width: 36rem;"
+                                            class="header d-flex align-items-center justify-content-between">
                                             <h3 class="h4 user-text fw-bold mb-3">Manage Addresses</h3>
-                                            
-                                           <a href="/add-address"> <input id="addAddress" class="btn user-btn" type="button" value="New Address"></a>
-                                        
+
+                                            <a href="/add-address"> <input id="addAddress" class="btn user-btn"
+                                                    type="button" value="New Address"></a>
+
                                         </div>
                                         <br><br>
-                                        
+
 
                                         <div class="row">
-                                            <% addresses.forEach((address, index) => { %>
+                                            <% addresses.forEach((address, index)=> { %>
                                                 <div class="card mb-3 mb-lg-0">
                                                     <div class="card-header">
-                                                        <h5 class="mb-0">Address <%= index + 1 %></h5>
+                                                        <h5 class="mb-0">Address <%= index + 1 %>
+                                                        </h5>
                                                     </div>
                                                     <div class="card-body">
-                                                        <p><%= address.name %></p>
-                                                        <address><%= address.address %></address>
-                                                        <p><%= address.city %>, <%= address.state %> - <%= address.pincode %></p>
-                                                        <p><%= address.mobile %></p>
-                                                        <a href="/edit-address/<%= address._id %>" class="btn-small">Edit</a>
-                                                        <a href="/delete-address/<%= address._id %>" class="btn-small">Delete</a>
+                                                        <p>
+                                                            <%= address.name %>
+                                                        </p>
+                                                        <address>
+                                                            <%= address.address %>
+                                                        </address>
+                                                        <p>
+                                                            <%= address.city %>, <%= address.state %> - <%=
+                                                                        address.pincode %>
+                                                        </p>
+                                                        <p>
+                                                            <%= address.mobile %>
+                                                        </p>
+                                                        <a href="/edit-address/<%= address._id %>"
+                                                            class="btn-small">Edit</a>
+                                                        <a href="/delete-address/<%= address._id %>"
+                                                            class="btn-small">Delete</a>
                                                     </div>
                                                 </div>
-                                            <% }) %>
+                                                <% }) %>
                                         </div>
 
 
                                     </div>
 
-                                    <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
+                                    <div class="tab-pane fade" id="account-detail" role="tabpanel"
+                                        aria-labelledby="account-detail-tab">
                                         <div class="card">
                                             <div class="card-header">
-                                              
-                                                
+
+
                                                 <h5>Account Details</h5>
                                             </div>
                                             <div class="card-body">
-                                                
+
                                                 <form method="post" name="enq" action="/update-detail/<%= user._id %>">
                                                     <div class="row">
                                                         <div class="form-group col-md-6">
                                                             <label>Name<span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="name" type="text" value="<%= user.name %>">
+                                                            <input required="" class="form-control square" name="name"
+                                                                type="text" value="<%= user.name %>">
                                                         </div>
-                                                        
-                                                        
+
+
                                                         <div class="form-group col-md-12">
                                                             <label>Phone <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="phone" type="text" value="<%= user.phone %>">
+                                                            <input required="" class="form-control square" name="phone"
+                                                                type="text" value="<%= user.phone %>">
                                                         </div>
                                                         <div class="form-group col-md-12">
-                                                            <label>Current Password <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="password" type="password">
+                                                            <label>Current Password <span
+                                                                    class="required">*</span></label>
+                                                            <input required="" class="form-control square"
+                                                                name="password" type="password">
                                                         </div>
                                                         <div class="form-group col-md-12">
                                                             <label>New Password <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="npassword" type="password">
+                                                            <input required="" class="form-control square"
+                                                                name="npassword" type="password">
                                                         </div>
                                                         <div class="form-group col-md-12">
-                                                            <label>Confirm Password <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="cpassword" type="password">
+                                                            <label>Confirm Password <span
+                                                                    class="required">*</span></label>
+                                                            <input required="" class="form-control square"
+                                                                name="cpassword" type="password">
                                                         </div>
                                                         <div class="col-md-12">
-                                                            <button type="submit" class="btn btn-fill-out submit" name="submit">Save</button>
+                                                            <button type="submit" class="btn btn-fill-out submit"
+                                                                name="submit">Save</button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -409,160 +460,249 @@
                                                 <h5 class="mb-0">Your Orders</h5>
                                             </div>
                                             <div class="card-body">
-                                                <% if (orders.length > 0) { %>
-                                                    <% orders.forEach(order => { %>
+                                                <% if (orders.length> 0) { %>
+                                                    <% orders.forEach(order=> { %>
                                                         <div class="container-fluid">
                                                             <div class="order-details">
-                                                                <% order.items.forEach(item => { %>
+                                                                <% order.items.forEach(item=> { %>
                                                                     <div class="row">
                                                                         <div class="col">
                                                                             <div class="card mb-4 shadow-sm">
                                                                                 <div class="row">
                                                                                     <div class="col-md-4">
-                                                                                        <img src="/admin-assets/imgs/items/<%= item.productId.primary_image.name %>" class="img-fluid" style="width: 130px; height: 130px;" alt="Product Image">
+                                                                                        <img src="/admin-assets/imgs/items/<%= item.productId.primary_image.name %>"
+                                                                                            class="img-fluid"
+                                                                                            style="width: 130px; height: 130px;"
+                                                                                            alt="Product Image">
                                                                                     </div>
                                                                                     <div class="col-md-5">
                                                                                         <div class="card-body">
-                                                                                            <h5 class="card-title"><strong><%= item.productId.product_name %></strong></h5>
-                                                                                            <h6 class="card-text">Quantity: <strong><%= item.quantity %></strong></h6>
-                                                                                            <% if(order.couponDiscount>0){ %>
-                                                                                            <h6 class="card-text">Amount: <strong><%=(item.quantity * item.productId.selling_price)- (item.quantity * item.productId.selling_price * (order.couponDiscount/100))  %></strong></h6>
-                                                                                            <% } %>
-                                                                                            <% if(order.couponDiscount == 0){ %>
-                                                                                                <h6 class="card-text">Amount: <strong><%= item.quantity * item.productId.selling_price %></strong></h6>
+                                                                                            <h5 class="card-title">
+                                                                                                <strong>
+                                                                                                    <%= item.productId.product_name
+                                                                                                        %>
+                                                                                                </strong></h5>
+                                                                                            <h6 class="card-text">
+                                                                                                Quantity: <strong>
+                                                                                                    <%= item.quantity %>
+                                                                                                </strong></h6>
+                                                                                            <% if(order.couponDiscount>
+                                                                                                0){ %>
+                                                                                                <h6 class="card-text">
+                                                                                                    Amount: <strong>
+                                                                                                        <%=(item.quantity
+                                                                                                            *
+                                                                                                            item.productId.selling_price)-
+                                                                                                            (item.quantity
+                                                                                                            *
+                                                                                                            item.productId.selling_price
+                                                                                                            *
+                                                                                                            (order.couponDiscount/100))
+                                                                                                            %>
+                                                                                                    </strong></h6>
                                                                                                 <% } %>
-                                                                                            <h6 class="card-text" style="color: <%= item.deliveryStatus === 'Cancelled' ? 'red' : (item.deliveryStatus === 'Delivered' ? 'green' : 'inherit') %>;">
-                                                                                                <strong><%= item.deliveryStatus %></strong>
-                                                                                            </h6>
-                                                                                            
-                                                                                               
-                                                                                               <button>
-                                                                                                    <a  href="/myorderdetails/<%= order._id %>?productId=<%= item.productId._id %>">Details</a>
-                                                                                                </button>
-                                                                                            
-                                                                                            
+                                                                                                    <% if(order.couponDiscount==0){
+                                                                                                        %>
+                                                                                                        <h6
+                                                                                                            class="card-text">
+                                                                                                            Amount:
+                                                                                                            <strong>
+                                                                                                                <%= item.quantity
+                                                                                                                    *
+                                                                                                                    item.productId.selling_price
+                                                                                                                    %>
+                                                                                                            </strong>
+                                                                                                        </h6>
+                                                                                                        <% } %>
+                                                                                                            <h6 class="card-text"
+                                                                                                                style="color: <%= item.deliveryStatus === 'Cancelled' ? 'red' : (item.deliveryStatus === 'Delivered' ? 'green' : 'inherit') %>;">
+                                                                                                                <strong>
+                                                                                                                    <%= item.deliveryStatus
+                                                                                                                        %>
+                                                                                                                </strong>
+                                                                                                            </h6>
+
+
+                                                                                                            <button>
+                                                                                                                <a
+                                                                                                                    href="/myorderdetails/<%= order._id %>?productId=<%= item.productId._id %>">Details</a>
+                                                                                                            </button>
+
+
                                                                                         </div>
-                                                                                       
+
                                                                                     </div>
-                                                                                    <div class="col-md-3 d-flex align-items-center">
-                                                                                        <% if (item.deliveryStatus == 'Processing') { %>
-                                                                                            <button onclick="cancelMyOrder('<%= order._id%>', '<%= item.productId._id %>','<%= item.quantity%>')" type="button" class="btn btn-danger btn-sm">Cancel</button>
-                                                                                        <% } %>
-                                                                                            <% if(item.deliveryStatus =='Delivered'){ %>
-                                                                                                <button onclick="returnMyOrder( '<%= order._id%>','<%= item.productId._id %>','<%= item.quantity%>')" type="button" class="btn btn-danger btn-sm">Return</button>  
+                                                                                    <div
+                                                                                        class="col-md-3 d-flex align-items-center">
+                                                                                        <% if
+                                                                                            (item.deliveryStatus=='Processing'
+                                                                                            ) { %>
+                                                                                            <button
+                                                                                                onclick="cancelMyOrder('<%= order._id%>', '<%= item.productId._id %>','<%= item.quantity%>')"
+                                                                                                type="button"
+                                                                                                class="btn btn-danger btn-sm">Cancel</button>
                                                                                             <% } %>
+                                                                                                <% if(item.deliveryStatus=='Delivered'
+                                                                                                    ){ %>
+                                                                                                    <button
+                                                                                                        onclick="returnMyOrder( '<%= order._id%>','<%= item.productId._id %>','<%= item.quantity%>')"
+                                                                                                        type="button"
+                                                                                                        class="btn btn-danger btn-sm">Return</button>
+                                                                                                    <% } %>
                                                                                     </div>
-                                                                                  
+
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                <% }) %>
+                                                                    <% }) %>
                                                             </div>
                                                         </div>
-                                                    <% }) %>
+                                                        <% }) %>
 
-                                                     <!-- Pagination markup -->
-    <div class="pagination-container">
-        <ul class="pagination justify-content-center">
-          <% if (currentPage !== 1) { %>
-            <li class="page-item">
-              <a class="page-link" href="?page=1">&laquo; First</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="?page=<%= currentPage - 1 %>">&lsaquo; Prev</a>
-            </li>
-          <% } %>
-  
-          <% for(let i = 1; i <= totalPages; i++) { %>
-            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
-              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-            </li>
-          <% } %>
-  
-          <% if (currentPage !== totalPages) { %>
-            <li class="page-item">
-              <a class="page-link" href="?page=<%= currentPage + 1 %>">Next &rsaquo;</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="?page=<%= totalPages %>">Last &raquo;</a>
-            </li>
-          <% } %>
-        </ul>
-      </div>
-                                                <% } else { %>
-                                                    <p>No orders found.</p>
+                                                            <!-- Pagination markup -->
+                                                            <div class="pagination-container">
+                                                                <ul class="pagination justify-content-center">
+                                                                    <% if (currentPage !==1) { %>
+                                                                        <li class="page-item">
+                                                                            <a class="page-link" href="?page=1">&laquo;
+                                                                                First</a>
+                                                                        </li>
+                                                                        <li class="page-item">
+                                                                            <a class="page-link"
+                                                                                href="?page=<%= currentPage - 1 %>">&lsaquo;
+                                                                                Prev</a>
+                                                                        </li>
+                                                                        <% } %>
 
-                                                <% } %>
+                                                                            <% for(let i=1; i <=totalPages; i++) { %>
+                                                                                <li
+                                                                                    class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                                                                    <a class="page-link"
+                                                                                        href="?page=<%= i %>">
+                                                                                        <%= i %>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <% } %>
+
+                                                                                    <% if (currentPage !==totalPages) {
+                                                                                        %>
+                                                                                        <li class="page-item">
+                                                                                            <a class="page-link"
+                                                                                                href="?page=<%= currentPage + 1 %>">Next
+                                                                                                &rsaquo;</a>
+                                                                                        </li>
+                                                                                        <li class="page-item">
+                                                                                            <a class="page-link"
+                                                                                                href="?page=<%= totalPages %>">Last
+                                                                                                &raquo;</a>
+                                                                                        </li>
+                                                                                        <% } %>
+                                                                </ul>
+                                                            </div>
+                                                            <% } else { %>
+                                                                <p>No orders found.</p>
+
+                                                                <% } %>
                                             </div>
-                                            
+
                                         </div>
-                                            
-                                            
+
+
                                     </div>
 
-                                    <div class="tab-pane fade" id="wallet" role="tabpanel" aria-labelledby="account-detail-tab" style="padding: 20px;
+                                    <div class="tab-pane fade" id="wallet" role="tabpanel"
+                                        aria-labelledby="account-detail-tab" style="padding: 20px;
                                     width: 100%; display: grid; grid-template-columns: 1fr 2fr;">
-                            <div class="card coupon-container" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 250px;">
-                               <% if(wallet){%>
-                                <div class="card-header bg-gradient-primary text-white" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                                    <h5 style="margin-bottom: 0; font-size: 24px;">Wallet</h5>
-                                </div>
+                                        <div class="card coupon-container"
+                                            style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 250px;">
+                                            <% if(wallet){%>
+                                                <div class="card-header bg-gradient-primary text-white"
+                                                    style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                                    <h5 style="margin-bottom: 0; font-size: 24px;">Wallet</h5>
+                                                </div>
 
-                                <div class="card-body" style="max-width: 300px;"> <!-- Adjust the max-width -->
-                                    <div class="wallet-info" style="padding-bottom: 15px;">
-                                        <h6 style="margin-bottom: 0; font-size: 18px;">Available Balance:</h6>
-                                        <p id="balanceAmount" style="margin-top: 5px; font-size: 24px; font-weight: bold;">$<%= wallet.balance %></p>
-                                        
-                                    </div>
-                                    <!-- wallet payment Form -->
-                                    <div class="add-funds-form" style="margin-top: 20px;">
-                                       
-                                          
-                                            <div class="form-group">
-                                                <label for="amount" style="margin-bottom: 5px; font-size: 18px;">Amount:</label>
-                                                <input type="number" class="form-control" id="amountInput" name="amount" style="border-radius: 20px; font-size: 16px; padding: 10px; border: 1px solid #ced4da;" value="">
+                                                <div class="card-body" style="max-width: 300px;">
+                                                    <!-- Adjust the max-width -->
+                                                    <div class="wallet-info" style="padding-bottom: 15px;">
+                                                        <h6 style="margin-bottom: 0; font-size: 18px;">Available
+                                                            Balance:</h6>
+                                                        <p id="balanceAmount"
+                                                            style="margin-top: 5px; font-size: 24px; font-weight: bold;">
+                                                            $<%= wallet.balance %>
+                                                        </p>
+
+                                                    </div>
+                                                    <!-- wallet payment Form -->
+                                                    <div class="add-funds-form" style="margin-top: 20px;">
+
+
+                                                        <div class="form-group">
+                                                            <label for="amount"
+                                                                style="margin-bottom: 5px; font-size: 18px;">Amount:</label>
+                                                            <input type="number" class="form-control" id="amountInput"
+                                                                name="amount"
+                                                                style="border-radius: 20px; font-size: 16px; padding: 10px; border: 1px solid #ced4da;"
+                                                                value="">
+                                                        </div>
+                                                        <button onclick="submitForm()"
+                                                            style="background-color: #000000;" type="submit"
+                                                            class="btn btn-primary"
+                                                            style="border-radius: 20px; padding: 10px 30px; font-size: 18px;">Pay</button>
+
+
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                        </div>
+
+                                        <% if (wallet) { %>
+                                            <div class="transaction-history"
+                                                style="max-height: 400px; overflow-y: auto;">
+                                                <h2
+                                                    style="position: sticky; top: 0; background-color: #ffffff; z-index: 1; color: #007bff; font-size: 24px; font-weight: bold; text-align: center; text-transform: uppercase; margin-bottom: 20px;">
+                                                    Transaction History</h2>
+                                                <table style="width: 100%;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Transaction ID</th>
+                                                            <th>Date</th>
+                                                            <th>Amount</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% for (let i=wallet.history.length - 1; i>= 0; i--) { %>
+                                                            <tr>
+                                                                <td>#<%= Math.random().toString(36).substr(2,
+                                                                        8).toUpperCase() %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= wallet.history[i].createdAt.toLocaleString() %>
+                                                                </td>
+                                                                <td
+                                                                    style="color: <%= wallet.history[i].type === 'credit' ? '#28a745' : '#dc3545' %>">
+                                                                    <%= wallet.history[i].type==='credit' ? '+ $'
+                                                                        : '- $' %>
+                                                                        <%= wallet.history[i].amount %>
+                                                                </td>
+                                                                <td
+                                                                    style="color: <%= wallet.history[i].type === 'credit' ? '#28a745' : '#dc3545' %>">
+                                                                    <%= wallet.history[i].type %>
+                                                                </td>
+
+                                                            </tr>
+                                                            <!-- Add more rows for each transaction -->
+                                                            <% } %>
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                            <button onclick="submitForm()" style="background-color: #000000;" type="submit"  class="btn btn-primary" style="border-radius: 20px; padding: 10px 30px; font-size: 18px;">Pay</button>
-                                        
-                                          
-                                    </div>
-                                </div>
-                                <% }  %>
-                            </div>
 
-                            <% if (wallet) { %>
-                                <div class="transaction-history" style="max-height: 400px; overflow-y: auto;">
-                                    <h2 style="position: sticky; top: 0; background-color: #ffffff; z-index: 1; color: #007bff; font-size: 24px; font-weight: bold; text-align: center; text-transform: uppercase; margin-bottom: 20px;">Transaction History</h2>
-                                    <table style="width: 100%;">
-                                        <thead>
-                                            <tr>
-                                                <th>Transaction ID</th>
-                                                <th>Date</th>
-                                                <th>Amount</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% for (let i = wallet.history.length - 1; i >= 0; i--) { %>
-                                                <tr>
-                                                    <td>#<%= Math.random().toString(36).substr(2, 8).toUpperCase() %></td>
-                                                    <td><%= wallet.history[i].createdAt.toLocaleString() %></td>
-                                                    <td style="color: <%= wallet.history[i].type === 'credit' ? '#28a745' : '#dc3545' %>"><%= wallet.history[i].type === 'credit' ? '+ $' : '- $' %><%= wallet.history[i].amount %></td>
-                                                     <td style="color: <%= wallet.history[i].type === 'credit' ? '#28a745' : '#dc3545' %>"><%= wallet.history[i].type %></td>
-                                                    
-                                                </tr>
-                                                <!-- Add more rows for each transaction -->
                                             <% } %>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                
-                            <% } %>
-                            
-                        </div>
-                         
-                                  
+
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -572,7 +712,7 @@
         </section>
     </main>
     <footer class="main">
-      
+
         <section class="section-padding footer-mid">
             <div class="container pt-15 pb-20">
                 <div class="row">
@@ -629,8 +769,10 @@
                             <div class="col-md-8 col-lg-12">
                                 <p class="wow fadeIn animated">From App Store or Google Play</p>
                                 <div class="download-app wow fadeIn animated">
-                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active" src="assets/imgs/theme/app-store.jpg" alt=""></a>
-                                    <a href="#" class="hover-up"><img src="assets/imgs/theme/google-play.jpg" alt=""></a>
+                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active"
+                                            src="assets/imgs/theme/app-store.jpg" alt=""></a>
+                                    <a href="#" class="hover-up"><img src="assets/imgs/theme/google-play.jpg"
+                                            alt=""></a>
                                 </div>
                             </div>
                             <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
@@ -648,22 +790,24 @@
                     <div class="footer-bottom"></div>
                 </div>
                 <div class="col-lg-6">
-                    <p class="float-md-left font-sm text-muted mb-0">&copy; 2022, <strong class="text-brand">BoltnWire</strong> - HTML Ecommerce Template </p>
+                    <p class="float-md-left font-sm text-muted mb-0">&copy; 2022, <strong
+                            class="text-brand">BoltnWire</strong> - HTML Ecommerce Template </p>
                 </div>
                 <div class="col-lg-6">
                     <p class="text-lg-end text-start font-sm text-muted mb-0">
-                        Designed by <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>. All rights reserved
+                        Designed by <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>. All rights
+                        reserved
                     </p>
                 </div>
             </div>
         </div>
     </footer>
     <script>
-        async function cancelMyOrder(orderId, productId,quantity){
+        async function cancelMyOrder(orderId, productId, quantity) {
             try {
                 event.preventDefault()
-                const response = await axios.post('/cancel-order', {orderId, productId, quantity });
-                if(response.data.success){
+                const response = await axios.post('/cancel-order', { orderId, productId, quantity });
+                if (response.data.success) {
                     location.reload()
                 }
             } catch (error) {
@@ -671,12 +815,12 @@
             }
         }
     </script>
-     <script>
-        async function returnMyOrder(orderId, productId,quantity){
+    <script>
+        async function returnMyOrder(orderId, productId, quantity) {
             try {
                 event.preventDefault()
-                const response = await axios.post('/return-order', {orderId, productId, quantity });
-                if(response.data.success){
+                const response = await axios.post('/return-order', { orderId, productId, quantity });
+                if (response.data.success) {
                     location.reload()
                 }
             } catch (error) {
@@ -684,77 +828,77 @@
             }
         }
     </script>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
-            integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-    function submitForm() {
-        // Get the amount input value
-        const amount = document.getElementById('amountInput').value;
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        function submitForm() {
+            // Get the amount input value
+            const amount = document.getElementById('amountInput').value;
 
-        // Prepare data for the request body
-        const data = {
-            amount: amount
-            // Add more data if needed
-        };
-
-        // Fetch request
-        fetch('/addTowallet', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then((response) => response.json())
-        .then(data => {
-            // Initialize Razorpay checkout with received order details
-            const options = {
-                "key": 'rzp_test_nrsjMCLp4uBA73', // Replace with your Razorpay key ID
-                "amount": data.order.amount, // Use the amount from server response
-                "currency": 'INR', // Change the currency to match your requirements
-                "name": 'Bolt & wire',
-                "description": 'Purchase Description',
-                "order_id": data.order.id, // Use the order ID from server response
-                "handler": function (response) {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "Payment successful!",
-                        showConfirmButton: false,
-                        timer: 2000
-                    }).then(() => {
-                        window.location.href = '/myaccount';
-                    });
-                },
-                "prefill": {
-                    "name": 'Ashidha muneer',
-                    "email": 'Ashidha@example.com',
-                    "contact": '9999999999',
-                },
-                "theme": {
-                    "color": '#4B0082'
-                }
+            // Prepare data for the request body
+            const data = {
+                amount: amount
+                // Add more data if needed
             };
-            const razorpayInstance = new Razorpay(options);
-            razorpayInstance.open();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Something went wrong!",
-            });
-        });
-    }
-</script>
+
+            // Fetch request
+            fetch('/addTowallet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then((response) => response.json())
+                .then(data => {
+                    // Initialize Razorpay checkout with received order details
+                    const options = {
+                        "key": 'rzp_test_nrsjMCLp4uBA73', // Replace with your Razorpay key ID
+                        "amount": data.order.amount, // Use the amount from server response
+                        "currency": 'INR', // Change the currency to match your requirements
+                        "name": 'Bolt & wire',
+                        "description": 'Purchase Description',
+                        "order_id": data.order.id, // Use the order ID from server response
+                        "handler": function (response) {
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "Payment successful!",
+                                showConfirmButton: false,
+                                timer: 2000
+                            }).then(() => {
+                                window.location.href = '/myaccount';
+                            });
+                        },
+                        "prefill": {
+                            "name": 'Ashidha muneer',
+                            "email": 'Ashidha@example.com',
+                            "contact": '9999999999',
+                        },
+                        "theme": {
+                            "color": '#4B0082'
+                        }
+                    };
+                    const razorpayInstance = new Razorpay(options);
+                    razorpayInstance.open();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Something went wrong!",
+                    });
+                });
+        }
+    </script>
 
 
-    
- 
+
+
     <!-- Vendor JS-->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
@@ -777,10 +921,11 @@
     <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
     <!-- Template  JS -->
     <script src="assets/js/maind134.js?v=3.4"></script>
-    
+
 
 </body>
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:11:15 GMT -->
+
 </html>

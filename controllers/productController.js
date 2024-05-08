@@ -10,23 +10,34 @@ const path = require("path");
 //add product function
 const add_product = async (req, res) => {
   try {
-
-    
     // Additional validation for numerical fields
     const stock = parseInt(req.body.stock);
     const prod_price = parseFloat(req.body.prod_price);
     const sellig_price = parseFloat(req.body.sellig_price);
 
-    if (isNaN(stock) || isNaN(prod_price) || isNaN(sellig_price) || stock <= 0 || prod_price <= 0 || sellig_price <= 0) {
-      return res.status(400).json({ error: "Stock, Actual Price, and Selling Price must be numerical and greater than 0." });
+    if (
+      isNaN(stock) ||
+      isNaN(prod_price) ||
+      isNaN(sellig_price) ||
+      stock <= 0 ||
+      prod_price <= 0 ||
+      sellig_price <= 0
+    ) {
+      return res
+        .status(400)
+        .json({
+          error:
+            "Stock, Actual Price, and Selling Price must be numerical and greater than 0.",
+        });
     }
 
     // Validate the number of images uploaded
     if (!req.files.images || req.files.images.length < 2) {
-      return res.status(400).json({ error: "At least 2 secondary images are required." });
+      return res
+        .status(400)
+        .json({ error: "At least 2 secondary images are required." });
     }
-    
- 
+
     let seconaryImages = [];
     req.files.images.forEach((e) => {
       seconaryImages.push({
@@ -42,16 +53,29 @@ const add_product = async (req, res) => {
         path: e.path,
       };
     });
-    
 
     seconaryImages.forEach(async (image) => {
-      await sharp(path.join(__dirname + `/../public/admin-assets/imgs/items/${image.name}`))
+      await sharp(
+        path.join(
+          __dirname + `/../public/admin-assets/imgs/items/${image.name}`
+        )
+      )
         .resize(480, 480)
-        .toFile(path.join(__dirname + `/../public/uploads/products/${image.name}`));
+        .toFile(
+          path.join(__dirname + `/../public/uploads/products/${image.name}`)
+        );
     });
-    await sharp(path.join(__dirname + `/../public/admin-assets/imgs/items/${PrimaryImage.name}`))
+    await sharp(
+      path.join(
+        __dirname + `/../public/admin-assets/imgs/items/${PrimaryImage.name}`
+      )
+    )
       .resize(480, 480)
-      .toFile(path.join(__dirname + `/../public/uploads/products/${PrimaryImage.name}`));
+      .toFile(
+        path.join(
+          __dirname + `/../public/uploads/products/${PrimaryImage.name}`
+        )
+      );
     const product = new Product({
       product_name: req.body.product_name,
       brand_name: req.body.brand_name,
@@ -65,10 +89,8 @@ const add_product = async (req, res) => {
       primary_image: PrimaryImage,
       secondary_images: seconaryImages,
     });
-   
-      await product.save();
-    
-    
+
+    await product.save();
 
     //req.flash('success', 'New product Added Sucessfully');
     res.redirect("/admin/product");
@@ -83,7 +105,6 @@ const render_product_page = async (req, res) => {
   const currentPage = parseInt(req.query.page) || 1;
   const perPage = 4; // Number of products per page
   try {
- 
     const totalProducts = await Product.countDocuments({ delete: false });
     const totalPages = Math.ceil(totalProducts / perPage);
     const skip = (currentPage - 1) * perPage;
@@ -97,8 +118,7 @@ const render_product_page = async (req, res) => {
       error: req.flash("false")[0],
       totalPages: totalPages,
       currentPage: currentPage,
-      itemsPerPage :perPage,
-     
+      itemsPerPage: perPage,
     });
   } catch (error) {
     console.error("Error rendering product page:", error);
@@ -145,11 +165,11 @@ const getAllProducts = async (skip, perPage) => {
       },
     },
     {
-      $skip: skip
-  },
-  {
-      $limit: perPage
-  }
+      $skip: skip,
+    },
+    {
+      $limit: perPage,
+    },
   ]);
   return products;
 };
@@ -230,7 +250,7 @@ const render_edit_product = async (req, res) => {
 const update_product = async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.body.id });
-    
+
     if (req.files != null) {
       // Handle primary image update
       let primaryImage = req.files.primaryImage;
@@ -238,30 +258,55 @@ const update_product = async (req, res) => {
       if (primaryImage) {
         product.primary_image.name = primaryImage[0].filename;
         product.primary_image.path = primaryImage[0].path;
-        await sharp(path.join(__dirname + `/../public/admin-assets/imgs/items/${product.primary_image.name}`))
-        .resize(480, 480)
-        .toFile(path.join(__dirname + `/../public/uploads/products/${product.primary_image.name}`));
+        await sharp(
+          path.join(
+            __dirname +
+              `/../public/admin-assets/imgs/items/${product.primary_image.name}`
+          )
+        )
+          .resize(480, 480)
+          .toFile(
+            path.join(
+              __dirname +
+                `/../public/uploads/products/${product.primary_image.name}`
+            )
+          );
       }
 
       // Handle secondary image update
       let secondaryImages = req.files.images;
       if (secondaryImages) {
-          for (let i = 0; i < secondaryImages.length; i++) {
-             
-              product.secondary_images[i].name = secondaryImages[i].filename;
-              product.secondary_images[i].path = secondaryImages[i].path;
-            }
-           
-            secondaryImages.forEach(async (image) => {
-                await sharp(path.join(__dirname + `/../public/admin-assets/imgs/items/${image.filename}`))
-                  .resize(480, 480)
-                  .toFile(path.join(__dirname + `/../public/uploads/products/${image.filename}`));
-              });
+        for (let i = 0; i < secondaryImages.length; i++) {
+          product.secondary_images[i].name = secondaryImages[i].filename;
+          product.secondary_images[i].path = secondaryImages[i].path;
         }
-         
+
+        secondaryImages.forEach(async (image) => {
+          await sharp(
+            path.join(
+              __dirname + `/../public/admin-assets/imgs/items/${image.filename}`
+            )
+          )
+            .resize(480, 480)
+            .toFile(
+              path.join(
+                __dirname + `/../public/uploads/products/${image.filename}`
+              )
+            );
+        });
+      }
     }
 
-    const {product_name,brand_name,description,stock,prod_price,sellig_price,color,status} = req.body;
+    const {
+      product_name,
+      brand_name,
+      description,
+      stock,
+      prod_price,
+      sellig_price,
+      color,
+      status,
+    } = req.body;
     const categoryID = new mongoose.Types.ObjectId(req.body.category);
 
     product.product_name = product_name;
@@ -272,7 +317,7 @@ const update_product = async (req, res) => {
     product.actual_price = prod_price;
     product.selling_price = sellig_price;
     product.color = color;
-    
+
     product.status = status;
     //await product.save();
     await Product.findByIdAndUpdate({ _id: req.body.id }, product);

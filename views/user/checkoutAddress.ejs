@@ -3,6 +3,7 @@
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:11:15 GMT -->
+
 <head>
     <meta charset="utf-8">
     <title>Bolt & Wire</title>
@@ -28,7 +29,7 @@
                         <div class="header-info">
                             <ul>
                                 <li><i class="fi-rs-smartphone"></i> <a href="#">(+01) - 2345 - 6789</a></li>
-                                <li><i class="fi-rs-marker"></i><a  href="page-contact.html">Our location</a></li>
+                                <li><i class="fi-rs-marker"></i><a href="page-contact.html">Our location</a></li>
                             </ul>
                         </div>
                     </div>
@@ -36,9 +37,11 @@
                         <div class="text-center">
                             <div id="news-flash" class="d-inline-block">
                                 <ul>
-                                    <li>Get great devices up to 50% off <a href="shop-grid-right.html">View details</a></li>
+                                    <li>Get great devices up to 50% off <a href="shop-grid-right.html">View details</a>
+                                    </li>
                                     <li>Supper Value Deals - Save more with coupons</li>
-                                    <li>Trendy 25silver jewelry, save up 35% off today <a href="shop-grid-right.html">Shop now</a></li>
+                                    <li>Trendy 25silver jewelry, save up 35% off today <a
+                                            href="shop-grid-right.html">Shop now</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -47,9 +50,11 @@
                         <div class="header-info header-info-right">
                             <ul>
                                 <li>
-                                    <a class="language-dropdown-active" href="#"> <i class="fi-rs-world"></i> English <i class="fi-rs-angle-small-down"></i></a>
+                                    <a class="language-dropdown-active" href="#"> <i class="fi-rs-world"></i> English <i
+                                            class="fi-rs-angle-small-down"></i></a>
                                     <ul class="language-dropdown">
-                                        <li><a href="#"><img src="assets/imgs/theme/flag-fr.png" alt="">Français</a></li>
+                                        <li><a href="#"><img src="assets/imgs/theme/flag-fr.png" alt="">Français</a>
+                                        </li>
                                         <li><a href="#"><img src="assets/imgs/theme/flag-dt.png" alt="">Deutsch</a></li>
                                         <li><a href="#"><img src="assets/imgs/theme/flag-ru.png" alt="">Pусский</a></li>
                                     </ul>
@@ -58,14 +63,18 @@
 
                                     <% if (user) { %>
                                         <!-- If user is logged in, show logout button -->
-                                        <li><a href="/myaccount"><h6><%= user.name %></h6></a></li>
+                                <li><a href="/myaccount">
+                                        <h6>
+                                            <%= user.name %>
+                                        </h6>
+                                    </a></li>
                                 <li><a href="/logout">Logout</a></li>
-        
+
                                 <% } else { %>
                                     <!-- If user is not logged in, show login button -->
                                     <li><a href="/signup">Log In / Sign Up</a></li>
                                     <% } %>
-        
+
                                         </li>
                             </ul>
                         </div>
@@ -79,11 +88,12 @@
                     <div class="logo logo-width-1">
                         <a href="/"><img src="assets/imgs/theme/mainlogo.png" alt="logo"></a>
                     </div>
-                    <div class="main-menu main-menu-grow main-menu-padding-1 main-menu-lh-1 main-menu-mrg-1 hm3-menu-padding d-none d-lg-block hover-boder">
+                    <div
+                        class="main-menu main-menu-grow main-menu-padding-1 main-menu-lh-1 main-menu-mrg-1 hm3-menu-padding d-none d-lg-block hover-boder">
                         <nav>
                             <ul>
                                 <li><a class="active" href="/">Home <i class="fi-rs-angle-down"></i></a>
-                                   
+
                                 </li>
                                 <li><a href="shop-grid-right.html">Shop <i class="fi-rs-angle-down"></i></a>
                                     <ul class="sub-menu">
@@ -106,7 +116,7 @@
                                         <li><a href="shop-compare.html">Shop – Compare</a></li>
                                     </ul>
                                 </li>
-                             
+
                                 <li><a href="#">Pages <i class="fi-rs-angle-down"></i></a>
                                     <ul class="sub-menu">
                                         <li><a href="page-about.html">About Us</a></li>
@@ -160,7 +170,8 @@
                                     <ul>
                                         <li>
                                             <div class="shopping-cart-img">
-                                                <a href="shop-product-right.html"><img alt="Evara" src="assets/imgs/shop/thumbnail-3.jpg"></a>
+                                                <a href="shop-product-right.html"><img alt="Evara"
+                                                        src="assets/imgs/shop/thumbnail-3.jpg"></a>
                                             </div>
                                             <div class="shopping-cart-title">
                                                 <h4><a href="shop-product-right.html">Plain Striola Shirts</a></h4>
@@ -172,7 +183,8 @@
                                         </li>
                                         <li>
                                             <div class="shopping-cart-img">
-                                                <a href="shop-product-right.html"><img alt="Evara" src="assets/imgs/shop/thumbnail-1.jpg"></a>
+                                                <a href="shop-product-right.html"><img alt="Evara"
+                                                        src="assets/imgs/shop/thumbnail-1.jpg"></a>
                                             </div>
                                             <div class="shopping-cart-title">
                                                 <h4><a href="shop-product-right.html">Macbook Pro 2022</a></h4>
@@ -234,14 +246,20 @@
                         </a>
                         <div class="categori-dropdown-wrap categori-dropdown-active-small">
                             <ul>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-dress"></i>Women's Clothing</a></li>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-tshirt"></i>Men's Clothing</a></li>
-                                <li> <a href="shop-grid-right.html"><i class="evara-font-smartphone"></i> Cellphones</a></li>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-desktop"></i>Computer & Office</a></li>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-cpu"></i>Consumer Electronics</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-dress"></i>Women's Clothing</a>
+                                </li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-tshirt"></i>Men's Clothing</a>
+                                </li>
+                                <li> <a href="shop-grid-right.html"><i class="evara-font-smartphone"></i> Cellphones</a>
+                                </li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-desktop"></i>Computer &
+                                        Office</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-cpu"></i>Consumer
+                                        Electronics</a></li>
                                 <li><a href="shop-grid-right.html"><i class="evara-font-home"></i>Home & Garden</a></li>
                                 <li><a href="shop-grid-right.html"><i class="evara-font-high-heels"></i>Shoes</a></li>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-teddy-bear"></i>Mother & Kids</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-teddy-bear"></i>Mother &
+                                        Kids</a></li>
                                 <li><a href="shop-grid-right.html"><i class="evara-font-kite"></i>Outdoor fun</a></li>
                             </ul>
                         </div>
@@ -250,16 +268,18 @@
                     <nav>
                         <ul class="mobile-menu">
                             <li class="menu-item"><span class="menu-expand"></span><a href="/">Home</a>
-                               
+
                             </li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="shop-grid-right.html">shop</a>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                    href="shop-grid-right.html">shop</a>
                                 <ul class="dropdown">
                                     <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
                                     <li><a href="shop-grid-left.html">Shop Grid – Left Sidebar</a></li>
                                     <li><a href="shop-list-right.html">Shop List – Right Sidebar</a></li>
                                     <li><a href="shop-list-left.html">Shop List – Left Sidebar</a></li>
                                     <li><a href="shop-fullwidth.html">Shop - Wide</a></li>
-                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Single Product</a>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                            href="#">Single Product</a>
                                         <ul class="dropdown">
                                             <li><a href="shop-product-right.html">Product – Right Sidebar</a></li>
                                             <li><a href="shop-product-left.html">Product – Left Sidebar</a></li>
@@ -273,9 +293,11 @@
                                     <li><a href="shop-compare.html">Shop – Compare</a></li>
                                 </ul>
                             </li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Mega menu</a>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Mega
+                                    menu</a>
                                 <ul class="dropdown">
-                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Women's Fashion</a>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                            href="#">Women's Fashion</a>
                                         <ul class="dropdown">
                                             <li><a href="shop-product-right.html">Dresses</a></li>
                                             <li><a href="shop-product-right.html">Blouses & Shirts</a></li>
@@ -283,14 +305,16 @@
                                             <li><a href="shop-product-right.html">Women's Sets</a></li>
                                         </ul>
                                     </li>
-                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Men's Fashion</a>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                            href="#">Men's Fashion</a>
                                         <ul class="dropdown">
                                             <li><a href="shop-product-right.html">Jackets</a></li>
                                             <li><a href="shop-product-right.html">Casual Faux Leather</a></li>
                                             <li><a href="shop-product-right.html">Genuine Leather</a></li>
                                         </ul>
                                     </li>
-                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Technology</a>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                            href="#">Technology</a>
                                         <ul class="dropdown">
                                             <li><a href="shop-product-right.html">Gaming Laptops</a></li>
                                             <li><a href="shop-product-right.html">Ultraslim Laptops</a></li>
@@ -301,13 +325,15 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="blog-category-fullwidth.html">Blog</a>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                    href="blog-category-fullwidth.html">Blog</a>
                                 <ul class="dropdown">
                                     <li><a href="blog-category-grid.html">Blog Category Grid</a></li>
                                     <li><a href="blog-category-list.html">Blog Category List</a></li>
                                     <li><a href="blog-category-big.html">Blog Category Big</a></li>
                                     <li><a href="blog-category-fullwidth.html">Blog Category Wide</a></li>
-                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Single Product Layout</a>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                            href="#">Single Product Layout</a>
                                         <ul class="dropdown">
                                             <li><a href="blog-post-left.html">Left Sidebar</a></li>
                                             <li><a href="blog-post-right.html">Right Sidebar</a></li>
@@ -342,10 +368,10 @@
                 </div>
                 <div class="mobile-header-info-wrap mobile-header-border">
                     <div class="single-mobile-header-info mt-30">
-                        <a  href="page-contact.html"> Our location </a>
+                        <a href="page-contact.html"> Our location </a>
                     </div>
                     <div class="single-mobile-header-info">
-                        
+
                     </div>
                     <div class="single-mobile-header-info">
                         <a href="#">(+01) - 2345 - 6789 </a>
@@ -373,186 +399,197 @@
             </div>
         </div>
         <section class="pt-150 pb-150">
-           
+
             <div class="container">
                 <div class="row">
                     <div class="col-lg-10 m-auto">
                         <div class="row">
                             <div class="col-md-4">
-                              
+
                             </div>
 
                             <div class="col-md-8">
-                              <div class="tab-content dashboard-content">
+                                <div class="tab-content dashboard-content">
 
 
 
-                                <div class="container mt-9">
+                                    <div class="container mt-9">
 
-    <form action="/checkout-address"method="POST">
+                                        <form action="/checkout-address" method="POST">
 
-        <div class="form-row">
-          <div class="form-group col-md-6">
-           <h4>Add your Address</h4>
-          </div>
-          <div class="form-group col-md-6">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="mobile">Mobile No.</label>
-            <input type="tel" id="mobile" name="mobile" class="form-control" placeholder="Enter your mobile number">
-          </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <h4>Add your Address</h4>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="name">Name</label>
+                                                    <input type="text" id="name" name="name" class="form-control"
+                                                        placeholder="Enter your name">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="mobile">Mobile No.</label>
+                                                    <input type="tel" id="mobile" name="mobile" class="form-control"
+                                                        placeholder="Enter your mobile number">
+                                                </div>
+                                            </div>
+                                            <div class="form-group text-area">
+                                                <label for="address">Address</label>
+                                                <textarea id="address" name="address" class="form-control"
+                                                    placeholder="Enter your address" rows="3"></textarea>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-3">
+                                                    <label for="pincode">Pin Code</label>
+                                                    <input type="text" id="pincode" name="pincode" class="form-control"
+                                                        placeholder="Enter your pin code">
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label for="state">State</label>
+                                                    <input type="text" id="state" name="state" class="form-control"
+                                                        placeholder="Enter your state">
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label for="district">District</label>
+                                                    <input type="text" id="district" name="district"
+                                                        class="form-control" placeholder="Enter your district">
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label for="city">City</label>
+                                                    <input type="text" id="city" name="city" class="form-control"
+                                                        placeholder="Enter your city">
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn probut">Submit</button>
+                                        </form>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+    </main>
+    <footer class="main">
+
+        <section class="section-padding footer-mid">
+            <div class="container pt-15 pb-20">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="widget-about font-md mb-md-5 mb-lg-0">
+                            <div class="logo logo-width-1 wow fadeIn animated">
+                                <a href="/"><img src="assets/imgs/theme/mainlogo.png" alt="logo"></a>
+                            </div>
+                            <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
+                            <p class="wow fadeIn animated">
+                                <strong>Address: </strong>562 Wellington Road, Street 32, San Francisco
+                            </p>
+                            <p class="wow fadeIn animated">
+                                <strong>Phone: </strong>+01 2222 365 /(+91) 01 2345 6789
+                            </p>
+                            <p class="wow fadeIn animated">
+                                <strong>Hours: </strong>10:00 - 18:00, Mon - Sat
+                            </p>
+                            <h5 class="mb-10 mt-30 fw-600 text-grey-4 wow fadeIn animated">Follow Us</h5>
+                            <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0">
+                                <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                                <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                                <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                                <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                                <a href="#"><img src="assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-3">
+                        <h5 class="widget-title wow fadeIn animated">About</h5>
+                        <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Delivery Information</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms &amp; Conditions</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Support Center</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2  col-md-3">
+                        <h5 class="widget-title wow fadeIn animated">My Account</h5>
+                        <ul class="footer-list wow fadeIn animated">
+                            <li><a href="#">Sign In</a></li>
+                            <li><a href="#">View Cart</a></li>
+                            <li><a href="#">My Wishlist</a></li>
+                            <li><a href="#">Track My Order</a></li>
+                            <li><a href="#">Help</a></li>
+                            <li><a href="#">Order</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <h5 class="widget-title wow fadeIn animated">Install App</h5>
+                        <div class="row">
+                            <div class="col-md-8 col-lg-12">
+                                <p class="wow fadeIn animated">From App Store or Google Play</p>
+                                <div class="download-app wow fadeIn animated">
+                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active"
+                                            src="assets/imgs/theme/app-store.jpg" alt=""></a>
+                                    <a href="#" class="hover-up"><img src="assets/imgs/theme/google-play.jpg"
+                                            alt=""></a>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
+                                <p class="mb-20 wow fadeIn animated">Secured Payment Gateways</p>
+                                <img class="wow fadeIn animated" src="assets/imgs/theme/payment-method.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container pb-20 wow fadeIn animated">
+            <div class="row">
+                <div class="col-12 mb-20">
+                    <div class="footer-bottom"></div>
+                </div>
+                <div class="col-lg-6">
+                    <p class="float-md-left font-sm text-muted mb-0">&copy; 2022, <strong
+                            class="text-brand">Evara</strong> - HTML Ecommerce Template </p>
+                </div>
+                <div class="col-lg-6">
+                    <p class="text-lg-end text-start font-sm text-muted mb-0">
+                        Designed by <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>. All rights
+                        reserved
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="form-group text-area">
-          <label for="address">Address</label>
-          <textarea id="address" name="address" class="form-control" placeholder="Enter your address" rows="3"></textarea>
-        </div>
-        <div class="form-row">
-          <div class="form-group col-md-3">
-            <label for="pincode">Pin Code</label>
-            <input type="text" id="pincode" name="pincode" class="form-control" placeholder="Enter your pin code">
-          </div>
-          <div class="form-group col-md-3">
-            <label for="state">State</label>
-            <input type="text" id="state" name="state" class="form-control" placeholder="Enter your state">
-          </div>
-          <div class="form-group col-md-3">
-            <label for="district">District</label>
-            <input type="text" id="district" name="district" class="form-control" placeholder="Enter your district">
-          </div>
-          <div class="form-group col-md-3">
-            <label for="city">City</label>
-            <input type="text" id="city" name="city" class="form-control" placeholder="Enter your city">
-          </div>
-        </div>
-        <button type="submit" class="btn probut">Submit</button>
-      </form>
-</div>
+    </footer>
 
-    
-    </div>
-    </div>
-  </div>
-</div>
-</div>
-</section>
-</main>
-<footer class="main">
-
-<section class="section-padding footer-mid">
-<div class="container pt-15 pb-20">
-<div class="row">
-  <div class="col-lg-4 col-md-6">
-      <div class="widget-about font-md mb-md-5 mb-lg-0">
-          <div class="logo logo-width-1 wow fadeIn animated">
-              <a href="/"><img src="assets/imgs/theme/mainlogo.png" alt="logo"></a>
-          </div>
-          <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
-          <p class="wow fadeIn animated">
-              <strong>Address: </strong>562 Wellington Road, Street 32, San Francisco
-          </p>
-          <p class="wow fadeIn animated">
-              <strong>Phone: </strong>+01 2222 365 /(+91) 01 2345 6789
-          </p>
-          <p class="wow fadeIn animated">
-              <strong>Hours: </strong>10:00 - 18:00, Mon - Sat
-          </p>
-          <h5 class="mb-10 mt-30 fw-600 text-grey-4 wow fadeIn animated">Follow Us</h5>
-          <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0">
-              <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
-              <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
-              <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
-              <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
-              <a href="#"><img src="assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
-          </div>
-      </div>
-  </div>
-  <div class="col-lg-2 col-md-3">
-      <h5 class="widget-title wow fadeIn animated">About</h5>
-      <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Delivery Information</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms &amp; Conditions</a></li>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">Support Center</a></li>
-      </ul>
-  </div>
-  <div class="col-lg-2  col-md-3">
-      <h5 class="widget-title wow fadeIn animated">My Account</h5>
-      <ul class="footer-list wow fadeIn animated">
-          <li><a href="#">Sign In</a></li>
-          <li><a href="#">View Cart</a></li>
-          <li><a href="#">My Wishlist</a></li>
-          <li><a href="#">Track My Order</a></li>
-          <li><a href="#">Help</a></li>
-          <li><a href="#">Order</a></li>
-      </ul>
-  </div>
-  <div class="col-lg-4">
-      <h5 class="widget-title wow fadeIn animated">Install App</h5>
-      <div class="row">
-          <div class="col-md-8 col-lg-12">
-              <p class="wow fadeIn animated">From App Store or Google Play</p>
-              <div class="download-app wow fadeIn animated">
-                  <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active" src="assets/imgs/theme/app-store.jpg" alt=""></a>
-                  <a href="#" class="hover-up"><img src="assets/imgs/theme/google-play.jpg" alt=""></a>
-              </div>
-          </div>
-          <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
-              <p class="mb-20 wow fadeIn animated">Secured Payment Gateways</p>
-              <img class="wow fadeIn animated" src="assets/imgs/theme/payment-method.png" alt="">
-          </div>
-      </div>
-  </div>
-</div>
-</div>
-</section>
-<div class="container pb-20 wow fadeIn animated">
-<div class="row">
-<div class="col-12 mb-20">
-  <div class="footer-bottom"></div>
-</div>
-<div class="col-lg-6">
-  <p class="float-md-left font-sm text-muted mb-0">&copy; 2022, <strong class="text-brand">Evara</strong> - HTML Ecommerce Template </p>
-</div>
-<div class="col-lg-6">
-  <p class="text-lg-end text-start font-sm text-muted mb-0">
-      Designed by <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>. All rights reserved
-  </p>
-</div>
-</div>
-</div>
-</footer>
-
-<!-- Vendor JS-->
-<script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
-<script src="/assets/js/vendor/jquery-3.6.0.min.js"></script>
-<script src="/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
-<script src="/assets/js/vendor/bootstrap.bundle.min.js"></script>
-<script src="/assets/js/plugins/slick.js"></script>
-<script src="/assets/js/plugins/jquery.syotimer.min.js"></script>
-<script src="/assets/js/plugins/wow.js"></script>
-<script src="/assets/js/plugins/jquery-ui.js"></script>
-<script src="/assets/js/plugins/perfect-scrollbar.js"></script>
-<script src="/assets/js/plugins/magnific-popup.js"></script>
-<script src="/assets/js/plugins/select2.min.js"></script>
-<script src="/assets/js/plugins/waypoints.js"></script>
-<script src="/assets/js/plugins/counterup.js"></script>
-<script src="/assets/js/plugins/jquery.countdown.min.js"></script>
-<script src="/assets/js/plugins/images-loaded.js"></script>
-<script src="/assets/js/plugins/isotope.js"></script>
-<script src="/assets/js/plugins/scrollup.js"></script>
-<script src="/assets/js/plugins/jquery.vticker-min.js"></script>
-<script src="/assets/js/plugins/jquery.theia.sticky.js"></script>
-<!-- Template  JS -->
-<script src="/assets/js/maind134.js?v=3.4"></script>
+    <!-- Vendor JS-->
+    <script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="/assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="/assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/plugins/slick.js"></script>
+    <script src="/assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="/assets/js/plugins/wow.js"></script>
+    <script src="/assets/js/plugins/jquery-ui.js"></script>
+    <script src="/assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="/assets/js/plugins/magnific-popup.js"></script>
+    <script src="/assets/js/plugins/select2.min.js"></script>
+    <script src="/assets/js/plugins/waypoints.js"></script>
+    <script src="/assets/js/plugins/counterup.js"></script>
+    <script src="/assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="/assets/js/plugins/images-loaded.js"></script>
+    <script src="/assets/js/plugins/isotope.js"></script>
+    <script src="/assets/js/plugins/scrollup.js"></script>
+    <script src="/assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="/assets/js/plugins/jquery.theia.sticky.js"></script>
+    <!-- Template  JS -->
+    <script src="/assets/js/maind134.js?v=3.4"></script>
 
 
 </body>
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:11:15 GMT -->
-</html>
 
+</html>
