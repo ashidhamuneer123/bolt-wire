@@ -251,7 +251,7 @@
                                                 Status
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="statusDropdown-<%= order._id %>">
-                                                <li><a class="dropdown-item" href="#" onclick="updateStatus('<%= order._id %>','Processing','<%= item.productId._id %>')">Processing</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="updateStatus('<%= order._id %>','Returned','<%= item.productId._id %>')">Return Approved</a></li>
                                                 <li><a class="dropdown-item" href="#" onclick="cancelOrder('<%= order._id %>','<%= item.productId._id %>','<%= item.quantity%>')">Cancelled</a></li>
                                                 <li><a class="dropdown-item" href="#" onclick="updateStatus('<%= order._id %>', 'Delivered','<%= item.productId._id %>')">Delivered</a></li>
                                             </ul>

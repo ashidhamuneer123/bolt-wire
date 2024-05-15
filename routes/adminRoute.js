@@ -44,7 +44,7 @@ admin_route.get('/product',auth.isLogin,productController.render_product_page )
 //new product page
 admin_route.get('/new-product',auth.isLogin,productController.render_new_product)
 
-admin_route.post('/new-product',auth.isLogin,upload.fields([{name:"images"},{name:"primaryImage"}]),productController.add_product);
+admin_route.post('/new-product',auth.isLogin,upload.any(),productController.add_product);
 
 admin_route.get('/edit-product/:id',auth.isLogin,productController.render_edit_product)
 

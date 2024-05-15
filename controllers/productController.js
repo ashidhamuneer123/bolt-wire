@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const { json } = require("body-parser");
 const sharp = require("sharp");
 const path = require("path");
+const Order = require('../models/orderModel')
 
 //add product function
 const add_product = async (req, res) => {
@@ -32,50 +33,29 @@ const add_product = async (req, res) => {
     }
 
     // Validate the number of images uploaded
-    if (!req.files.images || req.files.images.length < 2) {
+    if (!req.files || req.files.length < 2) {
       return res
         .status(400)
         .json({ error: "At least 2 secondary images are required." });
     }
-
-    let seconaryImages = [];
-    req.files.images.forEach((e) => {
-      seconaryImages.push({
-        name: e.filename,
-        path: e.path,
-      });
-    });
-
     let PrimaryImage;
-    req.files.primaryImage.forEach((e) => {
-      PrimaryImage = {
-        name: e.filename,
-        path: e.path,
-      };
+    let seconaryImages = [];
+    req.files.forEach((e) => {
+      console.log(e);
+      if(e.fieldname === 'primary-image') {
+        PrimaryImage = {
+          name: e.filename,
+          path: e.path,
+        };
+      }
+      else{
+        let image = {
+          name: e.filename,
+          path: e.path
+        }
+      seconaryImages.push(image);}
     });
-
-    seconaryImages.forEach(async (image) => {
-      await sharp(
-        path.join(
-          __dirname + `/../public/admin-assets/imgs/items/${image.name}`
-        )
-      )
-        .resize(480, 480)
-        .toFile(
-          path.join(__dirname + `/../public/uploads/products/${image.name}`)
-        );
-    });
-    await sharp(
-      path.join(
-        __dirname + `/../public/admin-assets/imgs/items/${PrimaryImage.name}`
-      )
-    )
-      .resize(480, 480)
-      .toFile(
-        path.join(
-          __dirname + `/../public/uploads/products/${PrimaryImage.name}`
-        )
-      );
+console.log(seconaryImages);
     const product = new Product({
       product_name: req.body.product_name,
       brand_name: req.body.brand_name,
@@ -330,6 +310,8 @@ const update_product = async (req, res) => {
 
 //delete product
 const deleteProduct = async (req, res) => {
+ 
+
   await Product.findByIdAndUpdate({ _id: req.params.id }, { delete: true });
   req.flash("success", "Poduct Deleted successfully");
   res.redirect("/admin/product");

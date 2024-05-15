@@ -206,27 +206,30 @@ border-color: #0056b3;
             </div>
         </header>
         <section style="position: relative;" class="new-product p-md-5">
+
             <div class="h3 fw-bold text-second px-4">
                 <a class="text-second h6" style="text-decoration: none;" href="/admin/product"><i
                         class="fa-solid fa-left-long"></i><span>Product</span></a>
                 <br><span>New Product</span>
             </div>
-            <form id="addProductForm" class="row d-flex justify-content-center" action="/admin/new-product" method="post" enctype="multipart/form-data">
+            <form id="addproduct" class="row d-flex justify-content-center" action="/admin/new-product" method="post" enctype="multipart/form-data">
                 <section class="left-secton col-md-6 p-3">
                    <!---->
+                                 
+
                    <div class="card p-md-5 p-2 me-md-5">
                     <h5>Choose product images </h5>
                     <span class="fw-normal mb-4 text-success">file supports only: jpeg,jpg,png,webp</span>
                     <span class="fw-bold">Select the Primary Image</span>
                     <div class="d-flex align-items-center justify-content-center">
-                        <img id="previewPrimary" class="border my-1 rounded" width="100rem" height="100rem" src="" alt="">
+                        <input class="form-control" type="file" id="primaryimageInput">
+                   <div id="PrimaryimageContainer"  ></div>
                     </div>
-                    <input id="primaryImageInput" type="file" accept=".jpg,.jpeg,.png,.webp,.svg" class="form-control FilUploader" class="mb-3" name="primaryImage" required />
-                    <input id="result" type="hidden" name="" value="">
-                    <div id="previewContainer" class="d-flex align-items-center justify-content-center"></div>
+            
 
                     <span class="fw-bold">Select secondary images <br> <span class="fw-normal text-success">Maximum 3 images</span></span>
-                    <input type="file" id="image" class="form-control FilUploader" accept=".jpg,.jpeg,.png,.webp,.svg" name="images" class="mb-3" multiple required />
+                    <input class="form-control" type="file" id="imageInput" multiple>
+                   <div id="imageContainer"  ></div>
                 </div>
                 
                     <div class="form-floating my-2 me-md-5">
@@ -273,6 +276,8 @@ border-color: #0056b3;
                         </div>
                        
                     </div>
+                           <!-- Add the error message element -->
+    <div id="errorMessage" class="alert alert-danger" style="display: none;"></div>
                     <div class="btn-group">
                         <button type="submit" class="add-btn py-3 highlighted-btn">Submit</button>
                         
@@ -308,87 +313,250 @@ border-color: #0056b3;
         </footer>
     </main>
     <script>
-        // Image preview for primary image
-        const primaryImageInput = document.getElementById('primaryImageInput');
-        const previewPrimary = document.getElementById('previewPrimary');
-        primaryImageInput.addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                previewPrimary.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
+        const form = document.getElementById("addproduct");
+  let totalimages = 0;
+
+  function imageupload(event) {
+    const files = event.target.files;
+    const imagecontainer = document.getElementById("imageContainer");
+    const maximum = 3;
+
+    const totalupload = totalimages + files.length;
+    if (totalupload > maximum) {
+        alert(`Oops! Upload only ${maximum} files. Sorry`);
+event.target.value = "";
+return;
+    }
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+      if (!file.type.startsWith("image/")) {
+        console.log("File is not an image.", file.type);
+        continue;
+      }
+
+      const imgdiv = document.createElement("div");
+      imgdiv.classList.add("image-div");
+
+      const img = document.createElement("img");
+      img.style.height = "300px";
+      img.style.width = "300px";
+      img.setAttribute("name", `image`);
+      img.classList.add("uploaded-image");
+
+      const deletebutton = document.createElement("button");
+      deletebutton.textContent = "Delete";
+      deletebutton.classList.add("btn", "btn-danger", "m-2");
+
+      deletebutton.addEventListener("click", function () {
+        totalimages--;
+        imgdiv.remove();
+      });
+
+      reader.onload = function (event) {
+        img.src = event.target.result;
+
+        const cropperdiv = document.createElement("div");
+        cropperdiv.classList.add("cropper-container");
+        cropperdiv.appendChild(img);
+
+        imgdiv.appendChild(cropperdiv);
+        const cropper = new Cropper(img, {
+          dragMode: "move",
+          aspectRatio: 1,
+          autoCropArea: 0.8,
+          restore: false,
+          guides: false,
+          center: false,
+          responsive: true,
+          highlight: false,
+          cropBoxMovable: false,
+          cropBoxResizable: false,
+          toggleDragModeOnDblclick: false,
         });
 
-        // Image preview for secondary images
-    const secondaryImageInput = document.getElementById('image');
-    secondaryImageInput.addEventListener('change', function(event) {
-        const files = event.target.files;
-        const previewContainer = document.getElementById('previewContainer');
-        previewContainer.innerHTML = ''; // Clear previous previews
+        const cropbtn = document.createElement("button");
+        cropbtn.classList.add("btn", "btn-primary", "m-2");
+        cropbtn.textContent = "Crop";
+        cropbtn.addEventListener("click", function (event) {
+          event.preventDefault();
+          const croppedCanvas = cropper.getCroppedCanvas();
 
-        // Loop through each selected file
-        for (const file of files) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.classList.add('border', 'my-1', 'rounded');
-                img.width = 100;
-                img.height = 100;
-                previewContainer.appendChild(img); // Append preview to container
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-    </script>
+          img.src = croppedCanvas.toDataURL();
 
-    <!-- JavaScript for image cropping -->
+          croppedCanvas.toBlob((blob) => {
+            const fileName = Date.now();
+            const file = new File([blob], `${fileName}.jpg`, {
+              type: "image/jpeg",
+            });
+
+            if (window.FileList && window.DataTransfer) {
+              const dataTransfer = new DataTransfer();
+              dataTransfer.items.add(file);
+              const input = document.createElement("input");
+              input.type = "file";
+              input.name = `image${i}`;
+              input.files = dataTransfer.files;
+              form.appendChild(input);
+              input.style.display = "none";
+            } else {
+              console.error(
+                "FileList and DataTransfer are not supported in this browser."
+              );
+            }
+          });
+          cropper.destroy();
+          cropbtn.remove();
+        });
+
+        imgdiv.appendChild(cropbtn);
+        imgdiv.appendChild(deletebutton);
+      };
+
+      reader.readAsDataURL(file);
+
+      imagecontainer.appendChild(imgdiv);
+    }
+    totalimages = totalupload;
+  }
+  const imageInput = document.getElementById("imageInput");
+
+  imageInput.addEventListener("change", imageupload);
+   
+    // const imagecontainer = document.getElementById("PrimaryimageContainer");
+//     const form = document.getElementById("addproduct");
+//   let totalimages = 0;
+
+  function primaryimageupload(event) {
+    const file = event.target.files[0];
+    const imagecontainer = document.getElementById("PrimaryimageContainer");
+ 
+      const reader = new FileReader();
+      if (!file.type.startsWith("image/")) {
+        console.log("File is not an image.", file.type);
+        return;
+      }
+
+      const imgdiv = document.createElement("primarydiv");
+      imgdiv.classList.add("primary-image-div");
+
+      const img = document.createElement("img");
+      img.style.height = "300px";
+      img.style.width = "300px";
+      img.setAttribute("name", `primary-image`);
+      img.classList.add("uploaded-image-primary");
+
+      const deletebutton = document.createElement("button");
+      deletebutton.textContent = "Delete";
+      deletebutton.classList.add("btn", "btn-danger", "m-2");
+
+      deletebutton.addEventListener("click", function () {
+        imgdiv.remove();
+      });
+
+      reader.onload = function (event) {
+        img.src = event.target.result;
+
+        const cropperdiv = document.createElement("div");
+        cropperdiv.classList.add("cropper-container");
+        cropperdiv.appendChild(img);
+
+        imgdiv.appendChild(cropperdiv);
+        const cropper = new Cropper(img, {
+          dragMode: "move",
+          aspectRatio: 1,
+          autoCropArea: 0.8,
+          restore: false,
+          guides: false,
+          center: false,
+          responsive: true,
+          highlight: false,
+          cropBoxMovable: false,
+          cropBoxResizable: false,
+          toggleDragModeOnDblclick: false,
+        });
+
+        const cropbtn = document.createElement("button");
+        cropbtn.classList.add("btn", "btn-primary", "m-2");
+        cropbtn.textContent = "Crop";
+        cropbtn.addEventListener("click", function (event) {
+          event.preventDefault();
+          const croppedCanvas = cropper.getCroppedCanvas();
+
+          img.src = croppedCanvas.toDataURL();
+
+          croppedCanvas.toBlob((blob) => {
+            const fileName = Date.now();
+            const file = new File([blob], `primary-${fileName}.jpg`, {
+              type: "image/jpeg",
+            });
+
+            if (window.FileList && window.DataTransfer) {
+              const dataTransfer = new DataTransfer();
+              dataTransfer.items.add(file);
+              const input = document.createElement("input");
+              input.type = "file";
+              input.name = `primary-image`;
+              input.files = dataTransfer.files;
+              form.appendChild(input);
+              input.style.display = "none";
+            } else {
+              console.error(
+                "FileList and DataTransfer are not supported in this browser."
+              );
+            }
+          });
+          cropper.destroy();
+          cropbtn.remove();
+        });
+
+        imgdiv.appendChild(cropbtn);
+        imgdiv.appendChild(deletebutton);
+      };
+
+      reader.readAsDataURL(file);
+
+      imagecontainer.appendChild(imgdiv);
+    
+    totalimages = totalupload;
+  }
+  const primaryimageInput = document.getElementById("primaryimageInput");
+
+  primaryimageInput.addEventListener("change", primaryimageupload);
+   
+</script>
 <script>
-    const primaryImageInput1 = document.getElementById('primaryImageInput');
-    const primaryImageCanvas = document.getElementById('primaryImageCanvas');
-    const cropPrimaryImageBtn = document.getElementById('cropPrimaryImageBtn');
+const addproduct = document.getElementById('addproduct');
 
-    let cropper;
+addproduct.addEventListener('submit', async (event) => {
+  event.preventDefault();
 
-    primaryImageInput1.addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        const reader = new FileReader();
-
-        reader.onload = function(e) {
-            const img = new Image();
-            img.src = e.target.result;
-
-            img.onload = function() {
-                primaryImageCanvas.width = img.width;
-                primaryImageCanvas.height = img.height;
-
-                const ctx = primaryImageCanvas.getContext('2d');
-                ctx.drawImage(img, 0, 0);
-
-                cropper = new Cropper(primaryImageCanvas, {
-                    aspectRatio: 1 / 1,
-                    viewMode: 2,
-                });
-            };
-        };
-
-        reader.readAsDataURL(file);
+  try {
+    const formData = new FormData(addproduct);
+    const response = await fetch('/admin/new-product', {
+      method: 'POST',
+      body: formData
     });
 
-    cropPrimaryImageBtn.addEventListener('click', function() {
-        const canvas = cropper.getCroppedCanvas();
-        canvas.toBlob(function(blob) {
-            const croppedFile = new File([blob], 'primary_image.jpg', { type: 'image/jpeg' });
+    if (!response.ok) {
+      const errorData = await response.json();
+      displayErrorMessage(errorData.error);
+    } else {
+      window.location.href = '/admin/product';
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+    displayErrorMessage('An error occurred. Please try again.');
+  }
+});
 
-            // Now you can upload the cropped file using AJAX or FormData
-            // Example:
-            const formData = new FormData();
-            formData.append('primaryImage', croppedFile);
+function displayErrorMessage(message) {
+  const errorMessageElement = document.getElementById('errorMessage');
+  errorMessageElement.innerText = message;
+  errorMessageElement.style.display = 'block';
+}
 
-            // Send formData to your backend
-        }, 'image/jpeg');
-    });
 </script>
 
     <script src="/admin-assets/js/vendors/jquery-3.6.0.min.js"></script>

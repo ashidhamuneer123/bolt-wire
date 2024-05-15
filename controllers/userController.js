@@ -153,6 +153,8 @@ const submitOTP = async (req, res) => {
       const saveUser = await userDATA.save();
       req.session.user_id = saveUser._id;
       res.redirect("/");
+    }else{
+      res.render('verifyOTP',{message:"Incorrect OTP!!!"})
     }
   } catch (error) {
     console.log(error);
@@ -453,7 +455,7 @@ const renderCart = async (req, res) => {
         totalWish,
       });
     } else {
-      res.render("login");
+      res.render("signUp");
     }
   } catch (error) {
     console.log(error.message);
@@ -465,8 +467,10 @@ const addToCart = async (req, res) => {
     const userId = req.session.user_id;
     const productId = req.params.productId;
     const quantity = req.body.quantity || 1;
+    
     // Find the cart for the user
     let cart = await Cart.findOne({ userId });
+   
 
     if (!cart) {
       // If the user does not have a cart, create a new one

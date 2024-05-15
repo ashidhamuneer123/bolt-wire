@@ -1,5 +1,6 @@
 const Order = require("../models/orderModel");
 const Product = require("../models/productModel");
+const Wallet = require('../models/walletModel')
 
 const getTotalOrderCount = async () => {
   try {
@@ -85,18 +86,57 @@ const cancelOrder = async (req, res) => {
 
 const updateStatus = async (req, res) => {
   try {
-    const { orderId, status, productId } = req.body;
+      const { orderId, status, productId } = req.body;
 
-    await Order.findOneAndUpdate(
-      { _id: orderId, "items.productId": productId },
-      { $set: { "items.$.deliveryStatus": status } }
-    );
-    res.json({ success: true });
+      const order = await Order.findOneAndUpdate(
+          { _id: orderId, "items.productId": productId },
+          { $set: { "items.$.deliveryStatus": status } }
+      );
+
+      if (status === 'Returned') {
+          const item = order.items.find(item => item.productId.toString() === productId);
+
+
+          let returnedAmount = item.quantity * item.price;
+           // Check if coupon applied for the order
+    if (order.couponDiscount > 0) {
+      // Calculate the discount amount based on the couponDiscount percentage
+      const discountAmount = (returnedAmount * order.couponDiscount) / 100;
+      returnedAmount -= discountAmount;
+    }
+
+    order.totalAmount -= returnedAmount;
+
+          const wallet = await Wallet.findOne({ userId: order.userId });
+          if (!wallet) {
+              return res.status(404).json({ success: false, message: 'Wallet not found for the user' });
+          }
+
+          wallet.balance += returnedAmount;
+          wallet.history.push({
+              amount: parseFloat(returnedAmount),
+              type: 'credit',
+              createdAt: new Date()
+          });
+          await wallet.save();
+
+          const product = await Product.findById(productId);
+          if (!product) {
+              return res.status(404).json({ success: false, message: 'Product not found' });
+          }
+
+          product.stock += item.quantity;
+          await product.save();
+      }
+
+      res.json({ success: true });
+
   } catch (error) {
-    console.error("Error updating status:", error);
-    res.status(500).json({ success: false, error: error.message });
+      console.error("Error updating status:", error);
+      res.status(500).json({ success: false, error: error.message });
   }
 };
+
 
 const orderDetails = async (req, res) => {
   try {

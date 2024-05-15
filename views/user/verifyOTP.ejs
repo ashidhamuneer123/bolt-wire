@@ -23,7 +23,11 @@
                                                     <button type="submit"
                                                         class="btn btn-fill-out btn-block hover-up">Submit</button>
                                                 </div>
-
+                                                <% if(typeof message !=='undefined' ) { %>
+                                                    <p style="color: red;">
+                                                        <%= message %>
+                                                    </p>
+                                                    <% } %>
                                                 <div class="form-group">
                                                     <button type="button" id="resendOTP"
                                                         class="btn btn-fill-out btn-block hover-up">Resend OTP</button>

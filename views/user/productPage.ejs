@@ -296,14 +296,14 @@
                                         <div class="product-image-slider">
                                             <figure class="border-radius-10">
                                                 <img width="100%" class="img-fluid"
-                                                    src="/uploads/products/<%= product.primary_image.name %>"
+                                                src="/admin-assets/imgs/items/<%= product.primary_image.name %>"
                                                     alt="product image">
                                             </figure>
                                             <% if (product.secondary_images && product.secondary_images.length> 0) { %>
                                                 <% product.secondary_images.forEach(image=> { %>
                                                     <figure class="border-radius-10">
                                                         <img class="img-fluid" width="100%"
-                                                            src="/uploads/products/<%= image.name %>"
+                                                        src="/admin-assets/imgs/items/<%= image.name %>"
                                                             alt="product image">
                                                     </figure>
                                                     <% }); %>
@@ -318,7 +318,7 @@
                                             <% if (product.secondary_images && product.secondary_images.length> 0) { %>
                                                 <% product.secondary_images.forEach(image=> { %>
                                                     <div><img class="img-fluid" width="100%"
-                                                            src="/uploads/products/<%= image.name %>"
+                                                        src="/admin-assets/imgs/items/<%= image.name %>"
                                                             alt="product image"></div>
                                                     <% }); %>
                                                         <% } else { %>
@@ -437,8 +437,8 @@
                                                         <div class="product-img product-img-zoom">
                                                             <a href="#" tabindex="0">
                                                                 <img class="default-img"
-                                                                    src="/admin-assets/imgs/items/<%= product.primary_image.name %>"
-                                                                    alt="" width="10px" height="175px">
+                                                                src="/admin-assets/imgs/items/<%= product.primary_image.name %>"
+                                                                    alt="">
 
                                                             </a>
                                                         </div>
