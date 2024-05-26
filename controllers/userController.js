@@ -248,7 +248,7 @@ const getAllProducts = async (req, res) => {
       search = req.query.search;
     }
     const products = await Product.find({
-      status: true,
+      delete: false,
       $or: [
         { product_name: { $regex: ".*" + search + ".*", $options: "i" } },
         { brand_name: { $regex: ".*" + search + ".*", $options: "i" } },
@@ -323,7 +323,7 @@ const getAllProducts = async (req, res) => {
 
 const allProducts = async (req, res) => {
   try {
-    const products = await Product.find({ status: true }).populate(
+    const products = await Product.find({ delete: false }).populate(
       "category_id"
     );
 

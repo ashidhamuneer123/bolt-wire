@@ -293,6 +293,14 @@
                 <button type="reset" class="btn button-cancel py-3" style="width:20vw;">Clear</button>
                 <button type="submit" class="btn add-btn ms-2 py-3" style="width:20vw;">Update</button>
             </form>
+
+            <% if(typeof message !== 'undefined') {
+                %>
+                    <p style="color: red;"><%=message %></p>
+                <%
+            }
+            %>
+            
         </section>
         <script>
             $(document).ready(function () {

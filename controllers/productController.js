@@ -41,7 +41,7 @@ const add_product = async (req, res) => {
     let PrimaryImage;
     let seconaryImages = [];
     req.files.forEach((e) => {
-      console.log(e);
+    
       if(e.fieldname === 'primary-image') {
         PrimaryImage = {
           name: e.filename,
@@ -55,7 +55,7 @@ const add_product = async (req, res) => {
         }
       seconaryImages.push(image);}
     });
-console.log(seconaryImages);
+
     const product = new Product({
       product_name: req.body.product_name,
       brand_name: req.body.brand_name,
@@ -72,7 +72,7 @@ console.log(seconaryImages);
 
     await product.save();
 
-    //req.flash('success', 'New product Added Sucessfully');
+    
     res.redirect("/admin/product");
   } catch (error) {
     res.status(400).send(error);
@@ -313,7 +313,7 @@ const deleteProduct = async (req, res) => {
  
 
   await Product.findByIdAndUpdate({ _id: req.params.id }, { delete: true });
-  req.flash("success", "Poduct Deleted successfully");
+  
   res.redirect("/admin/product");
 };
 

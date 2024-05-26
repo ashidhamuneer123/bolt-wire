@@ -4,7 +4,7 @@ const Category = require("../models/categoryModel");
 
 const get_searchedProducts = async (req, res) => {
   try {
-    const products = await Product.find({ status: true }).populate(
+    const products = await Product.find({ delete: false }).populate(
       "category_id"
     );
     // Retrieve the total count of products
