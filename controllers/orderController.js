@@ -29,7 +29,7 @@ const getOrderList = async (req, res) => {
     // Fetch orders for the current page
     const orders = await Order.find()
       .skip(offset)
-      .limit(limit)
+      .limit(limit).sort({ createdAt: -1 })
       .populate("items.productId")
       .populate("userId");
 
@@ -97,7 +97,7 @@ const updateStatus = async (req, res) => {
           const item = order.items.find(item => item.productId.toString() === productId);
 
 
-          let returnedAmount = item.quantity * item.price;
+          let returnedAmount =  item.price;
            // Check if coupon applied for the order
     if (order.couponDiscount > 0) {
       // Calculate the discount amount based on the couponDiscount percentage

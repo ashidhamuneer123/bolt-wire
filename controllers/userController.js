@@ -659,6 +659,7 @@ const remove_product_from_cart = async (req, res) => {
 const renderCheckOut = async (req, res) => {
   try {
     const userId = req.session.user_id;
+  
     const user = await User.find({ userId });
     // Find the user's cart
     const cart = await Cart.findOne({ userId }).populate("products.productId");
@@ -771,7 +772,8 @@ const editCheckoutAddress = async (req, res) => {
 const placeOrder = async (req, res) => {
   try {
     const userId = req.session.user_id;
-    const couponCode = req.body.couponCode;
+    const { couponCode, selectedAddress, paymentMethod} = req.body;
+    
     // Store applied coupon in session or temporary storage
     req.session.appliedCoupons = [couponCode];
     const coupon = await Coupon.findOne({
@@ -779,6 +781,7 @@ const placeOrder = async (req, res) => {
       isActive: true,
       expirationDate: { $gte: Date.now() },
     });
+
     // Find the user's cart
     const cart = await Cart.findOne({ userId }).populate("products.productId");
 
@@ -787,65 +790,77 @@ const placeOrder = async (req, res) => {
       return res.status(400).send("Cart is empty");
     }
 
-    // Get the selected address ID from the request body
-    const selectedAddressId = req.body.selectedAddress;
-
     // Find the selected address
-    const address = await Address.findOne({ _id: selectedAddressId, userId });
+    const address = await Address.findOne({ _id: selectedAddress, userId });
 
     // Ensure that the selected address exists and belongs to the user
     if (!address) {
       return res.status(400).send("Invalid address selected");
     }
+
     let couponDiscount = 0;
     if (coupon) {
       couponDiscount = coupon.discountAmount;
     }
+
     // Calculate total amount and set price for each item
     let totalAmount = 0;
     for (const item of cart.products) {
-      // Calculate price for each item based on quantity and selling price
       const itemPrice = item.quantity * item.productId.selling_price;
       item.price = itemPrice;
       totalAmount += itemPrice;
 
-      // Deduct the purchased quantity from the product's stock
-      const productId = item.productId._id;
-      const product = await Product.findById(productId);
-      // Update the product's stock
-      product.stock -= item.quantity;
-      await product.save();
     }
+
     // Deduct coupon discount from the total amount
-    let discountedAmount = 0;
-    discountedAmount = (totalAmount * couponDiscount) / 100;
+    let discountedAmount = (totalAmount * couponDiscount) / 100;
     totalAmount -= discountedAmount;
 
     // Ensure that paymentMethod is provided in the request body
-    const paymentMethod = req.body.paymentMethod;
     if (!paymentMethod) {
       return res.status(400).send("Payment method is required");
     }
 
-    // If payment method is 'Cash on Deliver'
+       // Set initial delivery status based on payment method
+    for (const item of cart.products) {
+      item.deliveryStatus = paymentMethod === "Online" ? "Payment Pending" : "Processing";
+    }
+
     // Create the order with required fields
     const order = new Order({
       userId,
-      items: cart.products,
-      status: "unpaid",
+      items: cart.products.map(item => ({
+        productId: item.productId._id,
+        quantity: item.quantity,
+        price: item.price,
+        deliveryStatus: item.deliveryStatus,
+      })),
+      status: paymentMethod === "Online" ? "pending" : "unpaid",
       totalAmount,
       paymentMethod,
-      address: address._id,
+      address: {
+        name: address.name,
+        mobile: address.mobile,
+        address: address.address,
+        pincode: address.pincode,
+        state: address.state,
+        district: address.district,
+        city: address.city,
+      },
       couponDiscount,
     });
     if (paymentMethod === "Cash on Delivery") {
-      //Save the order to the database
       await order.save();
-    }
-    // If payment method is 'Online payment'
-    if (paymentMethod === "Online") {
+      
+      // Deduct the purchased quantity from the product's stock
+      for (const item of cart.products) {
+      const productId = item.productId._id;
+      const product = await Product.findById(productId);
+      product.stock -= item.quantity;
+      await product.save();
+      }
+    } else if (paymentMethod === "Online") {
       const createOrder = await Order.create(order);
-      // Create Razorpay order
       const razorpayOrder = await instance.orders.create({
         amount: totalAmount * 100, // Razorpay expects amount in paise (multiply by 100)
         currency: "INR",
@@ -855,9 +870,8 @@ const placeOrder = async (req, res) => {
 
       const timestamp = razorpayOrder.created_at;
       const date = new Date(timestamp * 1000); // Convert the Unix timestamp to milliseconds
-
-      // Format the date and time
       const formattedDate = date.toISOString();
+
       let payment = new Payment({
         payment_id: razorpayOrder.id,
         amount: totalAmount * 100,
@@ -873,47 +887,35 @@ const placeOrder = async (req, res) => {
         orderId: razorpayOrder.id,
         amount: totalAmount * 100,
       });
-    }
-
-    if (paymentMethod === "Wallet") {
+    } else if (paymentMethod === "Wallet") {
       try {
-        // Find the wallet associated with the user
         const wallet = await Wallet.findOne({ userId });
 
-        // Check if the wallet exists and has sufficient balance
         if (!wallet || wallet.balance < totalAmount) {
           throw new Error("Insufficient balance in the wallet");
         }
 
-        // Deduct the total amount from the wallet balance
         wallet.balance -= totalAmount;
-
         wallet.history.push({
           amount: totalAmount,
           type: "debit",
         });
-
-        // Update the wallet balance in the database
         await wallet.save();
-
-        const order = new Order({
-          userId,
-          items: cart.products,
-          status: "paid",
-          totalAmount,
-          paymentMethod,
-          address: address._id,
-          couponDiscount,
-        });
-
-        //Save the order to the database
+        // Set order status to "paid" and save the order
+        order.status = "paid";
         await order.save();
-
-        // After successful order placement, mark applied coupons as redeemed
+        
+      // Deduct the purchased quantity from the product's stock
+      for (const item of cart.products) {
+      const productId = item.productId._id;
+      const product = await Product.findById(productId);
+      product.stock -= item.quantity;
+      await product.save();
+      }
         const appliedCoupons = req.session.appliedCoupons;
         if (appliedCoupons && appliedCoupons.length > 0) {
           for (const couponCode of appliedCoupons) {
-            const coupon = await Coupon.findOneAndUpdate(
+            await Coupon.findOneAndUpdate(
               {
                 couponCode,
                 isActive: true,
@@ -923,23 +925,19 @@ const placeOrder = async (req, res) => {
             );
           }
         }
-
-        // Clear applied coupons from session after order placement
         delete req.session.appliedCoupons;
       } catch (error) {
         console.error(error);
-        res.status(400).send(error.message);
+        return res.status(400).send(error.message);
       }
     }
 
-    //Clear the cart after placing the order
     await Cart.findOneAndUpdate({ userId }, { $set: { products: [] } });
 
-    // // Redirect to success page
     return res.redirect("/ordersuccess");
   } catch (error) {
     console.error(error);
-    res.status(500).send("Internal Server Error");
+    return res.status(500).send("Internal Server Error");
   }
 };
 
@@ -971,9 +969,17 @@ const verifyPayment = async (req, res) => {
         {
           $set: {
             status: "paid",
+            "items.$[].deliveryStatus": "Processing"
           },
         }
       );
+       // Deduct the purchased quantity from the product's stock
+       for (const item of cart.products) {
+        const productId = item.productId._id;
+        const product = await Product.findById(productId);
+        product.stock -= item.quantity;
+        await product.save();
+        }
       res.json({
         success: true,
       });
@@ -982,6 +988,7 @@ const verifyPayment = async (req, res) => {
     console.error(error);
   }
 };
+
 
 const renderOrderSuccess = async (req, res) => {
   try {

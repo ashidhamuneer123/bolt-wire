@@ -8,9 +8,34 @@ const orderSchema = new Schema({
         required: true
     },
     address: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Address',
-        required: true
+        name: {
+            type: String,
+            required: true
+          },
+          mobile: {
+            type: Number, 
+            required: true
+          },
+          address: {
+            type: String,
+            required: true
+          },
+          pincode: {
+            type: Number, 
+            required: true
+          },
+          state: {
+            type: String,
+            required: true
+          },
+          district: {
+            type: String,
+            required: true
+          },
+          city: {
+            type: String,
+            required: true
+          }
     },
     items: [
         {
@@ -21,7 +46,7 @@ const orderSchema = new Schema({
             },
             deliveryStatus: {
                 type: String,
-                enum: ['Processing', 'Cancelled', 'Delivered' , 'Returned','Pending'], 
+                enum: ['Payment Pending', 'Processing', 'Cancelled', 'Delivered' , 'Returned','Return Requested'], 
                 default: 'Processing' 
             },
             quantity: {
@@ -55,7 +80,7 @@ const orderSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['paid', 'unpaid'],
+        enum: ['paid', 'unpaid','pending'],
         default: 'unpaid'
     },
   

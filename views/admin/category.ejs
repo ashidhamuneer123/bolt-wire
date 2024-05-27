@@ -183,8 +183,8 @@
                 <tr>
                   <th class="th-sm">Category Name</th>
                   <th class="th-sm">Status</th>
-                  <th class="th-sm">Created on</th>
-                  <th class="th-sm">Delete/Edit</th>
+                  
+                  <th class="th-sm">Edit/Delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -196,7 +196,7 @@
                   <% } else { %>
                   <td>Unlisted</td>
                   <% } %>
-                  <td><%= category.createdAt %></td>
+                  
                   <td>
                     <!-- Edit category button -->
                     <a href="/admin/edit_category/<%= category._id %>" class="ms-3"><i class="fa-solid fa-pen"></i>Edit</a>

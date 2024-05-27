@@ -372,34 +372,25 @@
 
 
                                         <div class="row">
-                                            <% addresses.forEach((address, index)=> { %>
-                                                <div class="card mb-3 mb-lg-0">
-                                                    <div class="card-header">
-                                                        <h5 class="mb-0">Address <%= index + 1 %>
-                                                        </h5>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <p>
-                                                            <%= address.name %>
-                                                        </p>
-                                                        <address>
-                                                            <%= address.address %>
-                                                        </address>
-                                                        <p>
-                                                            <%= address.city %>, <%= address.state %> - <%=
-                                                                        address.pincode %>
-                                                        </p>
-                                                        <p>
-                                                            <%= address.mobile %>
-                                                        </p>
-                                                        <a href="/edit-address/<%= address._id %>"
-                                                            class="btn-small">Edit</a>
-                                                        <a href="/delete-address/<%= address._id %>"
-                                                            class="btn-small">Delete</a>
-                                                    </div>
+                                            <% addresses.forEach((address, index) => { %>
+                                              <div class="card mb-3 mb-lg-0">
+                                                <div class="card-header">
+                                                  <h5 class="mb-0">Address <%= index + 1 %>
+                                                    <%= address.isDefault ? '(Default)' : '' %>
+                                                  </h5>
                                                 </div>
-                                                <% }) %>
-                                        </div>
+                                                <div class="card-body">
+                                                  <p><%= address.name %></p>
+                                                  <address><%= address.address %></address>
+                                                  <p><%= address.city %>, <%= address.state %> - <%= address.pincode %></p>
+                                                  <p><%= address.mobile %></p>
+                                                  <a href="/edit-address/<%= address._id %>" class="btn-small">Edit</a>
+                                                  <a href="/delete-address/<%= address._id %>" class="btn-small">Delete</a>
+                                                </div>
+                                              </div>
+                                            <% }); %>
+                                          </div>
+                                          
 
 
                                     </div>
@@ -522,12 +513,12 @@
                                                                                                                 </strong>
                                                                                                             </h6>
 
-
+                                                                                                           <% if(item.deliveryStatus !== 'Payment Pending'){%> 
                                                                                                             <button>
                                                                                                                 <a
                                                                                                                     href="/myorderdetails/<%= order._id %>?productId=<%= item.productId._id %>">Details</a>
                                                                                                             </button>
-
+                                                                                                            <% }  %>
 
                                                                                         </div>
 
@@ -548,6 +539,14 @@
                                                                                                         onclick="returnMyOrder( '<%= order._id%>','<%= item.productId._id %>','<%= item.quantity%>')"
                                                                                                         type="button"
                                                                                                         class="btn btn-danger btn-sm">Return</button>
+                                                                                                    <% } %>
+
+                                                                                                    <% if(order.status=='pending'
+                                                                                                    ){ %>
+                                                                                                    <button
+                                                                                                        onclick="payNow('<%= order._id %>')"
+                                                                                                        type="button"
+                                                                                                        class="btn btn-danger btn-sm">Pay Now</button>
                                                                                                     <% } %>
                                                                                     </div>
 
@@ -828,6 +827,11 @@
             }
         }
     </script>
+    <script>
+    function payNow(orderId) {
+    window.location.href = '/checkout?orderId=' + orderId;
+}
+</script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"

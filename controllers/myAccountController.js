@@ -102,37 +102,39 @@ const addAddressPage = async(req,res)=>{
     }
 }
 
-const addAddress = async(req,res)=>{
-   
-        try {
-            const { name, mobile, address, pincode, state, district, city } = req.body;
-            
-            
-            const userId = req.session.user_id; 
-    
-            // Create a new address object
-            const newAddress = new Address({
-                userId,
-                name,
-                mobile,
-                address,
-                pincode,
-                state,
-                district,
-                city
-            });
-
-            // Save the new address to the database
-            await newAddress.save();
-    
-            res.redirect('/myaccount'); 
-        } catch (error) {
-            console.log(error.message);
-            res.status(500).send('Internal Server Error');
-        }
-        
-   
-}
+const addAddress = async (req, res) => {
+    try {
+      const { name, mobile, address, pincode, state, district, city, isDefault } = req.body;
+      const userId = req.session.user_id;
+  
+      // Convert isDefault to a boolean
+      const defaultAddress = isDefault === 'on';
+  
+      if (defaultAddress) {
+        // Ensure only one default address per user
+        await Address.updateMany({ userId, isDefault: true }, { isDefault: false });
+      }
+  
+      const newAddress = new Address({
+        userId,
+        name,
+        mobile,
+        address,
+        pincode,
+        state,
+        district,
+        city,
+        isDefault: defaultAddress
+      });
+  
+      await newAddress.save();
+      res.redirect('/myaccount');
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).send('Internal Server Error');
+    }
+  };
+  
 
 const editAddressPage = async(req,res)=>{
     try {
@@ -146,22 +148,47 @@ const editAddressPage = async(req,res)=>{
     }
 }
 
-const editAddress = async(req,res)=>{
+const editAddress = async (req, res) => {
     try {
-        const { name, mobile, address, pincode, state, district, city } = req.body;
-        const addressId = req.params.id;
-        await Address.findByIdAndUpdate(addressId, { name, mobile, address, pincode, state, district, city });
-        res.redirect('/myaccount'); // Redirect to my account page after editing
+      const { name, mobile, address, pincode, state, district, city, isDefault } = req.body;
+      const addressId = req.params.id;
+  
+      // Convert isDefault to a boolean
+      const defaultAddress = isDefault === 'on';
+  
+      if (defaultAddress) {
+        // Ensure only one default address per user
+        const currentAddress = await Address.findById(addressId);
+        await Address.updateMany({ userId: currentAddress.userId, isDefault: true }, { isDefault: false });
+      }
+  
+      await Address.findByIdAndUpdate(addressId, {
+        name,
+        mobile,
+        address,
+        pincode,
+        state,
+        district,
+        city,
+        isDefault: defaultAddress
+      });
+  
+      res.redirect('/myaccount');
     } catch (error) {
-        console.log(error.message);
-        res.status(500).send('Internal Server Error');
+      console.log(error.message);
+      res.status(500).send('Internal Server Error');
     }
-}
+  };
+  
 
 const deleteAddress = async (req, res) => {
     try {
         const addressId = req.params.addressId;
-        
+        const address = await Address.findById(addressId);
+
+    if (!address) {
+      return res.status(404).send('Address not found');
+    }
         // Delete the address from the database
         await Address.deleteOne({_id:addressId})
         res.redirect('/myaccount');
@@ -204,8 +231,8 @@ const cancelMyOrder = async (req, res) => {
     product.stock += parseInt(quantity); // Increment stock
 
     // Deduct total amount of canceled products from the order
-    let canceledAmount = item.quantity * item.price;
-
+    let canceledAmount = item.price;
+    
     // Check if coupon applied for the order
     if (order.couponDiscount > 0) {
       // Calculate the discount amount based on the couponDiscount percentage
@@ -264,7 +291,7 @@ const returnMyOrder = async (req, res) => {
       }
 
       // Update delivery status to "Pending" until admin approves Return
-      item.deliveryStatus = 'Pending';
+      item.deliveryStatus = 'Return Requested';
 
       // Save changes
       await order.save();

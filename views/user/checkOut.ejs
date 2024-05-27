@@ -377,142 +377,120 @@ body {
                 <div class="row">
                     <!-- Billing Details Section -->
                     <div class="col-md-6">
-                        <div class="mb-25">
-                            <h4>Billing Details</h4>
-                        </div>
-                        <div>
-                            <a href="/checkout-address"> <input id="addAddress" class="btn user-btn" type="button"
-                                    value="Add New Address"></a>
-                        </div>
-                        <div class="row">
-                            <% addresses.forEach((address, index)=> { %>
-                                <div class="card mb-3 mb-lg-0">
-                                    <div class="card-header col">
-                                        <label>
-                                            <input type="radio" id="selectedAddress<%= index %>" name="selectedAddress"
-                                                value="<%= address._id %>" <%=index===0 ? 'checked' : '' %>>
-                                        </label>
-                                        <h5 class="mb-0">Address <%= index + 1 %>
-                                        </h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <p>
-                                            <%= address.name %>
-                                        </p>
-                                        <address>
-                                            <%= address.address %>
-                                        </address>
-                                        <p>
-                                            <%= address.city %>, <%= address.state %> - <%= address.pincode %>
-                                        </p>
-                                        <p>
-                                            <%= address.mobile %>
-                                        </p>
-                                        <a href="/edit-checkoutaddress/<%= address._id %>" class="btn-small">Edit</a>
-                                    </div>
-                                </div>
-                                <% }) %>
-                        </div>
+                      <div class="mb-25">
+                        <h4>Billing Details</h4>
+                      </div>
+                      <div>
+                        <a href="/checkout-address">
+                          <input id="addAddress" class="btn user-btn" type="button" value="Add New Address">
+                        </a>
+                      </div>
+                      <div class="row">
+                        <% addresses.forEach((address, index) => { %>
+                          <div class="card mb-3 mb-lg-0">
+                            <div class="card-header col">
+                              <label>
+                                <input type="radio" id="selectedAddress<%= index %>" name="selectedAddress"
+                                  value="<%= address._id %>" <%= index === 0 ? 'checked' : '' %>>
+                              </label>
+                              <h5 class="mb-0">Address <%= index + 1 %></h5>
+                            </div>
+                            <div class="card-body">
+                              <p><%= address.name %></p>
+                              <address><%= address.address %></address>
+                              <p><%= address.city %>, <%= address.state %> - <%= address.pincode %></p>
+                              <p><%= address.mobile %></p>
+                              <a href="/edit-checkoutaddress/<%= address._id %>" class="btn-small">Edit</a>
+                            </div>
+                          </div>
+                        <% }) %>
+                      </div>
                     </div>
-
+                  
                     <!-- Orders Section -->
                     <div class="col-md-6">
-                        <div class="order_review">
-                            <div class="mb-20">
-                                <h4>Your Orders</h4>
-                            </div>
-                            <div class="table-responsive order_table text-center">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="2">Product</th>
-                                            <th>Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% cartItems.forEach(item=> { %>
-                                            <tr>
-                                                <td class="image product-thumbnail"><img
-                                                        src="/admin-assets/imgs/items/<%= item.productId.primary_image.name %>"
-                                                        alt="#"></td>
-                                                <td>
-                                                    <h5><a href="shop-product-full.html">
-                                                            <%= item.productId.product_name %>
-                                                        </a></h5> <span class="product-qty">x <%= item.quantity %>
-                                                    </span>
-                                                </td>
-                                                <td>$<%= item.price %>
-                                                </td>
-                                            </tr>
-                                            <% }); %>
-
-                                                <tr>
-                                                    <th>Shipping</th>
-                                                    <td colspan="2"><em>Free Shipping</em></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Total</th>
-                                                    <td id="GrandTotal" colspan="2" class="product-subtotal"><span
-                                                            class="font-xl text-brand fw-900">$<%= subtotal.toFixed(2)
-                                                                %></span></td>
-                                                </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="panel-body">
-                                <p class="mb-30 font-sm">
-                                <h4>If you have a coupon code, please apply it below.</h4>
-                                </p>
-
-                                <div class="form-group">
-                                    <input type="text" placeholder="Enter Coupon Code..." id="couponCode"
-                                        name="couponCode" />
-                                </div>
-                                <div class="form-group">
-                                    <a class="btn  mr-10 mb-sm-15" id="applyCouponBtn" onclick="applyCoupon()">Apply
-                                        Coupon</a>
-                                </div>
-                                <div id="couponNamePlaceholder"></div>
-                            </div>
-                            <div class="bt-1 border-color-1 mt-30 mb-30"></div>
-
-                            <!-- Payment Method Section -->
-                            <div class="payment_method">
-                                <div class="mb-25">
-                                    <h5>Payment</h5>
-                                </div>
-                                <div class="payment_option">
-                                    <div class="custome-radio">
-                                        <input class="form-check-input" type="radio" name="payment_option"
-                                            id="cashOnDelivery" value="Cash on Delivery">
-                                        <label class="form-check-label" for="cashOnDelivery">Cash On Delivery</label>
-                                    </div>
-                                    <div class="custome-radio">
-                                        <input class="form-check-input" type="radio" name="payment_option"
-                                            id="onlinePayment" value="Online" checked>
-                                        <label class="form-check-label" for="onlinePayment">Online Payment</label>
-                                    </div>
-                                    <div class="custome-radio">
-                                        <input class="form-check-input" type="radio" name="payment_option"
-                                            id="walletPayment" value="Wallet">
-                                        <label class="form-check-label" for="walletPayment">Wallet</label>
-                                    </div>
-                                </div>
-                                <p id="codMessage" class="text-danger" style="display: none;">COD is not available.</p>
-                            </div>
-                            <!-- Place Order button -->
-                            <button onclick="formSubmit()" class="btn btn-fill-out btn-block mt-30">Place Order</button>
+                      <div class="order_review">
+                        <div class="mb-20">
+                          <h4>Your Orders</h4>
                         </div>
+                        <div class="table-responsive order_table text-center">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th colspan="2">Product</th>
+                                <th>Total</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <% cartItems.forEach(item => { %>
+                                <tr>
+                                  <td class="image product-thumbnail"><img src="/admin-assets/imgs/items/<%= item.productId.primary_image.name %>" alt="#"></td>
+                                  <td>
+                                    <h5><a href="shop-product-full.html"><%= item.productId.product_name %></a></h5>
+                                    <span class="product-qty">x <%= item.quantity %></span>
+                                  </td>
+                                  <td>$<%= item.price %></td>
+                                </tr>
+                              <% }) %>
+                              <tr>
+                                <th>Shipping</th>
+                                <td colspan="2"><em>Free Shipping</em></td>
+                              </tr>
+                              <tr>
+                                <th>Total</th>
+                                <td id="GrandTotal" colspan="2" class="product-subtotal"><span class="font-xl text-brand fw-900">$<%= subtotal.toFixed(2) %></span></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="panel-body">
+                          <p class="mb-30 font-sm">
+                          <h4>If you have a coupon code, please apply it below.</h4>
+                          </p>
+                          <div class="form-group">
+                            <input type="text" placeholder="Enter Coupon Code..." id="couponCode" name="couponCode" />
+                          </div>
+                          <div class="form-group">
+                            <a class="btn mr-10 mb-sm-15" id="applyCouponBtn" onclick="applyCoupon()">Apply Coupon</a>
+                          </div>
+                          <div id="couponNamePlaceholder"></div>
+                        </div>
+                        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                  
+                        <!-- Payment Method Section -->
+                        <div class="payment_method">
+                          <div class="mb-25">
+                            <h5>Payment</h5>
+                          </div>
+                          <div class="payment_option">
+                            <div class="custome-radio">
+                              <input class="form-check-input" type="radio" name="payment_option" id="cashOnDelivery" value="Cash on Delivery">
+                              <label class="form-check-label" for="cashOnDelivery">Cash On Delivery</label>
+                            </div>
+                            <div class="custome-radio">
+                              <input class="form-check-input" type="radio" name="payment_option" id="onlinePayment" value="Online" checked>
+                              <label class="form-check-label" for="onlinePayment">Online Payment</label>
+                            </div>
+                            <div class="custome-radio">
+                              <input class="form-check-input" type="radio" name="payment_option" id="walletPayment" value="Wallet">
+                              <label class="form-check-label" for="walletPayment">Wallet</label>
+                            </div>
+                          </div>
+                          <p id="codMessage" class="text-danger" style="display: none;">COD is not available.</p>
+                        </div>
+                        <!-- Place Order button -->
+                        <button onclick="formSubmit()" class="btn btn-fill-out btn-block mt-30">Place Order</button>
+                      </div>
                     </div>
-                </div>
-
-                <!-- Hidden form for submitting data -->
-                <form id="hiddenForm" action="/place-order" method="POST" style="display: none;">
+                  </div>
+                  <form id="hiddenForm" action="/place-order" method="POST" style="display: none;">
                     <!-- Hidden input fields for selected address and payment method -->
+                    
                     <input type="hidden" id="selectedAddressInput" name="selectedAddress">
                     <input type="hidden" id="paymentMethodInput" name="paymentMethod">
                     <input type="hidden" name="couponCode" id="couponCodeInput">
-                </form>
+                  </form>
+                  
 
             </div>
         </section>
@@ -613,91 +591,77 @@ body {
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         async function formSubmit() {
-            // Get the selected address
-            const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
-            if (!selectedAddress) {
-                alert('Please select an address');
-                return;
-            }
-            // Get the selected payment method
-            const paymentMethod = document.querySelector('input[name="payment_option"]:checked');
-            if (!paymentMethod) {
-                alert('Please select a payment method');
-                return;
-            }
-            const couponCode = document.getElementById('couponCode').value;
-
-
-
-            // If online payment is selected, open Razorpay checkout
-            if (paymentMethod.value === 'Online') {
-
-                const body = {
-                    selectedAddress: selectedAddress.value,
-                    paymentMethod: paymentMethod.value,
-                    couponCode
-                }
-
-                const response = await fetch('/place-order', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-
-                });
-                const data = await response.json();
-                if (data.success) {
-                    const options = {
-                        key: 'rzp_test_nrsjMCLp4uBA73',
-                        amount: data.amount,
-                        currency: 'INR',
-                        order_id: data.orderId,
-                        name: 'Your Company Name',
-                        description: 'Purchase Description',
-                        handler: async function (response) {
-
-                            await verifyPayment(response)
-                        }
-                    };
-                    const rzp = new Razorpay(options);
-                    rzp.open();
-                } else {
-                    alert('Failed to create Razorpay order');
-                }
-            } else {
-                // Set the selected address and payment method in the hidden form
-                document.getElementById('selectedAddressInput').value = selectedAddress.value;
-                document.getElementById('paymentMethodInput').value = paymentMethod.value;
-                document.getElementById('couponCodeInput').value = couponCode;
-                console.log(couponCode);
-                // Submit the hidden form
-                document.getElementById('hiddenForm').submit();
-            }
-        }
-
-        const verifyPayment = async (response) => {
-            const res = await fetch("/verify-payment", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ response }),
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
-                    if (data.success) {
-                        location.assign("/ordersuccess");
-                    }
-                });
-
-            const data = await res.json()
-
-            console.log(data);
+          const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+          if (!selectedAddress) {
+            alert('Please select an address');
+            return;
+          }
+      
+          const paymentMethod = document.querySelector('input[name="payment_option"]:checked');
+          if (!paymentMethod) {
+            alert('Please select a payment method');
+            return;
+          }
+      
+          const couponCode = document.getElementById('couponCode').value;
+      
+          if (paymentMethod.value === 'Online') {
+            const body = {
+              selectedAddress: selectedAddress.value,
+              paymentMethod: paymentMethod.value,
+              couponCode
+            };
+      
+            const response = await fetch('/place-order', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(body)
+            });
+      
+            const data = await response.json();
             if (data.success) {
-                location.assign("/ordersuccess");
+              const options = {
+                key: 'rzp_test_nrsjMCLp4uBA73',
+                amount: data.amount,
+                currency: 'INR',
+                order_id: data.orderId,
+                name: 'Your Company Name',
+                description: 'Purchase Description',
+                handler: async function (response) {
+                  await verifyPayment(response);
+                }
+              };
+              const rzp = new Razorpay(options);
+              rzp.open();
+            } else {
+              alert('Failed to create Razorpay order');
             }
+          } else {
+            document.getElementById('selectedAddressInput').value = selectedAddress.value;
+            document.getElementById('paymentMethodInput').value = paymentMethod.value;
+            document.getElementById('couponCodeInput').value = couponCode;
+            document.getElementById('hiddenForm').submit();
+          }
         }
-    </script>
+      
+        const verifyPayment = async (response) => {
+          const res = await fetch("/verify-payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ response }),
+          });
+          
+          const data = await res.json();
+          if (data.success) {
+            location.assign("/ordersuccess");
+          }else {
+    alert('Payment verification failed');
+  }
+        }
+      </script>
+      
 
     <script>
         async function applyCoupon() {

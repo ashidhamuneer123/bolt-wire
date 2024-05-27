@@ -288,14 +288,14 @@
                                                     <div class="info"><%= selectedItem.productId.product_name %></div>
                                                 </a>
                                             </td>
-                                            <td>$<%= selectedItem.price.toFixed(2) %></td>
+                                            <td>$<%= selectedItem.productId.selling_price.toFixed(2) %></td>
                                             <td><%= selectedItem.quantity %></td>
                                             <% if(order.couponDiscount>0){ %>
                                                 <th width="20%"><%= order.couponDiscount %>%</th>
-                                                <th width="20%" class="text-end">$<%= (selectedItem.price * selectedItem.quantity).toFixed(2)- (selectedItem.price * selectedItem.quantity * (order.couponDiscount/100)).toFixed(2) %></th>
+                                                <th width="20%" class="text-end">$<%= (selectedItem.price).toFixed(2)- (selectedItem.price * (order.couponDiscount/100)).toFixed(2) %></th>
                                                 <% } %>
                                                 <% if(order.couponDiscount==0){ %>
-                                            <td class="text-end">$<%= (selectedItem.price * selectedItem.quantity).toFixed(2) %></td>
+                                            <td class="text-end">$<%= (selectedItem.price).toFixed(2) %></td>
                                             <% } %>
                                         </tr>
                                     </tbody>

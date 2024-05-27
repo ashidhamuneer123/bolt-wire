@@ -231,7 +231,7 @@
                     <tbody>
                         <% let serialNumber = 1; %>
                         <% orders.forEach(order => { %>
-                            
+                            <% if(order.status !== 'pending'){ %>
                             <% order.items.forEach(item => { %>
                                 <tr>
                                     <td><%= serialNumber %></td>
@@ -266,7 +266,7 @@
                                 </tr>
                                 <% serialNumber++; %>
                             <% }) %>
-                            
+                            <% } %>
                         <% }); %>
                     </tbody>
                 </table>
