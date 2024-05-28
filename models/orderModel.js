@@ -57,6 +57,10 @@ const orderSchema = new Schema({
             price:{
                 type:Number,
                 default:0
+            },
+            returnReason: {
+                type: String,
+                default: ''
             }
            
         }
@@ -80,7 +84,7 @@ const orderSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['paid', 'unpaid','pending'],
+        enum: ['paid', 'unpaid','pending','retry done'],
         default: 'unpaid'
     },
   

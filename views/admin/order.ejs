@@ -231,8 +231,9 @@
                     <tbody>
                         <% let serialNumber = 1; %>
                         <% orders.forEach(order => { %>
-                            <% if(order.status !== 'pending'){ %>
+                            
                             <% order.items.forEach(item => { %>
+                                <% if(item.deliveryStatus !== 'Payment Pending'){ %>
                                 <tr>
                                     <td><%= serialNumber %></td>
                                     <td><img src="/admin-assets/imgs/items/<%= item.productId.primary_image.name %>" class="img-fluid" style="width: 60px; height: 60px;" alt="Product Image"></td>
@@ -246,6 +247,9 @@
                                     <% } %>
                                     <td><span class="badge rounded-pill alert-warning"><strong style="color: <%= item.deliveryStatus === 'Cancelled' ? 'red' : (item.deliveryStatus === 'Delivered' ? 'green' : 'inherit') %>;"><%= item.deliveryStatus %></strong></span></td>
                                     <td class="text-end">
+                                        <% if(item.deliveryStatus == 'Return Requested'){ %>
+                                            <textarea class="form-control"><%= item.returnReason %></textarea>
+                                            <% } %>
                                         <div class="dropdown">
                                             <button class="btn btn-primary btn-sm font-sm dropdown-toggle" type="button" id="statusDropdown-<%= order._id %>" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Status
@@ -265,8 +269,9 @@
                                     </td>
                                 </tr>
                                 <% serialNumber++; %>
+                                <% } %>
                             <% }) %>
-                            <% } %>
+                            
                         <% }); %>
                     </tbody>
                 </table>

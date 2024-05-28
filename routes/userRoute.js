@@ -48,6 +48,7 @@ user_route.post('/cancel-order',auth.isLogin,myAccountController.cancelMyOrder)
 user_route.post('/return-order',auth.isLogin,myAccountController.returnMyOrder)
 user_route.get('/myorderdetails/:orderId',auth.isLogin,myAccountController.myOrderDetails)
 user_route.post('/addTowallet',myAccountController.addTowallet)
+user_route.post('/updateOrderStatus',myAccountController.updateOrderStatus)
 
 //cart management
 user_route.get('/cart', auth.isLogin, userController.renderCart)

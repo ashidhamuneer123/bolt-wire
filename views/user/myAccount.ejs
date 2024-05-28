@@ -453,6 +453,7 @@
                                             <div class="card-body">
                                                 <% if (orders.length> 0) { %>
                                                     <% orders.forEach(order=> { %>
+                                                        <% if (order.status !== 'retry done') { %>
                                                         <div class="container-fluid">
                                                             <div class="order-details">
                                                                 <% order.items.forEach(item=> { %>
@@ -535,6 +536,11 @@
                                                                                             <% } %>
                                                                                                 <% if(item.deliveryStatus=='Delivered'
                                                                                                     ){ %>
+                                                                                                        
+                                                        <textarea id="return-reason-<%= order._id %>-<%= item.productId._id %>" 
+                                                                  placeholder="Reason" 
+                                                                  class="form-control"></textarea>
+                                                    
                                                                                                     <button
                                                                                                         onclick="returnMyOrder( '<%= order._id%>','<%= item.productId._id %>','<%= item.quantity%>')"
                                                                                                         type="button"
@@ -557,6 +563,7 @@
                                                                     <% }) %>
                                                             </div>
                                                         </div>
+                                                        <%}%>
                                                         <% }) %>
 
                                                             <!-- Pagination markup -->
@@ -818,7 +825,8 @@
         async function returnMyOrder(orderId, productId, quantity) {
             try {
                 event.preventDefault()
-                const response = await axios.post('/return-order', { orderId, productId, quantity });
+                const reason = document.getElementById(`return-reason-${orderId}-${productId}`).value;
+                const response = await axios.post('/return-order', { orderId, productId, quantity, reason });
                 if (response.data.success) {
                     location.reload()
                 }
@@ -828,8 +836,25 @@
         }
     </script>
     <script>
-    function payNow(orderId) {
-    window.location.href = '/checkout?orderId=' + orderId;
+function payNow(orderId) {
+    // Make an AJAX request to update the order status
+    fetch('/updateOrderStatus', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ orderId: orderId, status: 'retry done' })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Redirect to the checkout page after updating the status
+            window.location.href = '/checkout'
+        } else {
+            console.error('Failed to update order status:', data.message);
+        }
+    })
+    .catch(error => console.error('Error:', error));
 }
 </script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

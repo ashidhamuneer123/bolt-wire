@@ -15,7 +15,7 @@ const getTotalOrderCount = async () => {
 const getOrderList = async (req, res) => {
   try {
     const page = req.query.page || 1; // Default to page 1 if not provided
-    const limit = 3; // Number of orders per page
+    const limit = 5; // Number of orders per page
 
     // Count total number of orders
     const totalCount = await getTotalOrderCount();

@@ -973,6 +973,9 @@ const verifyPayment = async (req, res) => {
           },
         }
       );
+       // Find the user's cart
+    const cart = await Cart.findOne({ userId }).populate("products.productId");
+
        // Deduct the purchased quantity from the product's stock
        for (const item of cart.products) {
         const productId = item.productId._id;

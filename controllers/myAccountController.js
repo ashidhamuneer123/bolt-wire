@@ -273,7 +273,7 @@ const cancelMyOrder = async (req, res) => {
 
 const returnMyOrder = async (req, res) => {
   try {
-      const { orderId, productId, quantity } = req.body;
+      const { orderId, productId, quantity, reason } = req.body;
       const userId = req.session.user_id;
 
       // Find the order of the user
@@ -292,7 +292,7 @@ const returnMyOrder = async (req, res) => {
 
       // Update delivery status to "Pending" until admin approves Return
       item.deliveryStatus = 'Return Requested';
-
+      item.returnReason = reason;
       // Save changes
       await order.save();
 
@@ -371,6 +371,30 @@ const addTowallet = async (req, res) => {
     }
 };
 
+//payment pending or failed payment case dealing
+
+const updateOrderStatus = async (req,res)=>{
+  try {
+    const { orderId, status } = req.body;
+    if (!orderId || !status) {
+        return res.status(400).json({ success: false, message: "Order ID and status are required" });
+    }
+
+    const order = await Order.findById(orderId);
+    if (!order) {
+        return res.status(404).json({ success: false, message: "Order not found" });
+    }
+
+    order.status = status;
+    await order.save();
+
+    res.json({ success: true });
+} catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+}
+}
+
 module.exports={
     myAccount,
     updateDetails,
@@ -382,5 +406,6 @@ module.exports={
     cancelMyOrder,
     returnMyOrder,
     addTowallet,
-    myOrderDetails
+    myOrderDetails,
+    updateOrderStatus
 }
