@@ -55,6 +55,7 @@ user_route.get('/cart', auth.isLogin, userController.renderCart)
 user_route.post('/add-to-cart/:productId',auth.isLogin,  userController.addToCart);
 user_route.post('/update-quantity',auth.isLogin, userController.updateQuantity);
 user_route.get('/remove-from-cart/:productId',auth.isLogin,  userController.remove_product_from_cart)
+user_route.get('/api/check-stock/:productId',userController.checkStock)
 
 user_route.get('/filter',searchController.get_searchedProducts);
 user_route.get('/checkout',auth.isLogin, userController.renderCheckOut);

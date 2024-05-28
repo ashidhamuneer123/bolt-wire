@@ -229,6 +229,57 @@ const render_edit_product = async (req, res) => {
 //update product
 const update_product = async (req, res) => {
   try {
+
+    const {
+      product_name,
+      brand_name,
+      description,
+      stock,
+      prod_price,
+      sellig_price,
+      color,
+      status,
+      imagesToDelete
+    } = req.body;
+
+   // Parse imagesToDelete
+   let imagesToDeleteParsed = [];
+   try {
+     if (imagesToDelete) {
+       imagesToDeleteParsed = JSON.parse(imagesToDelete);
+     }
+   } catch (error) {
+     console.log('Error parsing imagesToDelete:', error);
+   }
+
+      // Server-side validation
+      if (prod_price <= 0 || sellig_price <= 0 || stock <= 0) {
+        req.flash("error", "Prices and stock must be greater than 0.");
+        return res.redirect(`/admin/edit-product/${req.body.id}`);
+      }
+  
+      if (req.files != null) {
+        const allowedImageTypes = ['jpeg', 'image/png', 'image/webp', 'image/svg+xml'];
+  
+        // Validate primary image
+        let primaryImage = req.files.primaryImage;
+        if (primaryImage && !allowedImageTypes.includes(primaryImage.mimetype)) {
+          req.flash("error", "Invalid primary image file type. Only JPG, PNG, WEBP, and SVG are allowed.");
+          return res.redirect(`/admin/edit-product/${req.body.id}`);
+        }
+  
+        // Validate secondary images
+        let secondaryImages = req.files.images;
+        if (secondaryImages) {
+          for (let i = 0; i < secondaryImages.length; i++) {
+            if (!allowedImageTypes.includes(secondaryImages[i].mimetype)) {
+              req.flash("error", "Invalid secondary image file type. Only JPG, PNG, WEBP, and SVG are allowed.");
+              return res.redirect(`/admin/edit-product/${req.body.id}`);
+            }
+          }
+        }
+      }
+
     const product = await Product.findOne({ _id: req.body.id });
 
     if (req.files != null) {
@@ -277,16 +328,21 @@ const update_product = async (req, res) => {
       }
     }
 
-    const {
-      product_name,
-      brand_name,
-      description,
-      stock,
-      prod_price,
-      sellig_price,
-      color,
-      status,
-    } = req.body;
+  // Handle image deletions
+  imagesToDeleteParsed.forEach(async (image) => {
+    if (image.type === 'primary_img') {
+      fs.unlinkSync(product.primary_image.path);
+      product.primary_image = null;
+    } else if (image.type === 'secondary_img') {
+      const imgIndex = product.secondary_images.findIndex(img => img._id.toString() === image.id);
+      if (imgIndex !== -1) {
+        fs.unlinkSync(product.secondary_images[imgIndex].path);
+        product.secondary_images.splice(imgIndex, 1);
+      }
+    }
+    
+  });
+
     const categoryID = new mongoose.Types.ObjectId(req.body.category);
 
     product.product_name = product_name;

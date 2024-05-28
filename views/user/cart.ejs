@@ -295,8 +295,9 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <a href="/checkout" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To
-                                    CheckOut</a>
+                                <a href="#" id="checkout-button" class="btn"> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
+
+<form id="checkout-form" action="/checkout" method="GET" style="display: none;"></form>
                             </div>
                         </div>
                     </div>
@@ -395,7 +396,51 @@
             </div>
         </div>
     </footer>
-
+    <script>
+        async function validateStock() {
+            const quantities = document.querySelectorAll('input[name="quantity"]');
+            let validationFailed = false;
+            let errorMessage = '';
+    
+            for (let i = 0; i < quantities.length; i++) {
+                const quantityInput = quantities[i];
+                const productId = quantityInput.id.replace('quantity-', '');
+                const quantity = parseInt(quantityInput.value);
+    
+                try {
+                    const response = await fetch(`/api/check-stock/${productId}`);
+                    const productData = await response.json();
+    
+                    if (productData.stock < quantity) {
+                        validationFailed = true;
+                        errorMessage += `Requested quantity for ${productData.product_name} exceeds available stock.\n`;
+                    }
+                } catch (error) {
+                    console.error('Error checking stock:', error);
+                    alert('An error occurred while checking the stock. Please try again later.');
+                    return false;
+                }
+            }
+    
+            if (validationFailed) {
+                alert(errorMessage);
+                return false;
+            }
+    
+            return true;
+        }
+    
+        document.getElementById('checkout-button').addEventListener('click', async function(event) {
+            event.preventDefault();
+    
+            const isValid = await validateStock();
+    
+            if (isValid) {
+                document.getElementById('checkout-form').submit();
+            }
+        });
+    </script>
+    
 
 
     <script>

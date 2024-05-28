@@ -22,6 +22,12 @@ app.use(session({
 app.use(flash())
 app.use(cors())
 
+// Make flash messages available in all templates
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+  });
 //for user routes
 const userRoute=require('./routes/userRoute');
 app.use('/',userRoute);

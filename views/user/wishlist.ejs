@@ -347,6 +347,7 @@
                                                     <form action="/add-to-cart/<%= item.productId._id %>" method="post"
                                                         onsubmit="return addToCart(event)"
                                                         data-product-id="<%= item.productId._id %>">
+                                                        <input type="hidden" name="fromWishlist" value="true">
                                                         <button type="submit" class="btn btn-sm"><i
                                                                 class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
                                                     </form>

@@ -467,7 +467,7 @@ const addToCart = async (req, res) => {
     const userId = req.session.user_id;
     const productId = req.params.productId;
     const quantity = req.body.quantity || 1;
-    
+    const fromWishlist = req.body.fromWishlist === 'true'; // Check if the product is being added from the wishlist
     // Find the cart for the user
     let cart = await Cart.findOne({ userId });
    
@@ -502,14 +502,18 @@ const addToCart = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Product is out of stock" });
     }
+
+    // If the product is added from the wishlist, bypass the stock check
+    if (!fromWishlist) {
     // Check if the requested quantity is greater than available stock
+    
     if (product.stock < quantity) {
       return res.status(400).json({
         success: false,
         message: "Requested quantity exceeds available stock",
       });
     }
-
+  }
     // Save the cart to the database
     await cart.save();
 
@@ -656,6 +660,28 @@ const remove_product_from_cart = async (req, res) => {
   }
 };
 
+//checking stock before proceeding to checkout page
+
+const checkStock =async (req,res)=>{
+  try {
+    const productId = req.params.productId;
+    const product = await Product.findById(productId);
+
+    if (!product) {
+        return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    res.status(200).json({
+        success: true,
+        stock: product.stock,
+        product_name: product.product_name
+    });
+} catch (error) {
+    console.error('Error checking stock:', error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+}
+}
+
 const renderCheckOut = async (req, res) => {
   try {
     const userId = req.session.user_id;
@@ -790,6 +816,7 @@ const placeOrder = async (req, res) => {
       return res.status(400).send("Cart is empty");
     }
 
+     
     // Find the selected address
     const address = await Address.findOne({ _id: selectedAddress, userId });
 
@@ -1171,6 +1198,7 @@ module.exports = {
   productPage,
   renderCart,
   addToCart,
+  checkStock,
   checkoutAddresspage,
   addCheckoutAddress,
   editCheckoutAddressPage,

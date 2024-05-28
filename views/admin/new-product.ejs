@@ -215,20 +215,35 @@ border-color: #0056b3;
             <form id="addproduct" class="row d-flex justify-content-center" action="/admin/new-product" method="post" enctype="multipart/form-data">
                 <section class="left-secton col-md-6 p-3">
                    <!---->
-                                 
+                                  <!-- Flash Messages -->
+      <% if (success.length > 0) { %>
+        <div class="alert alert-success">
+            <% success.forEach(function(message) { %>
+                <p><%= message %></p>
+            <% }) %>
+        </div>
+    <% } %>
+
+    <% if (error.length > 0) { %>
+        <div class="alert alert-danger">
+            <% error.forEach(function(message) { %>
+                <p><%= message %></p>
+            <% }) %>
+        </div>
+    <% } %>
 
                    <div class="card p-md-5 p-2 me-md-5">
                     <h5>Choose product images </h5>
                     <span class="fw-normal mb-4 text-success">file supports only: jpeg,jpg,png,webp</span>
                     <span class="fw-bold">Select the Primary Image</span>
                     <div class="d-flex align-items-center justify-content-center">
-                        <input class="form-control" type="file" id="primaryimageInput">
+                        <input class="form-control" type="file" accept=".jpg,.jpeg,.png,.webp,.svg" id="primaryimageInput">
                    <div id="PrimaryimageContainer"  ></div>
                     </div>
             
 
                     <span class="fw-bold">Select secondary images <br> <span class="fw-normal text-success">Maximum 3 images</span></span>
-                    <input class="form-control" type="file" id="imageInput" multiple>
+                    <input class="form-control" type="file" accept=".jpg,.jpeg,.png,.webp,.svg" id="imageInput" multiple>
                    <div id="imageContainer"  ></div>
                 </div>
                 
