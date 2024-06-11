@@ -1159,7 +1159,7 @@ const brandFiltering = async (req, res) => {
     const brandName = req.params.brandName;
    
     // Fetch products based on the brand ID
-    const products = await Product.find({ brand_name: brandName }).populate(
+    const products = await Product.find({ delete:false,brand_name: brandName }).populate(
       "category_id"
     );
     res.json({ products });
@@ -1174,7 +1174,7 @@ const colorFiltering = async (req, res) => {
     const colorName = req.params.colorName;
     console.log(colorName);
     // Fetch products based on the brand ID
-    const products = await Product.find({ color: colorName }).populate(
+    const products = await Product.find({delete:false, color: colorName }).populate(
       "category_id"
     );
     res.json({ products });
