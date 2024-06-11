@@ -270,12 +270,12 @@ const getAllProducts = async (req, res) => {
         sortProducts = products; // Placeholder
         break;
       case "lowToHigh":
-        sortProducts = await Product.find({ status: true }).sort({
+        sortProducts = await Product.find({ delete: false }).sort({
           selling_price: 1,
         });
         break;
       case "highToLow":
-        sortProducts = await Product.find({ status: true }).sort({
+        sortProducts = await Product.find({ delete: false }).sort({
           selling_price: -1,
         });
         break;
@@ -288,17 +288,17 @@ const getAllProducts = async (req, res) => {
           currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
         );
         sortProducts = await Product.find({
-          status: true,
+          delete: false,
           createdAt: { $gte: oneWeekAgo },
         });
         break;
       case "aA-zZ":
-        sortProducts = await Product.find({ status: true }).sort({
+        sortProducts = await Product.find({ delete: false }).sort({
           product_name: 1,
         });
         break;
       case "zZ-aA":
-        sortProducts = await Product.find({ status: true }).sort({
+        sortProducts = await Product.find({ delete: false }).sort({
           product_name: -1,
         });
         break;
