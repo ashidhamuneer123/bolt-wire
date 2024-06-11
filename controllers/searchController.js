@@ -16,37 +16,37 @@ const get_searchedProducts = async (req, res) => {
     switch (priceRange) {
       case "0-100":
         sortPrice = await Product.find({
-          status: true,
+          delete: false,
           selling_price: { $gt: 0, $lte: 100 },
         });
         break;
       case "101-500":
         sortPrice = await Product.find({
-          status: true,
+          delete: false,
           selling_price: { $gt: 100, $lte: 500 },
         });
         break;
       case "501-700":
         sortPrice = await Product.find({
-          status: true,
+          delete: false,
           selling_price: { $gt: 500, $lte: 700 },
         });
         break;
       case "701-1000":
         sortPrice = await Product.find({
-          status: true,
+          delete: false,
           selling_price: { $gt: 700, $lte: 1000 },
         });
         break;
       case "1001-1500":
         sortPrice = await Product.find({
-          status: true,
+          delete: false,
           selling_price: { $gt: 1000, $lte: 1500 },
         });
         break;
       case "1501-2000":
         sortPrice = await Product.find({
-          status: true,
+          delete: false,
           selling_price: { $gt: 1500, $lte: 2000 },
         });
         break;
@@ -69,13 +69,13 @@ const get_searchedProducts = async (req, res) => {
         sortProducts = products; // Placeholder
         break;
       case "lowToHigh":
-        sortProducts = await Product.find({ status: true }).sort({
+        sortProducts = await Product.find({ delete: false }).sort({
           selling_price: 1,
         });
 
         break;
       case "highToLow":
-        sortProducts = await Product.find({ status: true }).sort({
+        sortProducts = await Product.find({ delete: false }).sort({
           selling_price: -1,
         });
         break;
@@ -94,12 +94,12 @@ const get_searchedProducts = async (req, res) => {
         });
         break;
       case "aA-zZ":
-        sortProducts = await Product.find({ status: true }).sort({
+        sortProducts = await Product.find({ delete: false }).sort({
           product_name: 1,
         });
         break;
       case "zZ-aA":
-        sortProducts = await Product.find({ status: true }).sort({
+        sortProducts = await Product.find({ delete: false }).sort({
           product_name: -1,
         });
         break;
@@ -111,10 +111,10 @@ const get_searchedProducts = async (req, res) => {
     // Retrieve categories, brands, and colors for filtering
     const categories = await Category.find({ cat_status: true });
     const brandCounts = await Product.aggregate([
-      { $match: { status: true } },
+      { $match: { delete: false } },
       { $group: { _id: "$brand_name", count: { $sum: 1 } } },
     ]);
-    const uniqueColors = await Product.distinct("color", { status: true });
+    const uniqueColors = await Product.distinct("color", { delete: false });
     const user = req.session.user_id;
     // Render the filter page with the retrieved data
     res.render("filter", {
