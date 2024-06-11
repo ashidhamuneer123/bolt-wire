@@ -43,8 +43,8 @@ const sendverifyMail = async (name, email, otp) => {
       service: "GMAIL",
 
       auth: {
-        user: "ashidhaa@gmail.com", // Your Gmail email address
-        pass: "boxx qkrc ujst lgbw", // Your Gmail password or an app-specific password
+        user: "ashidhaa@gmail.com", // Gmail email address
+        pass: "boxx qkrc ujst lgbw", //Gmail password or an app-specific password
       },
     });
 
@@ -1144,7 +1144,7 @@ const categoryFiltering = async (req, res) => {
   try {
     const categoryId = req.params.categoryId;
     // Fetch products based on the category ID
-    const products = await Product.find({ category_id: categoryId }).populate(
+    const products = await Product.find({delete:false, category_id: categoryId }).populate(
       "category_id"
     );
     res.json({ products });

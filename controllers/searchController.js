@@ -89,6 +89,7 @@ const get_searchedProducts = async (req, res) => {
         );
         sortProducts = await Product.find({
           status: true,
+          delete:false,
           createdAt: { $gte: oneWeekAgo },
         });
         break;
