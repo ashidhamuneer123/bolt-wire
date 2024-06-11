@@ -1157,7 +1157,7 @@ const categoryFiltering = async (req, res) => {
 const brandFiltering = async (req, res) => {
   try {
     const brandName = req.params.brandName;
-    console.log(brandName);
+   
     // Fetch products based on the brand ID
     const products = await Product.find({ brand_name: brandName }).populate(
       "category_id"
