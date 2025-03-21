@@ -108,6 +108,8 @@ const render_product_page = async (req, res) => {
 
 //get all Product
 const getAllProducts = async (skip, perPage) => {
+  const proData=await Product.find()
+  console.log(proData);
   const products = await Product.aggregate([
     {
       $match: {

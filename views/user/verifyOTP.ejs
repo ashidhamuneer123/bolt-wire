@@ -40,6 +40,7 @@
                                                 document.getElementById('resendOTP').addEventListener('click', function () {
                                                     // Make AJAX request to resend OTP
                                                     var xhr = new XMLHttpRequest();
+                                                    
                                                     xhr.open('POST', '/resend-otp', true);
                                                     xhr.setRequestHeader('Content-Type', 'application/json');
                                                     xhr.onreadystatechange = function () {

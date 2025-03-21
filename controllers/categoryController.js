@@ -76,6 +76,7 @@ const render_category_page = async (req, res) => {
     return obj;
   });
   const admin = res.locals.admin;
+  console.log(categories);
   res.render("admin/category", {
     admin: true,
     categories: categories,
